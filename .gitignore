@@ -1,6 +1,4 @@
-/Smarty/cache
-/Smarty/compile
-/Smarty/configs
+/include/Smarty/cache
 /nbproject/private/
 /html/Bilder/*-ist.png
 /include/Smarty/compile
