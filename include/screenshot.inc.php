@@ -14,17 +14,27 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
 function getScreenshotStatus($sTestName = 'download-seite') {
     global $iExeTime, $sExePath;
 
-    $sFileIst = "$sTestName-ist.png";
-    $sFileSoll = "$sTestName-soll.png";
-    if ((isset($_GET['done']) && $_GET['done'] == $sTestName)|| (isset($_POST['check']) && in_array($sTestName, $_POST['check']))) {
+    $sStem = substr($sTestName, 0, -8);
+    $sExt = substr($sTestName, -3);
+    $sFileIst = "$sStem-ist.$sExt";
+    $sFileSoll = "$sStem-soll.$sExt";
+    if (isset($_REQUEST['done']) && ($_GET['done'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
         copy($sFileIst, $sFileSoll);
     }
     $retval = array();
     $retval['fileIst'] = $sFileIst;
     $retval['fileSoll'] = $sFileSoll;
+    $retval['ext'] = $sExt;
     $retval['name'] = $sTestName;
     $retval['title'] = basename($sTestName);
-    
+
+    if (isset($_REQUEST['discard']) && ($_GET['discard'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
+        unlink($sFileIst);
+        $retval['desc'] = "Test wurde gelöscht";
+        $retval['status'] = 0;
+        return $retval;
+    }
+
     if (filemtime($sFileIst) < $iExeTime) {
         $retval['desc'] = "Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
         $retval['status'] = 0;
