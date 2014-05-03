@@ -2,22 +2,21 @@
 
 require '../include/smarty.inc.php';
 require '../include/screenshot.inc.php';
-
-$sExePath = 'c:\\LaufwerkD\\Daten\\Projekte\\prolab2002-ads\\System\\PROLab.exe';
-$iExeTime = filemtime($sExePath);
+require '../include/projectstatus.inc.php';
 
 $aTests = array();
+$aProjects = array();
 $iStatusSum = 0;
-array_walk(glob('Bilder/*-ist.png'), function($sFile) {
-    global $aTests, $iStatusSum;
-    $aTests[] = $aTest = getScreenshotStatus(substr($sFile, 0, -8));;
-    $iStatusSum += $aTest['status'];
-});
 
+getProjectStatus('PROLab_de', '\\\\delphicompiler0\\prolab_plus_de_AD\\PROLab_de.exe');
+getProjectStatus('PROLab_en', '\\\\delphicompiler0\\prolab_plus_en_AD\\PROLab_en.exe');
 
-$smarty->assign("sTime", date('Y-m-d H:i:s'));
-$smarty->assign("Name", "DelphiScreenshotTestsuite", true);
+$smarty->assign("aProjects", $aProjects);
+$smarty->assign("bHasHiddenProjects", 0);
 $smarty->assign("aTests", $aTests);
 $smarty->assign("iStatusSum", $iStatusSum);
+$smarty->assign("ini", isset($_GET['ini']));
+$smarty->assign("show_all", isset($_GET['show_all']));
 
-$smarty->display('index.tpl');
+
+$smarty->display(count($aProjects) < 2 ? 'index.tpl' : 'project_list.tpl');

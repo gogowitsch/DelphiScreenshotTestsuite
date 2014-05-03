@@ -1,3 +1,4 @@
+{* wird von index.php aufgerufen *}
 {if $ini}
     {include file="status.tpl"}
 {else}

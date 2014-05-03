@@ -2,3 +2,6 @@
 /nbproject/private/
 /html/Bilder/*-ist.png
 /include/Smarty/compile
+/html/development-bundle
+/html/Bilder
+/html/*.html

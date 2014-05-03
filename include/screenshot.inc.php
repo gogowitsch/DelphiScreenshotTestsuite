@@ -18,7 +18,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $sExt = substr($sTestName, -3);
     $sFileIst = "$sStem-ist.$sExt";
     $sFileSoll = "$sStem-soll.$sExt";
-    if (isset($_REQUEST['done']) && ($_GET['done'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
+    if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
         copy($sFileIst, $sFileSoll);
     }
     $retval = array();
@@ -28,10 +28,10 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $retval['name'] = $sTestName;
     $retval['title'] = basename($sTestName);
 
-    if (isset($_REQUEST['discard']) && ($_GET['discard'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
+    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
         unlink($sFileIst);
         $retval['desc'] = "Test wurde gelöscht";
-        $retval['status'] = 0;
+        $retval['status'] = 1;
         return $retval;
     }
 

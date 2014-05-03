@@ -1,0 +1,26 @@
+<?php
+
+function getProjectStatus($sProject, $p_sExePath) {
+	global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
+
+  if (isset($_GET['project']) && $_GET['project']!=$sProject) return;
+
+  $sPicturePath = "$sProject/";
+	$sExePath = $p_sExePath;
+	$iExeTime = filemtime($sExePath);
+  $aNewTests = array();
+  $iLocalStatusSum = 0;
+	array_walk(glob("Bilder/$sPicturePath*-ist.???"), function($sFile) {
+		global $aNewTests, $iLocalStatusSum;
+		$aNewTests[] = $aTest = getScreenshotStatus($sFile);
+		$iLocalStatusSum += $aTest['status'];
+	});
+
+  $aProjects[]  = array(
+    'title' => $sProject,
+    'status' => $iLocalStatusSum==0 ? 1 : 0,
+    'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
+  );
+  $aTests = array_merge($aTests, $aNewTests);
+  $iStatusSum += $iLocalStatusSum;
+}

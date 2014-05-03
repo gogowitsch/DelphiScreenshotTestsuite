@@ -3,8 +3,8 @@
 require '../include/smarty.inc.php';
 require '../include/screenshot.inc.php';
 
-
-$aTest = getScreenshotStatus($_GET['sTestName']);
+$sTestName = empty($_GET['sTestName']) ? '' : $_GET['sTestName'];
+$aTest = getScreenshotStatus($sTestName);
 $smarty->assign("aTest", $aTest);
 
 $smarty->display('details.tpl');
