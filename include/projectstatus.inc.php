@@ -18,7 +18,7 @@ function getProjectStatus($sProject, $p_sExePath) {
 
   $aProjects[]  = array(
     'title' => $sProject,
-    'status' => $iLocalStatusSum==0 ? 1 : 0,
+    'status' => $iLocalStatusSum==count($aNewTests) ? 1 : 0,
     'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
   );
   $aTests = array_merge($aTests, $aNewTests);

@@ -17,6 +17,7 @@ $smarty->assign("aTests", $aTests);
 $smarty->assign("iStatusSum", $iStatusSum);
 $smarty->assign("ini", isset($_GET['ini']));
 $smarty->assign("show_all", isset($_GET['show_all']));
+$smarty->assign("project", isset($_GET['project']) ? $_GET['project'] : '');
 
 
 $smarty->display(count($aProjects) < 2 ? 'index.tpl' : 'project_list.tpl');

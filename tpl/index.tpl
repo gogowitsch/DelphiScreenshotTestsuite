@@ -3,6 +3,10 @@
 {else}
     {strip}
         {include file="header.tpl" title=Start}
+        <div id="breadcrumbs">
+            <a href='/'>Projektübersicht</a> &#187; 
+            {$project}
+		</div>
 
         {$iStatusSum} / {$aTests|count} erfolgreich.
 
@@ -20,7 +24,7 @@
                                 <label for="cb{$i}">{$aTest.title}</label>
                             </td>
                             <td class="status{$aTest.status}">
-                                <a href="details.php?sTestName={$aTest.name|urlencode}">
+                                <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
                                     {$aTest.desc}
                                 </a>
                             </td>
@@ -73,7 +77,7 @@
             {/literal}
                 showhide_submit();
         </script>
-        {if !$show_all}<a href="?show_all=1">auch erfolgreiche Tests zeigen</a>{/if}
+        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">auch erfolgreiche Tests zeigen</a>{/if}
 
         {include file="footer.tpl"}
     {/strip}
