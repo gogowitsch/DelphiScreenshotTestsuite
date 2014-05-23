@@ -9,7 +9,7 @@
 
 <b style='color:red'>Es gibt Unterschiede in {$aTest.title}</b>
 <div style='background:red'><span class='label'>   Ist:</span>
-    {if $aTest.ext=='png'}
+    {if $aTest.ext=='png' || $aTest.ext=='bmp'}
     <img src='{$aTest.fileIst}?{$sTime|urlencode}' title=Ist>
     {else}
 
@@ -17,7 +17,7 @@
     {/if}
 </div>
 <div style='background:green'><span class='label'>   Soll:</span>
-    {if $aTest.ext=='png'}
+    {if $aTest.ext=='png' || $aTest.ext=='bmp'}
     <img src='{$aTest.fileSoll}?{$sTime|urlencode}' title=Soll>
     {else}
     <div class='iframe_container'><iframe src='{$aTest.fileSoll}?{$sTime|urlencode}' title=Soll></iframe></div>
@@ -31,7 +31,7 @@
     </script>
     {/if}
 </div>
-{if $aTest.ext=='png'}
+{if $aTest.ext=='png' || $aTest.ext=='bmp'}
     <span class='label'>Unterschiede: </span>
     <img src='compare.php?sTestName={$aTest.name|urlencode}' title=Unterschiede>
 {/if}
