@@ -4,7 +4,7 @@
     {strip}
         {include file="header.tpl" title=Start}
         <div id="breadcrumbs">
-            <a href='/'>Projektübersicht</a> &#187; 
+            <a href='/'>Projektübersicht</a> &#187;&nbsp;
             {$project}
 		</div>
 

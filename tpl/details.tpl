@@ -1,5 +1,12 @@
 {include file="header.tpl" title=Details}
 
+<div id="breadcrumbs">
+    <a href='/'>Projektübersicht</a> &#187;
+    <a href='/?project={$project|urlencode}'>{$project}</a> &#187;
+    {$aTest.title}
+</div>
+
+
 <b style='color:red'>Es gibt Unterschiede in {$aTest.title}</b>
 <div style='background:red'><span class='label'>   Ist:</span>
     {if $aTest.ext=='png'}

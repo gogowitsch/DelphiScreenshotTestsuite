@@ -3,10 +3,10 @@
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
     if (file($sFileSoll) != file($sFileIst)) {
-        $retval['desc'] = "Es gibt Unterschiede.";
+        $retval['desc'] = "Es gibt Unterschiede";
         $retval['status'] = 0;
     } else {
-        $retval['desc'] = "Bilder stimmen &uuml;berein.";
+        $retval['desc'] = "Bilder stimmen &uuml;berein";
         $retval['status'] = 1;
     }
 }
@@ -35,17 +35,16 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         return $retval;
     }
 
-    if (filemtime($sFileIst) < $iExeTime) {
-        $retval['desc'] = "Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
+    if (!file_exists($sFileSoll)) {
+        $retval['desc'] = "Soll-Datei existiert noch nicht";
         $retval['status'] = 0;
+        $sName = urlencode($sTestName);
     } else {
-        if (!file_exists($sFileSoll)) {
-            $retval['desc'] = "Soll-Datei existiert noch nicht.";
-            $retval['status'] = 0;
-            $sName = urlencode($sTestName);
-        } else {
-            compareFiles($sFileSoll, $sFileIst, $retval);
-        }
+        compareFiles($sFileSoll, $sFileIst, $retval);
+    }
+    if (filemtime($sFileIst) < $iExeTime) {
+        $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
+        $retval['status'] = 0;
     }
     return $retval;
 }
