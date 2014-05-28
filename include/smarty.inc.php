@@ -11,4 +11,5 @@ $smarty->setCacheDir('../include/Smarty/cache/');
 
 $smarty->assign("Name", "DelphiScreenshotTestsuite", true);
 $smarty->assign("sTime", date('Y-m-d H:i:s'));
+$smarty->assign("message", isset($_GET['message']) ? $_GET['message'] : '');
 
