@@ -24,3 +24,10 @@ function getProjectStatus($sProject, $p_sExePath) {
   $aTests = array_merge($aTests, $aNewTests);
   $iStatusSum += $iLocalStatusSum;
 }
+
+function getStatusOfAllProjects() {
+  global $aTests;
+  $aTests = array();
+  getProjectStatus('PROLab_de', '\\\\delphicompiler0\\prolab_plus_de_AD\\PROLab_de.exe');
+  getProjectStatus('PROLab_en', '\\\\delphicompiler0\\prolab_plus_en_AD\\PROLab_en.exe');
+}
