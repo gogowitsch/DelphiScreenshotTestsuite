@@ -20,11 +20,28 @@
             #breadcrumbs {
               margin: 0 0 1em 0;
             }
-
+            div.messages, div.status, div.warning, div.error {
+              min-height: 21px;
+              margin: 10px 0;
+              border: 2px solid #ff7;
+              padding: 5px 5px 5px 35px;
+              color: #000;
+              background-color: #ffc;
+              background-image: url(bilder/messages-status.png);
+              background-repeat: no-repeat;
+              background-position: 5px 5px;
+            }
+            div.status {
+              background-color: #ddf;
+              border: 2px solid #aaf;
+            }
             .iframe_container { width: 600px; height: 350px; padding: 0.5em; }
             .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
         </style>
         <script src="js/jquery.min.js"></script>
     </HEAD>
     <BODY bgcolor="#ffffff">
+    {if $message}
+      <div class="messages status">{$message}</div>
+    {/if}
 {/strip}
