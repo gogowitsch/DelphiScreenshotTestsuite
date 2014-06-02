@@ -8,8 +8,7 @@ $aTests = array();
 $aProjects = array();
 $iStatusSum = 0;
 
-getProjectStatus('PROLab_de', '\\\\delphicompiler0\\prolab_plus_de_AD\\PROLab_de.exe');
-getProjectStatus('PROLab_en', '\\\\delphicompiler0\\prolab_plus_en_AD\\PROLab_en.exe');
+getStatusOfAllProjects();
 
 $smarty->assign("aProjects", $aProjects);
 $smarty->assign("bHasHiddenProjects", 0);
@@ -18,6 +17,5 @@ $smarty->assign("iStatusSum", $iStatusSum);
 $smarty->assign("ini", isset($_GET['ini']));
 $smarty->assign("show_all", isset($_GET['show_all']));
 $smarty->assign("project", isset($_GET['project']) ? $_GET['project'] : '');
-
 
 $smarty->display(count($aProjects) < 2 ? 'index.tpl' : 'project_list.tpl');
