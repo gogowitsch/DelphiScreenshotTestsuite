@@ -12,7 +12,9 @@ $sFileSoll = "$sStem-soll.$sExt";
 // später: WinMerge HTML-Export des Vergleichs hier einbauen
 
 $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
-unlink('Bilder/difference.png');
+if (file_exists('Bilder/difference.png')) {
+    unlink('Bilder/difference.png');
+}
 $sCmd = "$sCompare -compose src $sFileIst $sFileSoll Bilder\\difference.png";
 $sRetVal = `$sCmd 2>&1`;
 

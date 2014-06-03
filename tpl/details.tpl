@@ -6,39 +6,34 @@
     {$aTest.title}
 </div>
 
+{function showDifferences}
+    <div style='background:{$color}'><span class='label'>   {$label}:</span>
+        {if $aTest.ext=='png' || $aTest.ext=='bmp'}
+        <img src="{$file}?{$sTime|urlencode}" title={$label}>
+        {else}
+            {if $aTest.ext=='txt'}
+                {if file_exists($file)}<div class='iframe_container'><textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea></div>{/if}
+            {else}
+            <div class='iframe_container'><iframe src="{$file}?{$sTime|urlencode}" title={$label}></iframe></div>
+            {/if}
+        {/if}
+    </div>
+{/function}
 
 <b style='color:red'>Es gibt Unterschiede in {$aTest.title}</b>
-<div style='background:red'><span class='label'>   Ist:</span>
-    {if $aTest.ext=='png' || $aTest.ext=='bmp'}
-    <img src="{$aTest.fileIst}?{$sTime|urlencode}" title=Ist>
-    {else}
-    {if $aTest.ext=='txt'}
-    {if file_exists($aTest.fileIst)}<div class='iframe_container'><textarea rows=21 cols=75 readonly="readonly">{fetch file=$aTest.fileIst}</textarea></div>{/if}
-    {else}
+{showDifferences color=red file=$aTest.fileIst label=Ist}
+{showDifferences color=green file=$aTest.fileSoll label=Soll}
 
-    <div class='iframe_container'><iframe src="{$aTest.fileIst}?{$sTime|urlencode}" title=Ist></iframe></div>
-    {/if}
-	{/if}
-</div>
-<div style='background:green'><span class='label'>   Soll:</span>
-    {if $aTest.ext=='png' || $aTest.ext=='bmp'}
-    <img src="{$aTest.fileSoll}?{$sTime|urlencode}" title=Soll>
-    {else}
-    {if $aTest.ext=='txt'}
-    {if file_exists($aTest.fileSoll)}<div class='iframe_container'><textarea rows=21 cols=75 readonly="readonly">{fetch file=$aTest.fileSoll}</textarea></div>{/if}
-    {else}
-      <div class='iframe_container'><iframe src="{$aTest.fileSoll}?{$sTime|urlencode}" title=Soll></iframe></div>
-      <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
-      <script>
-      $(function() {
-          $( ".iframe_container" ).resizable({
-            helper: "ui-resizable-helper"
-          });
-      });
-      </script>
-    {/if}
-    {/if}
-</div>
+{literal}
+    <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script>
+        $(function() {
+            $( ".iframe_container" ).resizable({
+              helper: "ui-resizable-helper"
+            });
+        });
+    </script>
+{/literal}
 {if $aTest.ext=='png' || $aTest.ext=='bmp'}
     <span class='label'>Unterschiede: </span>
     <img src='compare.php?sTestName={$aTest.name|urlencode}' title=Unterschiede>
