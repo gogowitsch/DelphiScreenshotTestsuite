@@ -2,7 +2,7 @@
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
-    if (file($sFileSoll) != file($sFileIst)) {
+    if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
         $retval['desc'] = "Es gibt Unterschiede";
         $retval['status'] = 0;
     } else {
@@ -16,8 +16,17 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
     $sStem = substr($sTestName, 0, -8);
     $sExt = substr($sTestName, -3);
+
     $sFileIst = "$sStem-ist.$sExt";
     $sFileSoll = "$sStem-soll.$sExt";
+
+    if (stristr($sExt, 'bmp')) {
+      require_once('../include/convertToPngIfNeeded.inc.php');
+      set_time_limit(120);
+      $sFileIst = convertToPngIfNeeded("$sStem-ist", $sExt);
+      $sFileSoll = convertToPngIfNeeded("$sStem-soll", $sExt);
+    }
+
     if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
         copy($sFileIst, $sFileSoll);
     }
@@ -46,5 +55,6 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
         $retval['status'] = 0;
     }
+
     return $retval;
 }
