@@ -20,7 +20,7 @@
     </div>
 {/function}
 
-<b style='color:red'>Es gibt Unterschiede in {$aTest.title}</b>
+<b style='color:red'>{$aTest.title}: {$aTest.desc}</b>
 {showDifferences color=red file=$aTest.fileIst label=Ist}
 {showDifferences color=green file=$aTest.fileSoll label=Soll}
 
