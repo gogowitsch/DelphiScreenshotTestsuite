@@ -26,7 +26,6 @@ function convertToPngIfNeeded($sName, &$sExt) {
   if (file_exists($sName . '.png') && trim($sRetVal) == '') {
     unlink("$sName.$sExt");
     $sExt = 'png';
-    echo "I did convert $sName<hr>";
     return "$sName.png";
   }
 
