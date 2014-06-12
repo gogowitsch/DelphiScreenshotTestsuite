@@ -38,6 +38,19 @@
     <span class='label'>Unterschiede: </span>
     <img src='compare.php?sTestName={$aTest.name|urlencode}' title=Unterschiede>
 {/if}
+{if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='ini' || $aTest.ext=='lmo'}
+  {if file_exists($aTest.fileSoll)}
+    <span class='label'>Unterschiede: </span>
+    {php}
+        global $aTest;
+        include_once('../include/finediff.inc.php');
+        $sIst = join('', file($aTest['fileIst']));
+        $sSoll = join('', file($aTest['fileSoll']));
+        $diff = new FineDiff($sSoll, $sIst);
+        echo "<pre>" . $diff->renderDiffToHTML() . "</pre>";
+    {/php}
+  {/if}
+{/if}
 <br>
 
 <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
