@@ -5,6 +5,9 @@
         <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
         <style>
             body, td { font-family: Arial; }
+            table tr:hover {
+                background-color: #68B3DB;
+            }
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
             .status0 { background: #ff9999 {* schlecht - rot *} }
