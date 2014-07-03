@@ -19,7 +19,7 @@ $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
 if (file_exists('Bilder/difference.png')) {
     unlink('Bilder/difference.png');
 }
-$sCmd = "$sCompare -compose src $sFileIst $sFileSoll Bilder\\difference.png";
+$sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" Bilder\\difference.png";
 $sRetVal = `$sCmd 2>&1`;
 
 if (trim($sRetVal) == '') {
