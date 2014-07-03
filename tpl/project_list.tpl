@@ -16,6 +16,7 @@
                         </td>
                         <td class="status{$aProject.status} ratio">
                             {$aProject.ratio} erfolgreich
+                            {include file="run_project.tpl" aProject=$aProject}
                         </td>
                     </tr>
                 {else}

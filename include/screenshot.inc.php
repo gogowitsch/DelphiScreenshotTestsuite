@@ -47,11 +47,15 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     if (!file_exists($sFileSoll)) {
         $retval['desc'] = "Soll-Datei existiert noch nicht";
         $retval['status'] = 0;
+        $retval['sollTime'] = '';
         $sName = urlencode($sTestName);
     } else {
+        $retval['sollTime'] = date(DATE_RSS, filemtime($sFileSoll));
         compareFiles($sFileSoll, $sFileIst, $retval);
     }
-    if (filemtime($sFileIst) < $iExeTime) {
+    $iIstTime = filemtime($sFileIst);
+    $retval['istTime'] = date(DATE_RSS, $iIstTime);
+    if ($iIstTime < $iExeTime) {
         $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
         $retval['status'] = 0;
     }

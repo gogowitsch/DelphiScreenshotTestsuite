@@ -9,6 +9,7 @@
 		</div>
 
         {$iStatusSum} / {$aTests|count} erfolgreich.
+        {include file="run_project.tpl" aProject=$aProjects.0}
 
         <form method="post" action="#">
             <table>
