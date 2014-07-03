@@ -8,7 +8,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
   if (stristr($sExt, 'bmp')) {
     require_once('../include/ImageCreateFromBMP.inc.php');
     $res=ImageCreateFromBMP($sName . '.bmp');
-    if (!is_resource($res)) die('ImageCreateFromBMP failed with ' . $res);
+    if (!is_resource($res)) die("ImageCreateFromBMP($sName) failed with $res");
     imagepng($res, $sName . '.png');
     $sRetVal ='';
   } else {
