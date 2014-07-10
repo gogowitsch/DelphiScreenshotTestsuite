@@ -20,8 +20,12 @@ require_once '../include/screenshot.inc.php';
 $sRetVal = createDifferenceImage($sFileIst, $sFileSoll, $sStem);
 
 if (trim($sRetVal) == '') {
-    $sPhpWarnings = ob_get_flush();
-    if (!$sPhpWarnings) header("Content-Type: image/png");
+    $sPhpWarnings = ob_get_clean();
+    if (strlen($sPhpWarnings) < 4) $sPhpWarnings = ''; // nur ein BOM
+    else echo "$sPhpWarnings;<br>File: $sStem-difference.png";
+    if (!$sPhpWarnings) {
+        header("Content-Type: image/png");
+    }
     readfile("$sStem-difference.png");
 } else {
     echo "<tt>$sCmd</tt><br><pre style='color:red'>$sRetVal </pre>";
