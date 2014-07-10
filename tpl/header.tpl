@@ -40,6 +40,10 @@
             }
             .iframe_container { width: 600px; height: 350px; padding: 0.5em; }
             .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
+            #soll_no_longer_needed-button { opacity: 0.4; }
+            #soll_no_longer_needed-button:hover { opacity: 1; }
+            #soll_no_longer_needed-wrap { background-color: #ffcccc; display: inline-block; }
+            #soll_no_longer_needed-wrap:hover { background-color: white; }
         </style>
         <script src="js/jquery.min.js"></script>
     </HEAD>

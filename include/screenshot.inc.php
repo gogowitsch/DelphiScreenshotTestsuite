@@ -11,6 +11,33 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
     }
 }
 
+function handleActions(&$retval) {
+    if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+        copy($retval['fileIst'], $retval['fileSoll']);
+    }
+    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+        unlink($retval['fileIst']);
+        $retval['desc'] = "Test wurde gelöscht";
+        $retval['status'] = 1;
+        return $retval;
+    }
+
+    if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+        unlink($retval['fileSoll']);
+        $retval['desc'] = "Solldatei wurde gelöscht";
+        $retval['status'] = 1;
+        return $retval;
+    }
+}
+
+function addRtfLink(&$retval) {
+  if ($retval['ext']=='txt' || $retval['ext']=='rtf') {
+    $sContent = file_get_contents($retval['fileIst']);
+    if (substr($sContent, 0, 5) == '{\rtf') $retval['sRtfLink'] = "<a href='rtf.php?file=".urlencode($retval['fileIst']) . "'>in Word öffnen</a>";
+  }
+}
+
+
 function getScreenshotStatus($sTestName = 'download-seite') {
     global $iExeTime, $sExePath;
 
@@ -27,9 +54,6 @@ function getScreenshotStatus($sTestName = 'download-seite') {
       $sFileSoll = convertToPngIfNeeded("$sStem-soll", $sExt);
     }
 
-    if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
-        copy($sFileIst, $sFileSoll);
-    }
     $retval = array();
     $retval['fileIst'] = $sFileIst;
     $retval['fileSoll'] = $sFileSoll;
@@ -37,12 +61,9 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $retval['name'] = $sTestName;
     $retval['title'] = basename($sTestName);
 
-    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
-        unlink($sFileIst);
-        $retval['desc'] = "Test wurde gelÃ¶scht";
-        $retval['status'] = 1;
-        return $retval;
-    }
+    addRtfLink($retval);
+
+    if (handleActions($retval)) return $retval;
 
     if (!file_exists($sFileSoll)) {
         $retval['desc'] = "Soll-Datei existiert noch nicht";
