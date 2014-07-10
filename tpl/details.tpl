@@ -11,10 +11,16 @@
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
         <img src="{$file}?{$sTime|urlencode}" title="{$label} {$time}">
         {else}
-            {if $aTest.ext=='txt'}
-                {if file_exists($file)}<div class='iframe_container'><textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea></div>{/if}
+            {if $aTest.ext=='txt' || $aTest.ext=='rtf'}
+                {if file_exists($file)}
+                    <div class='iframe_container'>
+                    {$aTest.sRtfLink}
+                      <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
+
+                    </div>
+                {/if}
             {else}
-            <div class='iframe_container'><iframe src="{$file}?{$sTime|urlencode}" title={$label}></iframe></div>
+                <div class='iframe_container'><iframe src="{$file}?{$sTime|urlencode}" title={$label}></iframe></div>
             {/if}
         {/if}
     </div>
@@ -64,6 +70,13 @@
   <button id="discard-button" onclick="if (confirm('M&ouml;chten Sie dieses Testergebnis (Ist-Zustand) wirklich l&ouml;schen?')) location.href = 'discard.php?discard={$aTest.name|urlencode}&project={$project|urlencode}';" style='opacity:0.9'>
       Ist-Zustand verwerfen
   </button>
+  {if file_exists($aTest.fileSoll)}
+  <div id="soll_no_longer_needed-wrap">
+    <button id="soll_no_longer_needed-button" onclick="if (confirm('M&ouml;chten Sie den Soll-Zustand wirklich l&ouml;schen? Das macht Sinn, wenn die neuste EXE keine Ist-Zust&auml;nde mit diesem Namen mehr produziert, oder der Sollzustand falsch ist.')) location.href = 'soll_no_longer_needed.php?soll_no_longer_needed={$aTest.name|urlencode}&project={$project|urlencode}';"      >
+        Soll-Zustand verwerfen
+    </button>
+  </div>
+  {/if}
 </div>
 
 {include file="footer.tpl"}
