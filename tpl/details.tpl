@@ -64,10 +64,13 @@
 <br>
 
 <div class='buttons' style='z-index:22'>
-  <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
-      Ist-Zustand als neuen Sollwert abspeichern
-  </button>
-  <button id="discard-button" onclick="if (confirm('M&ouml;chten Sie dieses Testergebnis (Ist-Zustand) wirklich l&ouml;schen?')) location.href = 'discard.php?discard={$aTest.name|urlencode}&project={$project|urlencode}';" style='opacity:0.9'>
+    <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
+        Ist-Zustand als neuen Sollwert abspeichern
+    </button>
+    <button id="done-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
+        Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
+    </button>
+    <button id="discard-button" onclick="if (confirm('M&ouml;chten Sie dieses Testergebnis (Ist-Zustand) wirklich l&ouml;schen?')) location.href = 'discard.php?discard={$aTest.name|urlencode}&project={$project|urlencode}';" style='opacity:0.9'>
       Ist-Zustand verwerfen
   </button>
   {if file_exists($aTest.fileSoll)}

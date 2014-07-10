@@ -1,6 +1,8 @@
 {strip}
+<!DOCTYPE html>
 <HTML>
     <HEAD>
+        <META charset="utf-8">
         <TITLE>{$title} - {$Name}</TITLE>
         <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
         <style>
