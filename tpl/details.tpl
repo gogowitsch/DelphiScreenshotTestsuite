@@ -67,19 +67,24 @@
     <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
         Ist-Zustand als neuen Sollwert abspeichern
     </button>
-    <button id="done-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
-        Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
-    </button>
+
+    {if $aTest.ext=='png'}
+      <button id="done-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
+          Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
+      </button>
+    {/if}
+
     <button id="discard-button" onclick="if (confirm('M&ouml;chten Sie dieses Testergebnis (Ist-Zustand) wirklich l&ouml;schen?')) location.href = 'discard.php?discard={$aTest.name|urlencode}&project={$project|urlencode}';" style='opacity:0.9'>
       Ist-Zustand verwerfen
-  </button>
-  {if file_exists($aTest.fileSoll)}
-  <div id="soll_no_longer_needed-wrap">
-    <button id="soll_no_longer_needed-button" onclick="if (confirm('M&ouml;chten Sie den Soll-Zustand wirklich l&ouml;schen? Das macht Sinn, wenn die neuste EXE keine Ist-Zust&auml;nde mit diesem Namen mehr produziert, oder der Sollzustand falsch ist.')) location.href = 'soll_no_longer_needed.php?soll_no_longer_needed={$aTest.name|urlencode}&project={$project|urlencode}';"      >
-        Soll-Zustand verwerfen
     </button>
-  </div>
-  {/if}
+
+    {if file_exists($aTest.fileSoll)}
+      <div id="soll_no_longer_needed-wrap">
+        <button id="soll_no_longer_needed-button" onclick="if (confirm('M&ouml;chten Sie den Soll-Zustand wirklich l&ouml;schen? Das macht Sinn, wenn die neuste EXE keine Ist-Zust&auml;nde mit diesem Namen mehr produziert, oder der Sollzustand falsch ist.')) location.href = 'soll_no_longer_needed.php?soll_no_longer_needed={$aTest.name|urlencode}&project={$project|urlencode}';"      >
+            Soll-Zustand verwerfen
+        </button>
+      </div>
+    {/if}
 </div>
 
 {include file="footer.tpl"}

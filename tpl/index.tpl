@@ -1,12 +1,12 @@
-{if $ini}
+﻿{if $ini}
     {include file="status.tpl"}
 {else}
     {strip}
         {include file="header.tpl" title=Start}
         <div id="breadcrumbs">
-            <a href='/'>Projekt�bersicht</a> &#187;&nbsp;
+            <a href='/'>Projektübersicht</a> &#187;&nbsp;
             {$project}
-		</div>
+        </div>
 
         {$iStatusSum} / {$aTests|count} erfolgreich.
         {include file="run_project.tpl" aProject=$aProjects.0}
