@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
@@ -33,6 +33,7 @@ function compareAllTestFiles($project) {
 }
 
 function updateAllTestStatus($test, $projekt) {
+    // Ist-Zustand als neuen Sollwert f�r alle gleichen Unterschiede abspeichern
     $path = "Bilder/$projekt";
     $sStem = substr($test, 0, -8);
     $differenceFile = "$sStem-difference.png";
@@ -48,6 +49,12 @@ function updateAllTestStatus($test, $projekt) {
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
     $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
     if (file_exists("$sStem-difference.png")) {
+        $iTimeD = filemtime("$sStem-difference.png");
+        $iTimeI = filemtime($sFileIst);
+        $iTimeS = filemtime($sFileSoll);
+        if ($iTimeD > $iTimeI && $iTimeD > $iTimeS) return '';
+
+        // Unterschiede sind veraltet
         unlink("$sStem-difference.png");
     }
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
@@ -81,7 +88,9 @@ function handleActions(&$retval) {
 function addRtfLink(&$retval) {
   if ($retval['ext']=='txt' || $retval['ext']=='rtf') {
     $sContent = file_get_contents($retval['fileIst']);
-    if (substr($sContent, 0, 5) == '{\rtf') $retval['sRtfLink'] = "<a href='rtf.php?file=".urlencode($retval['fileIst']) . "'>in Word 򦦮en</a>";
+    if (substr($sContent, 0, 5) == '{\rtf') {
+      $retval['sRtfLink'] = "<a href='rtf.php?file=".urlencode($retval['fileIst']) . "'>in Word öffnen</a>";
+    }
   }
 }
 
