@@ -39,7 +39,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
     if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $sTestName || (isset($_POST['check']) && in_array($sTestName, $_POST['check'])))) {
         unlink($sFileIst);
-        $retval['desc'] = "Test wurde gelöscht";
+        $retval['desc'] = "Test wurde gelÃ¶scht";
         $retval['status'] = 1;
         return $retval;
     }

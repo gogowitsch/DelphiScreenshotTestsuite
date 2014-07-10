@@ -1,7 +1,7 @@
 {include file="header.tpl" title=Details}
 
 <div id="breadcrumbs">
-    <a href='/'>Projektübersicht</a> &#187;
+    <a href='/'>ProjektÃ¼bersicht</a> &#187;
     <a href='/?project={$project|urlencode}'>{$project}</a> &#187;
     {$aTest.title}
 </div>

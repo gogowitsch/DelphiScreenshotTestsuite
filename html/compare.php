@@ -13,7 +13,7 @@ require_once('../include/convertToPngIfNeeded.inc.php');
 $sFileIst = convertToPngIfNeeded("$sStem-ist", $sExt);
 $sFileSoll = convertToPngIfNeeded("$sStem-soll", $sExt);
 
-// sp‰ter: WinMerge HTML-Export des Vergleichs hier einbauen
+// sp√§ter: WinMerge HTML-Export des Vergleichs hier einbauen
 
 $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
 if (file_exists('Bilder/difference.png')) {
