@@ -27,7 +27,7 @@
 {/function}
 
 <b style='color:red'>{$aTest.title}: {$aTest.desc}</b>
-{showDifferences color=red file=$aTest.fileIst label=Ist time=$aTest.istTime}
+{showDifferences color=red file=$aTest.fileIst|utf8_encode label=Ist time=$aTest.istTime}
 
 {literal}
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -40,7 +40,7 @@
     </script>
 {/literal}
 {if file_exists($aTest.fileSoll)}
-  {showDifferences color=green file=$aTest.fileSoll label=Soll time=$aTest.sollTime}
+  {showDifferences color=green file=$aTest.fileSoll|utf8_encode label=Soll time=$aTest.sollTime}
   {if $aTest.ext=='png' || $aTest.ext=='bmp'}
     <span class='label'>Unterschiede: </span>
     <div style='position:relative;display:inline-block;background-image:url({$aTest.fileIst}?{$sTime|urlencode})'>
@@ -68,8 +68,8 @@
         Ist-Zustand als neuen Sollwert abspeichern
     </button>
 
-    {if $aTest.ext=='png'}
-      <button id="done-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
+    {if $aTest.ext=='png' && file_exists($aTest.fileSoll)}
+      <button id="doneAll-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
           Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
       </button>
     {/if}
