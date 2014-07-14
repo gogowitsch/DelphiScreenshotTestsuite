@@ -4,11 +4,21 @@
     {strip}
         {include file="header.tpl" title=Start}
         <div id="breadcrumbs">
-            <a href='/'>Projektübersicht</a> &#187;&nbsp;
+            <a href='/'>
+                {if $Sprache=='de'}
+                    ProjektÃ¼bersicht
+                {else}
+                    Project Overview
+                {/if}
+            </a> &#187;&nbsp;
             {$project}
 		</div>
 
-        {$iStatusSum} / {$aTests|count} erfolgreich.
+            {if $Sprache=='de'}
+                {$iStatusSum} / {$aTests|count} erfolgreich.
+            {else}
+                {$iStatusSum} / {$aTests|count} successful.
+            {/if}
         {include file="run_project.tpl" aProject=$aProjects.0}
 
         <form method="post" action="#">
@@ -33,9 +43,23 @@
                     {/if}
                 {/foreach}
             </table>
-            <a id='check_all' href="javascript:check_all(true)">alle markieren</a><br>
-            <input type=submit name=done title="als Okay markieren" value="Ist-Zustand als neuen Sollwert abspeichern" />
-            <input type=submit name=discard value="Ist-Zustand verwerfen"  onclick="return confirm('M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?\n\nDas ist sinnvoll, wenn es verwaist ist, also nicht mehr automatisch generiert wird.')"  />
+                {if $Sprache=='de'}
+                    <a id='check_all' href="javascript:check_all(true)">alle markieren</a><br>
+                {else}
+                    <a id='check_all' href="javascript:check_all(true)">Select all</a><br>
+                {/if}
+
+                {if $Sprache=='de'}
+                    <input type=submit name=done title="als Okay markieren" value="Ist-Zustand als neuen Sollwert abspeichern" />
+                {else}
+                    <input type=submit name=done title="als Okay markieren" value="Save actual state as new target state" />
+                {/if}
+
+                {if $Sprache=='de'}
+                    <input type=submit name=discard value="Ist-Zustand verwerfen"  onclick="return confirm('M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?\n\nDas ist sinnvoll, wenn es verwaist ist, also nicht mehr automatisch generiert wird.')"  />
+                {else}
+                    <input type=submit name=discard value="Discard actual state"  onclick="return confirm('Do you really want to remove the selected test results (Actual state)?\n\nThat is useful when the test results don\'t get automatically generated anymore.')"  />
+                {/if}
         </form>
         <script>
             {literal}

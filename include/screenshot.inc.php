@@ -2,6 +2,7 @@
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
+    if(LANG=='de'){
     if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
         $retval['desc'] = "Es gibt Unterschiede";
         $retval['status'] = 0;
@@ -10,6 +11,19 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
         $retval['desc'] = "Bilder stimmen &uuml;berein";
         $retval['status'] = 1;
         return true;
+    }
+    }
+    if (LANG == 'en') {
+        if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
+            $retval['desc'] = "There are differences";
+            $retval['status'] = 0;
+            return false;
+        }
+        else {
+            $retval['desc'] = "Screenshots are equal";
+            $retval['status'] = 1;
+            return true;
+        }
     }
 }
 
@@ -113,6 +127,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
     if (handleActions($retval)) return $retval;
 
+    if (LANG=='de'){
     if (!file_exists($sFileSoll)) {
         $retval['desc'] = "Soll-Datei existiert noch nicht";
         $retval['status'] = 0;
@@ -122,6 +137,20 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         $retval['sollTime'] = date(DATE_RSS, filemtime($sFileSoll));
         compareFiles($sFileSoll, $sFileIst, $retval);
     }
+    }
+    if (LANG == 'en') {
+        if (!file_exists($sFileSoll)) {
+            $retval['desc'] = "Currently no actual state file";
+            $retval['status'] = 0;
+            $retval['sollTime'] = '';
+            $sName = urlencode($sTestName);
+        }
+        else {
+            $retval['sollTime'] = date(DATE_RSS, filemtime($sFileSoll));
+            compareFiles($sFileSoll, $sFileIst, $retval);
+        }
+    }
+
     $iIstTime = filemtime($sFileIst);
     $retval['istTime'] = date(DATE_RSS, $iIstTime);
     if ($iIstTime < $iExeTime) {

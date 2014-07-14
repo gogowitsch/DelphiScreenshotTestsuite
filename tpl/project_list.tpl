@@ -25,7 +25,6 @@
             {/foreach}
         </table>
         {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">auch 100 % erfolgreiche Projekte zeigen</a>{/if}
-
         {include file="footer.tpl"}
     {/strip}
 {/if}
