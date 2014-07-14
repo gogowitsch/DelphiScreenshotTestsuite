@@ -1,4 +1,4 @@
-{if $ini}
+﻿{if $ini}
     {include file="status.tpl"}
 {else}
     {strip}
@@ -12,7 +12,7 @@
                 {/if}
             </a> &#187;&nbsp;
             {$project}
-		</div>
+        </div>
 
             {if $Sprache=='de'}
                 {$iStatusSum} / {$aTests|count} erfolgreich.
@@ -32,7 +32,7 @@
                                 {/if}
                             </td>
                             <td>
-                                <label for="cb{$i}">{$aTest.title}</label>
+                                <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
                             </td>
                             <td class="status{$aTest.status}">
                                 <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
