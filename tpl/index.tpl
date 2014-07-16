@@ -1,3 +1,24 @@
+{if $Sprache=='de'}
+    {$Proj="Projektübersicht"}
+    {$Erf="erfolgreich."}
+    {$AllM="Alle markieren"}
+    {$IstZu="Ist-Zustand als neuen Sollwert abspeichern"}
+    {$ZurVer="Ist-Zustand verwerfen"}
+    {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
+    {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
+
+{else}
+    {$Proj="Project Overview"}
+    {$Erf="successful."}
+    {$AllM="Select all"}
+    {$IstZu="Save actual state as new target state"}
+    {$ZurVer="Discard actual state"}
+    {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
+    {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
+
+{/if}
+
+
 ﻿{if $ini}
     {include file="status.tpl"}
 {else}
@@ -5,20 +26,12 @@
         {include file="header.tpl" title=Start}
         <div id="breadcrumbs">
             <a href='/'>
-                {if $Sprache=='de'}
-                    Projektübersicht
-                {else}
-                    Project Overview
-                {/if}
+                {$Proj}
             </a> &#187;&nbsp;
             {$project}
         </div>
+                {$iStatusSum} / {$aTests|count} {$Erf}
 
-            {if $Sprache=='de'}
-                {$iStatusSum} / {$aTests|count} erfolgreich.
-            {else}
-                {$iStatusSum} / {$aTests|count} successful.
-            {/if}
         {include file="run_project.tpl" aProject=$aProjects.0}
 
         <form method="post" action="#">
@@ -43,23 +56,11 @@
                     {/if}
                 {/foreach}
             </table>
-                {if $Sprache=='de'}
-                    <a id='check_all' href="javascript:check_all(true)">alle markieren</a><br>
-                {else}
-                    <a id='check_all' href="javascript:check_all(true)">Select all</a><br>
-                {/if}
+                <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
 
-                {if $Sprache=='de'}
-                    <input type=submit name=done title="als Okay markieren" value="Ist-Zustand als neuen Sollwert abspeichern" />
-                {else}
-                    <input type=submit name=done title="als Okay markieren" value="Save actual state as new target state" />
-                {/if}
+                    <input type=submit name=done title="als Okay markieren" value="{$IstZu}" />
+                    <input type=submit name=discard value="{$ZurVer}"  onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
 
-                {if $Sprache=='de'}
-                    <input type=submit name=discard value="Ist-Zustand verwerfen"  onclick="return confirm('M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?\n\nDas ist sinnvoll, wenn es verwaist ist, also nicht mehr automatisch generiert wird.')"  />
-                {else}
-                    <input type=submit name=discard value="Discard actual state"  onclick="return confirm('Do you really want to remove the selected test results (Actual state)?\n\nThat is useful when the test results don\'t get automatically generated anymore.')"  />
-                {/if}
         </form>
         <script>
             {literal}

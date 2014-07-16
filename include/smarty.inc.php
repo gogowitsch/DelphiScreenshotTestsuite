@@ -2,7 +2,7 @@
 
 require '../include/Smarty/libs/Smarty.class.php';
 
-define('LANG', 'en'); //Sprache ändern 'en' or 'de'
+define('LANG', 'de'); //Sprache ändern 'en' or 'de'
 
 $smarty = new Smarty;
 
@@ -16,3 +16,5 @@ $smarty->assign("sTime", date('Y-m-d H:i:s'));
 $smarty->assign("message", isset($_GET['message']) ? $_GET['message'] : '');
 
 $smarty->assign("Sprache", LANG);
+
+

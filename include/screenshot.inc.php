@@ -33,7 +33,7 @@ function compareAllTestFiles($project) {
 }
 
 function updateAllTestStatus($test, $projekt) {
-    // Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
+    // Ist-Zustand als neuen Sollwert fï¿½r alle gleichen Unterschiede abspeichern
     $path = "Bilder/$projekt";
     $sStem = substr($test, 0, -8);
     $differenceFile = "$sStem-difference.png";
@@ -122,28 +122,14 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
     if (handleActions($retval)) return $retval;
 
-    if (LANG=='de'){
     if (!file_exists($sFileSoll)) {
-        $retval['desc'] = "Soll-Datei existiert noch nicht";
+        $retval['desc'] =LANG=='de' ? "Soll-Datei existiert noch nicht" : "Currently no actual state file";
         $retval['status'] = 0;
         $retval['sollTime'] = '';
         $sName = urlencode($sTestName);
     } else {
         $retval['sollTime'] = date(DATE_RSS, filemtime($sFileSoll));
         compareFiles($sFileSoll, $sFileIst, $retval);
-    }
-    }
-    if (LANG == 'en') {
-        if (!file_exists($sFileSoll)) {
-            $retval['desc'] = "Currently no actual state file";
-            $retval['status'] = 0;
-            $retval['sollTime'] = '';
-            $sName = urlencode($sTestName);
-        }
-        else {
-            $retval['sollTime'] = date(DATE_RSS, filemtime($sFileSoll));
-            compareFiles($sFileSoll, $sFileIst, $retval);
-        }
     }
 
     $iIstTime = filemtime($sFileIst);

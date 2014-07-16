@@ -1,11 +1,30 @@
+{if $Sprache=='de'}
+    {$Proj="Projektübersicht"}
+    {$IstAcu="Ist"}
+    {$SollTar="Soll"}
+    {$UntDif="Unterschiede"}
+    {$SollD="Soll-Datei existiert noch nicht"}
+    {$IstZ="Ist-Zustand als neuen Sollwert abspeichern"}
+    {$GleiU="Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern"}
+    {$ZuVer="Ist-Zustand verwerfen"}
+    {$SoVer="Soll-Zustand verwerfen"}
+{else}
+    {$Proj="Project Overview"}
+    {$IstAcu="Actual"}
+    {$SollTar="Target"}
+    {$UntDif="Differences"}
+    {$SollD="Currently no Actual state file"}
+    {$IstZ="Save actual state as new target state"}
+    {$GleiU="Save actual state as new target state for all equal differences"}
+    {$ZuVer="Discard actual state"}
+    {$SoVer="Discard target state"}
+{/if}
+
 {include file="header.tpl" title=Details}
 
 <div id="breadcrumbs">
-    {if $Sprache=='de'}
-        <a href='/'>Projektübersicht</a> &#187;
-    {else}
-        <a href='/'>Project Overview</a> &#187;
-    {/if}
+
+        <a href='/'>{$Proj}</a> &#187;
 
     <a href='/?project={$project|urlencode}'>{$project}</a> &#187;
     {$aTest.title}
@@ -32,11 +51,9 @@
 {/function}
 
 <b style='color:red'>{$aTest.title}: {$aTest.desc}</b>
-{if $Sprache=='de'}
-    {assign 'sDiff' 'Ist'}
-{else}
-    {assign 'sDiff' 'Actual'}
-{/if}
+
+    {assign 'sDiff' {$IstAcu}}
+
 {showDifferences color=red file=$aTest.fileIst|utf8_encode label=$sDiff time=$aTest.istTime}
 
 
@@ -51,27 +68,21 @@
     </script>
 {/literal}
 {if file_exists($aTest.fileSoll)}
-    {if $Sprache=='de'}
-        {showDifferences color=green file=$aTest.fileSoll|utf8_encode label=Soll time=$aTest.sollTime}
-    {else}
-        {showDifferences color=green file=$aTest.fileSoll|utf8_encode label=Target time=$aTest.sollTime}
-    {/if}
+
+        {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}
+
   {if $aTest.ext=='png' || $aTest.ext=='bmp'}
-      {if $Sprache=='de'}
-        <span class='label'>Unterschiede: </span>
-    {else}
-        <span class='label'>Differences: </span>
-    {/if}
+
+          <span class='label'>{$UntDif}: </span>
+
     <div style='position:relative;display:inline-block;background-image:url({$aTest.fileIst}?{$sTime|urlencode})'>
       <img src='compare.php?sTestName={$aTest.name|urlencode}'  style='opacity:0.95' title=Unterschiede >
     </div>
   {/if}
   {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='ini' || $aTest.ext=='lmo'}
-      {if $Sprache=='de'}
-        <span class='label'>Unterschiede: </span>
-    {else}
-        <span class='label'>Differences: </span>
-    {/if}
+
+      <span class='label'>{$UntDif}: </span>
+
     {php}
         global $aTest;
         include_once('../include/finediff.inc.php');
@@ -82,48 +93,31 @@
     {/php}
   {/if}
 {else}
-    {if $Sprache=='de'}
-       Soll-Datei existiert noch nicht.
-   {else}
-       Currently no Actual state file
-   {/if}
+    {$SollD}
 {/if}
 <br>
 
 <div class='buttons' style='z-index:22'>
     <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
-        {if $Sprache=='de'}
-            Ist-Zustand als neuen Sollwert abspeichern
-        {else}
-            Save actual state as new target state
-        {/if}
+        {$IstZ}
+
     </button>
     {if $aTest.ext=='png' && file_exists($aTest.fileSoll)}
 	    <button id="done-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
-	        {if $Sprache=='de'}
-	            Ist-Zustand als neuen Sollwert für alle gleichen Unterschiede abspeichern
-	        {else}
-	            Save actual state as new target state for all equal differences
-	        {/if}
+            {$GleiU}
 	    </button>
     {/if}
     <button id="discard-button" onclick="if (confirm('M&ouml;chten Sie dieses Testergebnis (Ist-Zustand) wirklich l&ouml;schen?')) location.href = 'discard.php?discard={$aTest.name|urlencode}&project={$project|urlencode}';" style='opacity:0.9'>
-        {if $Sprache=='de'}
-            Ist-Zustand verwerfen
-        {else}
-            Discard actual state
-        {/if}
+
+        {$ZuVer}
+
   </button>
   {if file_exists($aTest.fileSoll)}
   <div id="soll_no_longer_needed-wrap">
     <button id="soll_no_longer_needed-button" onclick="if (confirm('M&ouml;chten Sie den Soll-Zustand wirklich l&ouml;schen? Das macht Sinn, wenn die neuste EXE keine Ist-Zust&auml;nde mit diesem Namen mehr produziert, oder der Sollzustand falsch ist.')) location.href = 'soll_no_longer_needed.php?soll_no_longer_needed={$aTest.name|urlencode}&project={$project|urlencode}';"      >
-        {if $Sprache=='de'}
-            Soll-Zustand verwerfen
-        {else}
-            Discard target state
-        {/if}
+        {$SoVer}
+    {/if}
     </button>
-
     {if file_exists($aTest.fileSoll)}
       <div id="soll_no_longer_needed-wrap">
         <button id="soll_no_longer_needed-button" onclick="if (confirm('M&ouml;chten Sie den Soll-Zustand wirklich l&ouml;schen? Das macht Sinn, wenn die neuste EXE keine Ist-Zust&auml;nde mit diesem Namen mehr produziert, oder der Sollzustand falsch ist.')) location.href = 'soll_no_longer_needed.php?soll_no_longer_needed={$aTest.name|urlencode}&project={$project|urlencode}';"      >
