@@ -33,10 +33,12 @@
 
 <b style='color:red'>{$aTest.title}: {$aTest.desc}</b>
 {if $Sprache=='de'}
-    {showDifferences color=red file=$aTest.fileIst|utf8_encode label=Ist time=$aTest.istTime}
+    {assign 'sDiff' 'Ist'}
 {else}
-    {showDifferences color=red file=$aTest.fileIst|utf8_encode label=Actual time=$aTest.istTime}
+    {assign 'sDiff' 'Actual'}
 {/if}
+{showDifferences color=red file=$aTest.fileIst|utf8_encode label=$sDiff time=$aTest.istTime}
+
 
 {literal}
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>

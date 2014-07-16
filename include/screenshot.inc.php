@@ -2,28 +2,14 @@
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
-    if(LANG=='de'){
     if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
-        $retval['desc'] = "Es gibt Unterschiede";
+        $retval['desc'] = LANG=='de' ? "Es gibt Unterschiede" : "There are differences";
         $retval['status'] = 0;
         return false;
     } else {
-        $retval['desc'] = "Bilder stimmen &uuml;berein";
+        $retval['desc'] = LANG=='de' ? "Bilder stimmen &uuml;berein" : "Screenshots are equal";
         $retval['status'] = 1;
         return true;
-    }
-    }
-    if (LANG == 'en') {
-        if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
-            $retval['desc'] = "There are differences";
-            $retval['status'] = 0;
-            return false;
-        }
-        else {
-            $retval['desc'] = "Screenshots are equal";
-            $retval['status'] = 1;
-            return true;
-        }
     }
 }
 
