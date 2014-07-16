@@ -37,7 +37,7 @@
         <form method="post" action="#">
             <table>
                 {foreach $aTests as $i => $aTest}
-                    {if $show_all || $aTest.status==0}
+                    {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp'}
                         <tr>
                             <td>
                                 {if $aTest.status==0}
