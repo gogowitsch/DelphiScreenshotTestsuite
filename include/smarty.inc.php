@@ -1,8 +1,7 @@
 <?php
+require_once '../include/config.inc.php';
 
 require '../include/Smarty/libs/Smarty.class.php';
-
-define('LANG', 'de'); //Sprache ändern 'en' or 'de'
 
 $smarty = new Smarty;
 

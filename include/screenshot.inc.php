@@ -1,5 +1,7 @@
 ﻿<?php
 
+require_once '../include/config.inc.php';
+
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));
     if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
@@ -97,9 +99,15 @@ function addRtfLink(&$retval) {
 
 function getScreenshotStatus($sTestName = 'download-seite') {
     global $iExeTime, $sExePath;
+    global $iConvertedBmpsDuringThisCall;
 
     $sStem = substr($sTestName, 0, -8);
     $sExt = substr($sTestName, -3);
+    if (stristr($sExt, 'bmp')) {
+      if (!file_exists("$sStem-ist.$sExt")) {
+        header('Location: /details.php?'.substr(http_build_query($_GET), 0, -3).'png');
+      }
+    }
 
     $sFileIst = "$sStem-ist.$sExt";
     $sFileSoll = "$sStem-soll.$sExt";

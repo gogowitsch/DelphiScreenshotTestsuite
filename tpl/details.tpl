@@ -1,4 +1,4 @@
-{if $Sprache=='de'}
+﻿{if $Sprache=='de'}
     {$Proj="Projektübersicht"}
     {$IstAcu="Ist"}
     {$SollTar="Soll"}
@@ -13,7 +13,7 @@
     {$IstAcu="Actual"}
     {$SollTar="Target"}
     {$UntDif="Differences"}
-    {$SollD="Currently no Actual state file"}
+    {$SollD="Currently no Target state file"}
     {$IstZ="Save actual state as new target state"}
     {$GleiU="Save actual state as new target state for all equal differences"}
     {$ZuVer="Discard actual state"}
@@ -53,10 +53,7 @@
 {/function}
 
 <b style='color:red'>{$aTest.title}: {$aTest.desc}</b>
-
-    {assign 'sDiff' {$IstAcu}}
-
-{showDifferences color=red file=$aTest.fileIst|utf8_encode label=$sDiff time=$aTest.istTime}
+{showDifferences color=red file=$aTest.fileIst|utf8_encode label=$IstAcu time=$aTest.istTime}
 
 
 {literal}
@@ -71,7 +68,7 @@
 {/literal}
 {if file_exists($aTest.fileSoll)}
 
-        {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}
+  {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}
 
   {if $aTest.ext=='png' || $aTest.ext=='bmp'}
 

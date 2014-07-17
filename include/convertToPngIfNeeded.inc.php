@@ -1,13 +1,18 @@
 <?php
 
 function convertToPngIfNeeded($sName, &$sExt) {
+  global $iConvertedBmpsDuringThisCall;
+  if (empty($iConvertedBmpsDuringThisCall)) $iConvertedBmpsDuringThisCall = 1;
+  else $iConvertedBmpsDuringThisCall++;
+
   if (stristr($sExt, 'png')) return $sName . '.png';
+  if (stristr($sExt, 'bmp') && $iConvertedBmpsDuringThisCall > 4) return $sName . '.bmp';
 
   if (file_exists($sName . '.png')) unlink($sName . '.png');
 
   if (stristr($sExt, 'bmp')) {
     require_once('../include/ImageCreateFromBMP.inc.php');
-    $res=ImageCreateFromBMP($sName . '.bmp');
+    $res = ImageCreateFromBMP($sName . '.bmp');
     if (!is_resource($res)) die("ImageCreateFromBMP($sName) failed with $res");
     imagepng($res, $sName . '.png');
     $sRetVal ='';
