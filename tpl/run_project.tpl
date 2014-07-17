@@ -5,6 +5,8 @@
 {/if}
 
 
+
+
 {if $aProject.cmd}
   {* assign "sFrage" "Möchtest du wirklich alle Ist-Zustäde  verwerfen und neu erstellen?" *}
   {assign "sFrage" ""}

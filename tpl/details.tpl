@@ -20,6 +20,8 @@
     {$SoVer="Discard target state"}
 {/if}
 
+
+
 {include file="header.tpl" title=Details}
 
 <div id="breadcrumbs">
