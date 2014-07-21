@@ -112,7 +112,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $sFileIst = "$sStem-ist.$sExt";
     $sFileSoll = "$sStem-soll.$sExt";
 
-    if (stristr($sExt, 'bmp')) {
+    if (stristr($sExt, 'bmp') || stristr($sExt, 'pdf')) {
       require_once('../include/convertToPngIfNeeded.inc.php');
       set_time_limit(120);
       $sFileIst = convertToPngIfNeeded("$sStem-ist", $sExt);
@@ -122,7 +122,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $retval = array();
     $retval['fileIst'] = $sFileIst;
     $retval['fileSoll'] = $sFileSoll;
-    $retval['ext'] = $sExt;
+    $retval['ext'] = strtolower($sExt);
     $retval['name'] = $sTestName;
     $retval['title'] = basename($sTestName);
 

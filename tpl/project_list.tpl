@@ -6,6 +6,9 @@
         {include file="header.tpl" title=Start}
 
         Tests: {$iStatusSum} / {$aTests|count} erfolgreich.
+        {if isset($iframeFurtherImageConversions)}
+            <iframe src='convert_images.php' style='overflow: hidden; height:1em;width:300px;border:none'></iframe>
+        {/if}
 
         <table>
             {foreach $aProjects as $i => $aProject}

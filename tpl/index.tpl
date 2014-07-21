@@ -30,14 +30,14 @@
             </a> &#187;&nbsp;
             {$project}
         </div>
-                {$iStatusSum} / {$aTests|count} {$Erf}
+        {$iStatusSum} / {$aTests|count} {$Erf}
 
         {include file="run_project.tpl" aProject=$aProjects.0}
 
         <form method="post" action="#">
             <table>
                 {foreach $aTests as $i => $aTest}
-                    {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp'}
+                    {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp' && $aTest.ext != 'pdf'}
                         <tr>
                             <td>
                                 {if $aTest.status==0}

@@ -23,6 +23,11 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $aNewTests, $iLocalStatusSum;
     $aNewTests[] = $aTest = getScreenshotStatus($sFile);
     $iLocalStatusSum += $aTest['status'];
+    if ($aTest['ext'] == 'pdf' || $aTest['ext'] == 'bmp') {
+      global $bNeedsFurtherConversions;
+      if (empty($bNeedsFurtherConversions)) $bNeedsFurtherConversions = 1;
+      else $bNeedsFurtherConversions++;
+    }
   });
 
   $aProjects[]  = array(
@@ -45,5 +50,14 @@ function getStatusOfAllProjects() {
   getProjectStatus('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe', "$sAhkCmd \"$sAhkFolderPl mqVAL_DE.ahk\"");
   getProjectStatus('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_DE.ahk\"");
   // getProjectStatus('PROLab_Smart_EN', 'c:/daten/PROLab_Smart_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_EN.ahk\"");
+
+  checkFurtherImageConversions();
 }
-// `start calc`;
+
+function checkFurtherImageConversions() {
+  global $bNeedsFurtherConversions, $smarty;
+  if (empty($bNeedsFurtherConversions)) return;
+  if (empty($smarty)) return;
+
+  $smarty->assign("iframeFurtherImageConversions", $bNeedsFurtherConversions);
+}
