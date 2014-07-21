@@ -6,7 +6,6 @@
     {$ZurVer="Ist-Zustand verwerfen"}
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
-
 {else}
     {$Proj="Project Overview"}
     {$Erf="successful."}
@@ -15,8 +14,8 @@
     {$ZurVer="Discard actual state"}
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
-
 {/if}
+
 
 
 ﻿{if $ini}
