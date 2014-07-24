@@ -17,7 +17,7 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
 
 function compareImages($image1, $image2) {
     $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
-    $sCmd = "$sCompare -metric RMSE \"$image1\" \"$image2\" NULL:";
+    $sCmd = "$sCosmpare -metric RMSE \"$image1\" \"$image2\" NULL:";
     $response = `$sCmd 2>&1`;
     return $response === '0 (0)';
 }
@@ -131,7 +131,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     if (handleActions($retval)) return $retval;
 
     if (!file_exists($sFileSoll)) {
-        $retval['desc'] =LANG=='de' ? "Soll-Datei existiert noch nicht" : "Currently no actual state file";
+        $retval['desc'] =LANG=='de' ? "Soll-Datei existiert noch nicht" : "Currently no target state file";
         $retval['status'] = 0;
         $retval['sollTime'] = '';
         $sName = urlencode($sTestName);
