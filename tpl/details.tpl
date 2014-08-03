@@ -74,7 +74,7 @@
 
           <span class='label'>{$UntDif}: </span>
 
-    <div style='position:relative;display:inline-block;background-image:url({$aTest.fileIst}?{$sTime|urlencode})'>
+    <div style='position:relative;display:inline-block;background-image:url("{$aTest.fileIst|escape}?{$sTime|urlencode}")'>
       <img src='compare.php?sTestName={$aTest.name|urlencode}'  style='opacity:0.95' title=Unterschiede >
     </div>
   {/if}
