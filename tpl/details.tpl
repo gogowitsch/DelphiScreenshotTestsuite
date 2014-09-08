@@ -37,10 +37,10 @@
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
         <img src="{$file}?{$sTime|urlencode}" title="{$label} {$time}">
         {else}
-            {if $aTest.ext=='txt' || $aTest.ext=='rtf'}
+            {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
                 {if file_exists($file)}
                     <div class='iframe_container'>
-                    {$aTest.sRtfLink}
+                    {$aTest.sRtfLink|default}
                       <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
 
                     </div>
