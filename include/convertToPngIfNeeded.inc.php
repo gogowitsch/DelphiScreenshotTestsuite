@@ -12,7 +12,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     if (stristr($sExt, 'png'))
         return $sName . '.png';
-    if ($iConvertedBmpsDuringThisCall > 1)
+    if ($iConvertedBmpsDuringThisCall > 5)
         return $sName . '.' . $sExt;
 
 
@@ -39,7 +39,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         die("unexpected extension: convertToPngIfNeeded($sName, $sExt)");
     }
     if (file_exists($sName . '.png') && trim($sRetVal) == '') {
-        unlink("$sName.$sExt");
+        @unlink("$sName.$sExt");
         $sExt = 'png';
         return "$sName.png";
     }

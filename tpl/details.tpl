@@ -35,14 +35,13 @@
 {function showDifferences}
     <div style='background:{$color}'><span class='label'>   {$label}:</span>
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
-        <img src="{$file}?{$sTime|urlencode}" title="{$label} {$time}">
+            <img src="{$file}?{$sTime|urlencode}" title="{$label} {$time}">
         {else}
             {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
                 {if file_exists($file)}
                     <div class='iframe_container'>
-                    {$aTest.sRtfLink|default}
-                      <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
-
+                        {$aTest.sRtfLink|default}
+                        <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
                     </div>
                 {/if}
             {else}
@@ -67,28 +66,24 @@
             $(document).bind('keydown', 'a', function(event) {
                 if(event.keyCode == 65) {
                     $('#done-button').click();
-
                 }
             });
 
             $(document).bind('keydown', 'b', function(event) {
                 if(event.keyCode == 66) {
                     $('#doneAll-button').click();
-
                 }
             });
 
             $(document).bind('keydown', 'c', function(event) {
                 if(event.keyCode == 67) {
                     $('#discard-button').click();
-
                 }
             });
 
             $(document).bind('keydown', 'd', function(event) {
                 if(event.keyCode == 68) {
                     $('#soll_no_longer_needed-button').click();
-                   
                 }
             });
         });
@@ -106,8 +101,8 @@
       <img src='compare.php?sTestName={$aTest.name|urlencode}'  style='opacity:0.95' title=Unterschiede >
     </div>
   {/if}
-  {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='ini' || $aTest.ext=='lmo'}
-
+  {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='ini' || $aTest.ext=='lmo' || $aTest.ext=='csv'}
+      {* von diesen Dateitypen soll ein FineDiff angezeigt werden *}
       <span class='label'>{$UntDif}: </span>
 
     {php}
@@ -129,6 +124,9 @@
         A: {$IstZ}
     </button>
     {if $aTest.ext=='png' && file_exists($aTest.fileSoll)}
+        <button id="done-button-alternative" title="speichert den Ist-Wert als Sollwert-Alternative" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}&alternative=1';">
+            *
+        </button>
         <button id="doneAll-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
             B: {$GleiU}
         </button>

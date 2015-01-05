@@ -7,6 +7,11 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
     if (filesize($sFileSoll) != filesize($sFileIst) || file($sFileSoll) != file($sFileIst)) {
         $retval['desc'] = LANG=='de' ? "Es gibt Unterschiede" : "There are differences";
         $retval['status'] = 0;
+        if (file_exists($sFileSoll . "2")) {
+          $bIdentical = compareFiles($sFileSoll . "2", $sFileIst, $retval);
+          $retval['desc'] .= ' [Alternative]';
+          return $bIdentical;
+        }
         return false;
     } else {
         $retval['desc'] = LANG=='de' ? "Bilder stimmen &uuml;berein" : "Screenshots are equal";
@@ -65,7 +70,8 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
 
 function handleActions(&$retval) {
     if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
-        copy($retval['fileIst'], $retval['fileSoll']);
+        $alt = empty($_REQUEST['alternative']) ? '' : '2';
+        copy($retval['fileIst'], $retval['fileSoll'] . $alt);
     }
     if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
         set_time_limit(600);
