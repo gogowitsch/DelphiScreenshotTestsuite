@@ -48,6 +48,7 @@ function getStatusOfAllProjects() {
   global $aTests;
   $aTests = array();
   $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
+  $sCasperJS = 'cmd /c "cd C:\xampp\htdocs\lvu\tests\PhantomJS && c:\progra~2\git\bin\git pull && cmd /c start /b casperjs test ';
   $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
   getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
   getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
@@ -58,6 +59,7 @@ function getStatusOfAllProjects() {
   getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
   getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
   getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
+  getProjectStatus('RingDat_Online.Human.Siteadmin', '', $sCasperJS . ' Human_design_Test.js"');
 
   checkFurtherImageConversions();
 }
