@@ -28,9 +28,9 @@
 
 <div id="breadcrumbs">
 
-        <a href='/'>{$Proj}</a> &#187;
+        <a href='.'>{$Proj}</a> &#187;
 
-    <a href='/?project={$project|urlencode}'>{$project}</a> &#187;
+    <a href='.?project={$project|urlencode}'>{$project}</a> &#187;
     {$aTest.title}
 </div>
 

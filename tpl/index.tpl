@@ -26,7 +26,7 @@
     {strip}
         {include file="header.tpl" title=Start}
         <div id="breadcrumbs">
-            <a href='/'>
+            <a href='.'>
                 {$Proj}
             </a> &#187;&nbsp;
             {$project}
@@ -42,7 +42,8 @@
                         <tr>
                             <td>
                                 {if $aTest.status==0}
-                                    <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|escape}" />
+                                    {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
+                                    <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
                                 {/if}
                             </td>
                             <td>

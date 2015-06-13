@@ -69,9 +69,12 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
 }
 
 function handleActions(&$retval) {
-    if (isset($_REQUEST['done']) && ($_REQUEST['done'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
-        $alt = empty($_REQUEST['alternative']) ? '' : '2';
-        copy($retval['fileIst'], $retval['fileSoll'] . $alt);
+    if (isset($_REQUEST['done'])) {
+      $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
+      if ($_REQUEST['done'] == $retval['name'] || $bCheckedInIndexList) {
+          $alt = empty($_REQUEST['alternative']) ? '' : '2';
+          copy($retval['fileIst'], $retval['fileSoll'] . $alt);
+      }
     }
     if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
         set_time_limit(600);
