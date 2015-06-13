@@ -1,4 +1,6 @@
-﻿{if $Sprache=='de'}
+﻿{* Diese Seite zeigt den Vergleicht von genau ein Pärchen von Soll- und Ist-Zustand *}
+
+{if $Sprache=='de'}
     {$Proj="Projektübersicht"}
     {$IstAcu="Ist"}
     {$SollTar="Soll"}
@@ -55,40 +57,15 @@
 {showDifferences color=red file=$aTest.fileIst|utf8_encode label=$IstAcu time=$aTest.istTime}
 
 
-{literal}
-    <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
-    <script>
-        $(function() {
-            $( ".iframe_container" ).resizable({
-              helper: "ui-resizable-helper"
-            });
-
-            $(document).bind('keydown', 'a', function(event) {
-                if(event.keyCode == 65) {
-                    $('#done-button').click();
-                }
-            });
-
-            $(document).bind('keydown', 'b', function(event) {
-                if(event.keyCode == 66) {
-                    $('#doneAll-button').click();
-                }
-            });
-
-            $(document).bind('keydown', 'c', function(event) {
-                if(event.keyCode == 67) {
-                    $('#discard-button').click();
-                }
-            });
-
-            $(document).bind('keydown', 'd', function(event) {
-                if(event.keyCode == 68) {
-                    $('#soll_no_longer_needed-button').click();
-                }
-            });
+<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+<script>
+    $(function() {
+        $( ".iframe_container" ).resizable({
+          helper: "ui-resizable-helper"
         });
-    </script>
-{/literal}
+        {include file="key_binding.inc.tpl"}
+    });
+</script>
 {if file_exists($aTest.fileSoll)}
 
   {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}

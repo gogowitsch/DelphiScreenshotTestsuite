@@ -1,3 +1,5 @@
+{* zeigt Ergebnisse eines einzigen Projektes *}
+
 {if $Sprache=='de'}
     {$Proj="Projektübersicht"}
     {$Erf="erfolgreich."}
@@ -55,52 +57,52 @@
                     {/if}
                 {/foreach}
             </table>
-                <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
+            <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
 
-                    <input type=submit name=done title="als Okay markieren" value="{$IstZu}" />
-                    <input type=submit name=discard value="{$ZurVer}"  onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+            <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
+            <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
 
         </form>
         <script>
-            {literal}
-                function check_all(bValue) {
-                    $('input[type=checkbox]').attr('checked', bValue);
-                    $('input[type=submit]').show();
-                }
-                var $chkboxes = null;
-                var lastChecked = null;
-                function checkbox_click(e) {
-                    if(!lastChecked) {
-                        lastChecked = this;
-                        return;
-                    }
+            {include file="key_binding.inc.tpl"}
 
-                    if (e.shiftKey) {
-                        var start = $chkboxes.index(this);
-                        var end = $chkboxes.index(lastChecked);
-                        $chkboxes.slice(Math.min(start,end), Math.max(start,end) + 1).attr('checked', lastChecked.checked);
-
-                    }
-
+            function check_all(bValue) {
+                $('input[type=checkbox]').attr('checked', bValue);
+                $('input[type=submit]').show();
+            }
+            var $chkboxes = null;
+            var lastChecked = null;
+            function checkbox_click(e) {
+                if(!lastChecked) {
                     lastChecked = this;
+                    return;
                 }
-                function showhide_submit() {
-                    $('input[type=submit]').hide();
-                    $('input[type=checkbox]').each(function() {
-                        if ($(this).is(':checked')) {
-                            $('input[type=submit]').show();
-                        }
-                    });
+
+                if (e.shiftKey) {
+                    var start = $chkboxes.index(this);
+                    var end = $chkboxes.index(lastChecked);
+                    $chkboxes.slice(Math.min(start,end), Math.max(start,end) + 1).attr('checked', lastChecked.checked);
+
                 }
-                $(function () {
-                    $chkboxes = $('input[type=checkbox]');
-                    $chkboxes.click(checkbox_click).change(showhide_submit);
-                    var iFailedTests = $chkboxes.length;
-                    if (!iFailedTests)
-                        $('#check_all').hide();
+
+                lastChecked = this;
+            }
+            function showhide_submit() {
+                $('input[type=submit]').hide();
+                $('input[type=checkbox]').each(function() {
+                    if ($(this).is(':checked')) {
+                        $('input[type=submit]').show();
+                    }
                 });
-            {/literal}
-                showhide_submit();
+            }
+            $(function () {
+                $chkboxes = $('input[type=checkbox]');
+                $chkboxes.click(checkbox_click).change(showhide_submit);
+                var iFailedTests = $chkboxes.length;
+                if (!iFailedTests)
+                    $('#check_all').hide();
+            });
+            showhide_submit();
         </script>
         {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">auch erfolgreiche Tests zeigen</a>{/if}
 

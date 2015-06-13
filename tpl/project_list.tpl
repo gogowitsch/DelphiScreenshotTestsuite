@@ -1,4 +1,5 @@
-{* wird von index.php aufgerufen *}
+{* wird von index.php aufgerufen, zeigt Übersicht über alle Projekte *}
+
 {if $ini}
     {include file="status.tpl"}
 {else}
