@@ -1,4 +1,8 @@
-<head>
+<?php
+
+/* Diese Datei wird von footer.tpl als <iframe> eingebunden */
+
+?><head>
 <style>
   body {  font-family: Arial; margin:0; padding:0; overflow: hidden; }
 </style>
@@ -11,6 +15,8 @@ require '../include/projectstatus.inc.php';
 $aTests = array();
 $aProjects = array();
 $iStatusSum = 0;
+
+$_REQUEST['andConvertImages'] = 1;
 
 getStatusOfAllProjects();
 

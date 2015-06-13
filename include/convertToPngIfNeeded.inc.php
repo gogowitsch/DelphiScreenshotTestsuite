@@ -12,7 +12,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     if (stristr($sExt, 'png'))
         return $sName . '.png';
-    if ($iConvertedBmpsDuringThisCall > 5)
+    if ($iConvertedBmpsDuringThisCall > 3 || empty($_REQUEST['andConvertImages']))
         return $sName . '.' . $sExt;
 
 
