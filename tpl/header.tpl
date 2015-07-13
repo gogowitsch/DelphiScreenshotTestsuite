@@ -22,6 +22,10 @@
                 height: 100%;
                 border: none;
             }
+            #alt_langs {
+			  margin: 0 0 1em 0;
+              float: right;
+            }
             #breadcrumbs {
               margin: 0 0 1em 0;
             }

@@ -26,6 +26,13 @@
 
 {include file="header.tpl" title=Details}
 
+<div id='alt_langs'>
+  {* wird in details.php gefüllt *}
+  {foreach $aFlags as $sFlagLink}
+    {$sFlagLink}
+  {/foreach}
+</div>
+
 <div id="breadcrumbs">
 
         <a href='.'>{$Proj}</a> &#187;
