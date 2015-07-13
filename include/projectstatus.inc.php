@@ -3,7 +3,6 @@
 /**
  * @param string $p_sExePath wird für Ermittlung des Verfallsdatums verwendet, wird nicht zum Start verwendet
 */
-
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
   global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
   global $smarty;
@@ -48,7 +47,7 @@ function getStatusOfAllProjects() {
   global $aTests;
   $aTests = array();
   $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-  $sCasperJS = 'cmd /c "cd C:\xampp\htdocs\lvu\tests\PhantomJS && c:\progra~2\git\bin\git pull && cmd /c start /b casperjs test ';
+  $sCasperJS = 'cmd /c "cd C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS && c:\\progra~2\\git\\bin\\git pull && ' . $sAhkCmd;
   $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
   getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
   getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
@@ -59,7 +58,7 @@ function getStatusOfAllProjects() {
   getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
   getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
   getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
-  getProjectStatus('RingDat_Online.Human.Siteadmin', '', $sCasperJS . ' Human_design_Test.js"');
+  getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . ' casperjs_kickstart.ahk human"');
 
   checkFurtherImageConversions();
 }
