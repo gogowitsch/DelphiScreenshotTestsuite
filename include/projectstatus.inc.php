@@ -60,7 +60,7 @@ function getStatusOfAllProjects() {
   getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
   getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk human"');
   getProjectStatus('RingDat_Online.Ibbl', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk ibbl"');
-  getProjectStatus('RingDat_Online.IfEP', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk IfEP"');
+  getProjectStatus('RingDat_Online.InstitutEignungspruefung', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk IfEP"');
   getProjectStatus('RingDat_Online.UBA', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA"');
   
   checkFurtherImageConversions();
