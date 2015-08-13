@@ -47,7 +47,10 @@ function getStatusOfAllProjects() {
   global $aTests;
   $aTests = array();
   $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-  $sCasperJS = 'cmd /c "cd C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS && c:\\progra~2\\git\\bin\\git pull && ' . $sAhkCmd;
+  $sCasperJS = 'cmd /c "cd C:\\xampp\\htdocs\\lvu && ' .
+    'c:\\progra~2\\git\\bin\\git checkout html/js/version.js && ' .
+    'c:\\progra~2\\git\\bin\\git pull && ' .
+    'cd tests\\PhantomJS && ' . $sAhkCmd;
   $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
   getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
   getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
@@ -62,7 +65,7 @@ function getStatusOfAllProjects() {
   getProjectStatus('RingDat_Online.Ibbl', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk ibbl"');
   getProjectStatus('RingDat_Online.InstitutEignungspruefung', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk IfEP"');
   getProjectStatus('RingDat_Online.UBA_Wien', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA"');
-  
+
   checkFurtherImageConversions();
 }
 
