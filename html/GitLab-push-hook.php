@@ -1,7 +1,7 @@
 <?php
 
 
-// hier müssen alle Repos eingetragen werden, die dieses Skript verarbeiten kann:
+// hier mÃ¼ssen alle Repos eingetragen werden, die dieses Skript verarbeiten kann:
 if ($_REQUEST['repo'] == 'ringdat-online')
   chdir("C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS");
 
@@ -10,10 +10,17 @@ putenv("GIT_ASK_YESNO=false");
 
 // Das folgende geht, weil ein Nutzer über den Cred Helper für den Nutzer des Webservers eingetragen wurde.
 $iErrorLevel = 0;
-$sDatei= "Alter_des_Masterbranches.txt";
-if(!file_exists($sDatei)) $iErrorLevel = 2;
-else
-file_put_contents($sDatei, strftime('%c'));
+$sDatei = "Alter_des_Masterbranches.txt";
+if(!file_exists($sDatei))
+  $iErrorLevel = 2;
+else {
+  $data = json_decode(file_get_contents('php://input'), true);
+  if ($data['ref'] == 'refs/heads/master') {
+    file_put_contents($sDatei, strftime('%c'));
+    file_put_contents($sDatei, print_r($data, true), FILE_APPEND);
+  }
+}
+
 if ($iErrorLevel > 0) {
   $sSubj = basename(__FILE__) . ': error';
   $sMsg = "An error occured while running the file " .

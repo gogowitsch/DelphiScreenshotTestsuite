@@ -48,7 +48,7 @@ function getStatusOfAllProjects() {
   $aTests = array();
   $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
   $sCasperJS = 'cmd /c "cd C:\\xampp\\htdocs\\lvu && ' .
-    'c:\\progra~2\\git\\bin\\git checkout html/js/version.js && ' .
+    #'c:\\progra~2\\git\\bin\\git checkout html/js/version.js && ' .
     'c:\\progra~2\\git\\bin\\git pull && ' .
     'cd tests\\PhantomJS && ' . $sAhkCmd;
   $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
