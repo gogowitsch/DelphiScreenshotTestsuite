@@ -49,7 +49,7 @@
                             <td>
                                 <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
                             </td>
-                            <td class="status{$aTest.status}">
+                            <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
                                 <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
                                     {$aTest.desc}
                                 </a>

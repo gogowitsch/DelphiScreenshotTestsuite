@@ -12,6 +12,7 @@
             }
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
+            tr .wouldbe1 { background: yellow; }
             .status0 { background: #ff9999 {* schlecht - rot *} }
             .label { width: 82px; display: inline-block; }
             img {

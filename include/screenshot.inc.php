@@ -129,6 +129,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     }
 
     $retval = array();
+    $retval['iWouldBeStatus'] = '-x';
     $retval['fileIst'] = $sFileIst;
     $retval['fileSoll'] = $sFileSoll;
     $retval['ext'] = strtolower($sExt);
@@ -153,6 +154,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $retval['istTime'] = date(DATE_RSS, $iIstTime);
     if ($iIstTime < $iExeTime) {
         $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
+        $retval['iWouldBeStatus'] = $retval['status'];
         $retval['status'] = 0;
     }
 
