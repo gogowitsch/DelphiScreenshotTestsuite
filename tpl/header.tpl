@@ -12,6 +12,7 @@
             }
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
+            tr .wouldbe1 { background: yellow; }
             .status0 { background: #ff9999 {* schlecht - rot *} }
             .label { width: 82px; display: inline-block; }
             img {
@@ -21,6 +22,10 @@
                 width: 100%;
                 height: 100%;
                 border: none;
+            }
+            #alt_langs {
+			  margin: 0 0 1em 0;
+              float: right;
             }
             #breadcrumbs {
               margin: 0 0 1em 0;
