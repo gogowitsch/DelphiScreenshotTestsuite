@@ -56,23 +56,29 @@ function getStatusOfAllProjects() {
             'c:\\progra~2\\git\\bin\\git pull && ' .
             'cd tests\\PhantomJS && ' . $sAhkCmd;
     $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
-    getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
-    getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
-    getProjectStatus('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_fr.ahk\"");
-    getProjectStatus('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe', "$sAhkCmd \"$sAhkFolderPl mqVAL_DE.ahk\"");
-    getProjectStatus('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_DE.ahk\"");
-    getProjectStatus('RingDat_en', 'c:/daten/RingDat_EN\\RingDat4_en.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_EN.ahk\"");
-    getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
-    getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
-    getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
-    getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk human"');
-    getProjectStatus('RingDat_Online.IBBL', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk ibbl"');
-    getProjectStatus('RingDat_Online.InstitutEignungspruefung', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk IfEP"');
-    getProjectStatus('RingDat_Online.UBA-Wien', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA"');
-    getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
-
+	if ($_SERVER['SERVER_NAME'] == 'screenshot01-PC') {
+		getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
+		getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
+		getProjectStatus('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_fr.ahk\"");
+		getProjectStatus('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe', "$sAhkCmd \"$sAhkFolderPl mqVAL_DE.ahk\"");
+		getProjectStatus('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_DE.ahk\"");
+		getProjectStatus('RingDat_en', 'c:/daten/RingDat_EN\\RingDat4_en.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_EN.ahk\"");
+		getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
+		getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
+		getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
+	}
+	if ($_SERVER['SERVER_NAME'] == 'screenshot02-pc') {
+		getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk human"');
+		getProjectStatus('RingDat_Online.IBBL', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk ibbl"');
+		getProjectStatus('RingDat_Online.InstitutEignungspruefung', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk IfEP"');
+		getProjectStatus('RingDat_Online.UBA-Wien', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA"');
+		getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
+	}
     checkFurtherImageConversions();
 }
+
+echo ($_SERVER['SERVER_NAME']);
+echo("<br>");
 
 function checkFurtherImageConversions() {
     global $bNeedsFurtherConversions, $smarty;
