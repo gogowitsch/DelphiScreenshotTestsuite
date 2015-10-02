@@ -56,7 +56,7 @@ function getStatusOfAllProjects() {
             'c:\\progra~2\\git\\bin\\git pull && ' .
             'cd tests\\PhantomJS && ' . $sAhkCmd;
     $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
-	if ($_SERVER['SERVER_NAME'] == 'screenshot01-PC') {
+	if ($_SERVER['SERVER_NAME'] == 'screenshot01-pc') {
     getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
     getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
     getProjectStatus('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_fr.ahk\"");
