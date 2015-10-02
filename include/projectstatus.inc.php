@@ -79,9 +79,6 @@ function getStatusOfAllProjects() {
     checkFurtherImageConversions();
 }
 
-echo ($_SERVER['SERVER_NAME']);
-echo("<br>");
-
 function checkFurtherImageConversions() {
     global $bNeedsFurtherConversions, $smarty;
     if (empty($bNeedsFurtherConversions))
