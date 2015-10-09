@@ -69,8 +69,8 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
 }
 
 function handleActions(&$retval) {
+    $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
     if (isset($_REQUEST['done'])) {
-      $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
       if ($_REQUEST['done'] == $retval['name'] || $bCheckedInIndexList) {
           // Taste "A"
           $alt = empty($_REQUEST['alternative']) ? '' : '2';
@@ -91,7 +91,7 @@ function handleActions(&$retval) {
         return $retval;
     }
 
-    if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
         unlink($retval['fileSoll']);
         $retval['desc'] = "Solldatei wurde gelöscht";
         $retval['status'] = 1;
