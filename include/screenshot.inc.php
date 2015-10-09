@@ -72,16 +72,19 @@ function handleActions(&$retval) {
     if (isset($_REQUEST['done'])) {
       $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
       if ($_REQUEST['done'] == $retval['name'] || $bCheckedInIndexList) {
+          // Taste "A"
           $alt = empty($_REQUEST['alternative']) ? '' : '2';
           copy($retval['fileIst'], $retval['fileSoll'] . $alt);
       }
     }
-    if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || $bCheckedInIndexList)) {
+        // Taste "B"
         set_time_limit(600);
         compareAllTestFiles($_REQUEST['project']);
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
     }
-    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || $bCheckedInIndexList)) {
+        // Taste "C"
         unlink($retval['fileIst']);
         $retval['desc'] = "Test wurde gelöscht";
         $retval['status'] = 1;
