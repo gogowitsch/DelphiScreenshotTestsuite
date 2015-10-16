@@ -61,7 +61,12 @@ function check_queue() {
     db_connect($sSQL);
 
     //E-mail an Nutzer: Projekt wurde beendet
-    sendMailToUser("DelphiScreenshotTestsuite", "Das Projekt " . $project . " wurde beendet.");
+    $sServername = $_SERVER['SERVER_NAME'];
+    sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
+            . "Das Projekt https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project wurde beendet."
+            . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+            . "https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite"
+    );
 
     //Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
@@ -86,13 +91,21 @@ function save_job($aProjects) {
 
     //E-mail an Nutzer: bereits Projekte in der Warteschlange
     if (!empty($sProject_number)) {
-        sendMailToUser("DelphiScreenshotTestsuite", "Das Projekt " . $project
-                . " wurde erfolgreich in die Warteschlange gespeichert. " . "<br><br>"
-                . "Ihr Projekt kann leider erst zu einem späteren Zeitpunkt gestartet werden ,da sich bereits Projekte in der Liste befinden.");
+        $sServername = $_SERVER['SERVER_NAME'];
+        sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
+                . "Das Projekt https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project"
+                . " wurde erfolgreich in die Warteschlange aufgenommen. " . "<br><br>"
+                . "Leider kann Ihr Projekt erst zu einem späteren Zeitpunkt gestartet werden, da sich bereits Projekte in der Liste befinden."
+                . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+                . "<br><br>https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite");
     }
     else {
         //E-mail an Nutzer: Projekt wurde gestartet
-        sendMailToUser("DelphiScreenshotTestsuite", "Das Projekt " . $project . " wurde erfolgreich gestartet.");
+        $sServername = $_SERVER['SERVER_NAME'];
+        sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>" . "Das Projekt "
+                . "https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project" . " wurde erfolgreich gestartet."
+                . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+                . "<br><br>https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite");
     }
     $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES('$project', '$email', NOW());";
     db_connect($sSQL);
