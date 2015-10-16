@@ -4,16 +4,23 @@
     {$ScreN="Create new screenshots"}
 {/if}
 
-
-
-
 {if $aProject.cmd}
-  {* assign "sFrage" "Möchtest du wirklich alle Ist-Zustäde  verwerfen und neu erstellen?" *}
-  &nbsp;
-  <a
-    onclick="return confirm('Möchtest du wirklich alle Ist-Zustäde von {$aProject.title} verwerfen und neu erstellen?')"
-    href="run_project.php?project={$aProject.title|urlencode}&run=1"
+    <form method="post"
+          {*action="run_project.php?project={$aProject.title|urlencode}&run=1"*}>
+        <label for="email">Please enter your email address:</label>
+        <input type="text" name="email" id="email" {*value="{$sEmail}"*}>
 
-    title="Startet {$aProject.cmd|escape}">{$ScreN}</a>
+        <button type="submit"
+                name="action"
+                title="Startet {$aProject.cmd|escape}">
+            Create new screenshots</button>
+    </form>
 
+    {if $bEmail}
+        <script>
+            $(document).ready(function () {
+                window.location='run_project.php?project={$aProject.title|urlencode}&run=1';
+            });
+        </script>
+    {/if}
 {/if}
