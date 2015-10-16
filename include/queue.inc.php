@@ -55,12 +55,12 @@ function db_connect($sSQL) {
 }
 
 function check_queue() {
-    //Abschlossenes Projekt aus List löschen
+    // Abschlossenes Projekt aus List löschen
     $project = mysql_real_escape_string($_GET['project']);
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = '$project';";
     db_connect($sSQL);
 
-    //E-mail an Nutzer: Projekt wurde beendet
+    // E-mail an Nutzer: Projekt wurde beendet
     $sServername = $_SERVER['SERVER_NAME'];
     sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
             . "Das Projekt https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project wurde beendet."
@@ -79,21 +79,23 @@ function check_queue() {
 }
 
 function save_job($aProjects) {
-    $_SESSION['email'] = $_POST['email'];
+    $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
+    $_SESSION['email'] = $sEmail;
 
-    $email = mysql_real_escape_string($_POST['email']);
+    $sSafeEmail = mysql_real_escape_string($sEmail);
     $project = mysql_real_escape_string($aProjects[0]['title']);
 
-    //E-mail an Nutzer: Prüfen ob noch ein Job in Warteschlange vorliegt
+    // E-mail an Nutzer: Prüfen ob noch ein Job in Warteschlange vorliegt
     $sSQL = "SELECT * FROM `job_warteschlange`";
     $result = db_connect($sSQL);
     $sProject_number = count($result);
+    $sServername = $_SERVER['SERVER_NAME'];
 
-    //E-mail an Nutzer: bereits Projekte in der Warteschlange
+    // E-mail an Nutzer: bereits Projekte in der Warteschlange
     if (!empty($sProject_number)) {
         $sServername = $_SERVER['SERVER_NAME'];
         sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
-                . "Das Projekt https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project"
+                . "Das Projekt https://$sServername/?project=$project"
                 . " wurde erfolgreich in die Warteschlange aufgenommen. " . "<br><br>"
                 . "Leider kann Ihr Projekt erst zu einem späteren Zeitpunkt gestartet werden, da sich bereits Projekte in der Liste befinden."
                 . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
@@ -101,12 +103,22 @@ function save_job($aProjects) {
     }
     else {
         //E-mail an Nutzer: Projekt wurde gestartet
-        $sServername = $_SERVER['SERVER_NAME'];
         sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>" . "Das Projekt "
-                . "https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project" . " wurde erfolgreich gestartet."
+                . "http://$sServername/?project=$project wurde erfolgreich gestartet."
                 . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
                 . "<br><br>https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite");
     }
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES('$project', '$email', NOW());";
+    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES('$project', '$sSafeEmail', NOW());";
     db_connect($sSQL);
+}
+
+if (!empty($smarty)) {
+    session_start();
+
+    $sEmail = "";
+    if (!empty($_SESSION['email'])) {
+        $sEmail = $_SESSION['email'];
+    }
+
+    $smarty->assign("sEmail", $sEmail);
 }
