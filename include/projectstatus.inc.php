@@ -6,7 +6,7 @@
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
 
-    if (isset($_GET['project']) && $_GET['project'] != $sProject)
+    if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
     if (!empty($_GET['run'])) {

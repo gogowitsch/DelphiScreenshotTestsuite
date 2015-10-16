@@ -27,7 +27,7 @@ require '../include/screenshot.inc.php';
 $sTestName = empty($_GET['sTestName']) ? '' : $_GET['sTestName'];
 $aTest = getScreenshotStatus($sTestName);
 $smarty->assign("aTest", $aTest);
-$sProject = isset($_GET['project']) ? $_GET['project'] : '';
+$sProject = !empty($_GET['project']) ? $_GET['project'] : '';
 $smarty->assign("project", $sProject);
 
 // Sprachwechsel-Flaggen berechnen
