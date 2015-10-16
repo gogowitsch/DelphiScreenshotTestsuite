@@ -69,26 +69,29 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
 }
 
 function handleActions(&$retval) {
+    $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
     if (isset($_REQUEST['done'])) {
-      $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
       if ($_REQUEST['done'] == $retval['name'] || $bCheckedInIndexList) {
+          // Taste "A"
           $alt = empty($_REQUEST['alternative']) ? '' : '2';
           copy($retval['fileIst'], $retval['fileSoll'] . $alt);
       }
     }
-    if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || $bCheckedInIndexList)) {
+        // Taste "B"
         set_time_limit(600);
         compareAllTestFiles($_REQUEST['project']);
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
     }
-    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || $bCheckedInIndexList)) {
+        // Taste "C"
         unlink($retval['fileIst']);
         $retval['desc'] = "Test wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
     }
 
-    if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || (isset($_POST['check']) && in_array($retval['name'], $_POST['check'])))) {
+    if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
         unlink($retval['fileSoll']);
         $retval['desc'] = "Solldatei wurde gelöscht";
         $retval['status'] = 1;
@@ -129,6 +132,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     }
 
     $retval = array();
+    $retval['iWouldBeStatus'] = '-x';
     $retval['fileIst'] = $sFileIst;
     $retval['fileSoll'] = $sFileSoll;
     $retval['ext'] = strtolower($sExt);
@@ -153,6 +157,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
     $retval['istTime'] = date(DATE_RSS, $iIstTime);
     if ($iIstTime < $iExeTime) {
         $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller ".  basename($sExePath);
+        $retval['iWouldBeStatus'] = $retval['status'];
         $retval['status'] = 0;
     }
 
