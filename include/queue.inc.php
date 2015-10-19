@@ -1,5 +1,15 @@
 <?php
 
+// benötigt MySQL-Datenbank, zu Erstellen mit
+//~   CREATE DATABASE IF NOT EXISTS `delphiscreenshottestsuite`;
+//~   USE delphiscreenshottestsuite;
+//~   CREATE TABLE IF NOT EXISTS `job_warteschlange` (
+//~     `project` varchar(255) DEFAULT NULL,
+//~     `user_email` varchar(255) DEFAULT NULL,
+//~     `Datum` datetime DEFAULT NULL
+//~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 function sendMailToUser($subject, $message) {
     $path = '../PHPMailer/class.phpmailer.php';
     if (file_exists($path))
