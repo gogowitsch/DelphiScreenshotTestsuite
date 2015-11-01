@@ -33,14 +33,19 @@ function sendMailToUser($subject, $message, $sMailTo) {
 }
 
 function db_connect($sSQL) {
+	global $conn;
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "delphiscreenshottestsuite";
 
     try {
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		if (empty($conn)) {
+			$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}
+		if (!$sSQL) 
+			return;
         $stmt = $conn->prepare($sSQL);
         $stmt->execute();
         if (stristr($sSQL, 'SELECT')) {
@@ -54,11 +59,14 @@ function db_connect($sSQL) {
 }
 
 function ProjectDone_RemoveFromQueue() {
+	global $conn;
+	
     // Abschlossenes Projekt aus List löschen
-    $project = mysql_real_escape_string($_GET['project']);
-    $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = '$project';";
+	db_connect('');
+    $project = $conn->uote($_GET['project']);
+    $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = $project;";
     $aMail = db_connect($sSQL);
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = '$project';";
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
     db_connect($sSQL);
 
     // E-mail an Nutzer: Projekt wurde beendet
@@ -84,14 +92,16 @@ function ProjectDone_RemoveFromQueue() {
 }
 
 function save_job() {
+	global $conn;
     $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
     if ($sEmail)
         $_SESSION['email'] = $sEmail;
 
-    $sSafeEmail = mysql_real_escape_string($sEmail);
-    $project = mysql_real_escape_string($_GET['project']);
+	db_connect('');
+    $sSafeEmail = $conn->quote($sEmail);
+    $project = $conn->quote($_GET['project']);
 
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ('$project', '$sSafeEmail', NOW());";
+    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
     db_connect($sSQL);
 
     // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
