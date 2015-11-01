@@ -7,7 +7,6 @@ require_once '../include/queue.inc.php';
  */
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
-    global $smarty;
 
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
@@ -56,7 +55,7 @@ function getStatusOfAllProjects() {
     $sCasperJS = 'cmd /c "cd C:\\xampp\\htdocs\\lvu && ' .
             'git pull && ' .
             'cd tests\\PhantomJS && ' . $sAhkCmd;
-    $sAhkFolderPl = 'C:\\Users\\Screenhot01\\Desktop\\ScreenshotsPROLab\\Test starten -';
+    $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\Test starten -';
 
     if ($_SERVER['SERVER_NAME'] == 'screenshot01-pc') {
         getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");

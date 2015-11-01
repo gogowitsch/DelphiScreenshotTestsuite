@@ -1,29 +1,30 @@
 <?php
 
-function sendMailToUser($subject, $message) {
-    $path = '../PHPMailer/class.phpmailer.php';
-    if (file_exists($path))
-        require_once($path);
-    else
+function sendMailToUser($subject, $message, $sMailTo) {
+    $path = 'PHPMailer/class.phpmailer.php';
+    if (file_exists("../$path"))
         require_once("../$path");
+    else
+        require_once("../../lvu/$path");
 
     $mail = new PHPMailer(true);
     $mail->IsSMTP();
-    $sMailTo = mysql_real_escape_string($_POST['email']);
 
     try {
         //Smtp-Settings
-        include_once '/smtp-settings.inc.php';
-        $mail->SMTPAuth = true;
+        if (file_exists('smtp-settings.inc.php'))
+            include 'smtp-settings.inc.php';
+        $mail->SMTPAuth = !empty($mail->Password);
         $mail->CharSet = "UTF-8";
         $mail->IsHTML(true);
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
 
         //E-mail-Inhalt
         $mail->From = "peter.oertel@quodata.de";
         $mail->AddAddress($sMailTo);
         $mail->Subject = $subject;
-        $mail->Body = $message;
+        $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+                . "<a href='https://wiki.quodata.de/?title=DelphiScreenshotTestsuite'>wiki.quodata.de/?title=DelphiScreenshotTestsuite</a>.</small>";
         $mail->Send();
     }
     catch (phpmailerException $e) {
@@ -42,79 +43,66 @@ function db_connect($sSQL) {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare($sSQL);
         $stmt->execute();
-
-        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $result = $stmt->fetchAll();
+        if (stristr($sSQL, 'SELECT')) {
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll();
+        }
     }
     catch (PDOException $e) {
         echo $sSQL . "<br>" . $e->getMessage();
     }
-    $conn = null;
-
-    return $result;
 }
 
-function check_queue() {
+function ProjectDone_RemoveFromQueue() {
     // Abschlossenes Projekt aus List löschen
     $project = mysql_real_escape_string($_GET['project']);
+    $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = '$project';";
+    $aMail = db_connect($sSQL);
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = '$project';";
     db_connect($sSQL);
 
     // E-mail an Nutzer: Projekt wurde beendet
-    $sServername = $_SERVER['SERVER_NAME'];
-    sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
-            . "Das Projekt https://localhost/DelphiScreenshotTestsuite/html/index.php?project=$project wurde beendet."
-            . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
-            . "https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite"
-    );
+    if (!empty($aMail[0]['user_email'])) {
+        $sServername = $_SERVER['SERVER_NAME'];
+        $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
+        $sBody = "Diese E-Mail wurde automatisch von " . __FILE__ . " auf $sServername erstellt.<br><br>"
+                . "Der Test des Projektes <a href='http://$sServername/?project=$project'>$project</a> wurde abgeschlossen.";
+        sendMailToUser($sSubject, $sBody, $aMail[0]['user_email']);
+    }
 
-    //Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
+    // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
     $result = db_connect($sSQL);
-    $sNextProject = $result[0]['project'];
 
-    //Neues Projekt starten
-    header("Location: run_project.php?run=1&project=$sNextProject");
-    die;
+    if (!empty($result[0]['project'])) {
+        $sNextProject = $result[0]['project'];
+
+        // nächstes Projekt starten
+        header("Location: run_project.php?run=1&project=$sNextProject");
+        die;
+    }
 }
 
-function save_job($aProjects) {
+function save_job() {
     $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
-    $_SESSION['email'] = $sEmail;
+    if ($sEmail)
+        $_SESSION['email'] = $sEmail;
 
     $sSafeEmail = mysql_real_escape_string($sEmail);
-    $project = mysql_real_escape_string($aProjects[0]['title']);
+    $project = mysql_real_escape_string($_GET['project']);
 
-    // E-mail an Nutzer: Prüfen ob noch ein Job in Warteschlange vorliegt
-    $sSQL = "SELECT * FROM `job_warteschlange`";
-    $result = db_connect($sSQL);
-    $sProject_number = count($result);
-    $sServername = $_SERVER['SERVER_NAME'];
-
-    // E-mail an Nutzer: bereits Projekte in der Warteschlange
-    if (!empty($sProject_number)) {
-        $sServername = $_SERVER['SERVER_NAME'];
-        sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>"
-                . "Das Projekt https://$sServername/?project=$project"
-                . " wurde erfolgreich in die Warteschlange aufgenommen. " . "<br><br>"
-                . "Leider kann Ihr Projekt erst zu einem späteren Zeitpunkt gestartet werden, da sich bereits Projekte in der Liste befinden."
-                . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
-                . "<br><br>https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite");
-    }
-    else {
-        //E-mail an Nutzer: Projekt wurde gestartet
-        sendMailToUser("DelphiScreenshotTestsuite", "Diese E-Mail wurde automatisch von $sServername erstellt.<br><br>" . "Das Projekt "
-                . "http://$sServername/?project=$project wurde erfolgreich gestartet."
-                . "<br><br>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
-                . "<br><br>https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite");
-    }
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES('$project', '$sSafeEmail', NOW());";
+    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ('$project', '$sSafeEmail', NOW());";
     db_connect($sSQL);
+
+    // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
+    $aHasId = db_connect("SHOW COLUMNS FROM `job_warteschlange` LIKE 'ID'");
+    if (empty($aHasId))
+        db_connect("ALTER TABLE `job_warteschlange` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
 }
 
-if (!empty($smarty)) {
-    session_start();
+session_start();
 
+if (!empty($smarty)) {
     $sEmail = "";
     if (!empty($_SESSION['email'])) {
         $sEmail = $_SESSION['email'];
