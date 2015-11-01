@@ -51,6 +51,9 @@
             #soll_no_longer_needed-button:hover { opacity: 1; }
             #soll_no_longer_needed-wrap { background-color: #ffcccc; display: inline-block; }
             #soll_no_longer_needed-wrap:hover { background-color: white; }
+            form.run_project { display: inline }
+            form.run_project label, form.run_project input { visibility: hidden; }
+            form.run_project:hover label, form.run_project:hover input { visibility: visible; }
         </style>
         <script src="js/jquery.min.js"></script>
     </HEAD>
