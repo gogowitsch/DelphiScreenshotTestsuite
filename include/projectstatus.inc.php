@@ -69,6 +69,7 @@ function getStatusOfAllProjects() {
         getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
         getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
         getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
+        getProjectStatus('InterVAL', 'c:/daten/InterVAL\\InterVAL.exe', "C:\\Daten\\InterVAL\\InterVAL.exe /create_test_images C:\\xampp\\htdocs\\DelphiScreenshotTestsuite\\html\\Bilder\\InterVAL");
     }
     if (in_array($_SERVER['SERVER_NAME'], array('screenshot02-pc', 'localhost'))) {
         getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Masterbranches.txt', $sCasperJS . 'casperjs_kickstart.ahk human"');
