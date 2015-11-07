@@ -65,7 +65,7 @@ function ProjectDone_RemoveFromQueue() {
 	
     // Abschlossenes Projekt aus List löschen
 	db_connect('');
-    $project = $conn->uote($_GET['project']);
+    $project = $conn->quote($_GET['project']);
     $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = $project;";
     $aMail = db_connect($sSQL);
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
