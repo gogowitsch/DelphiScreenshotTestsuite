@@ -4,8 +4,10 @@ function sendMailToUser($subject, $message, $sMailTo) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path"))
         require_once("../$path");
-    else
+    else {
+        echo `echo %cd%`;
         require_once("../../lvu/$path");
+    }
 
     $mail = new PHPMailer(true);
     $mail->IsSMTP();
@@ -25,7 +27,7 @@ function sendMailToUser($subject, $message, $sMailTo) {
         $mail->Subject = $subject;
         $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
                 . "<a href='https://wiki.quodata.de/?title=DelphiScreenshotTestsuite'>wiki.quodata.de/?title=DelphiScreenshotTestsuite</a>.</small>";
-        $mail->Send();
+        if (!$mail->Send()) die("Check your mail-Einstellungen!");
     }
     catch (phpmailerException $e) {
         echo "<h1>PHPMailer Exception: </h1><br>" . $e->getMessage();
