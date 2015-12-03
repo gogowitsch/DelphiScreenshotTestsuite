@@ -6,7 +6,8 @@
 //~   CREATE TABLE IF NOT EXISTS `job_warteschlange` (
 //~     `project` varchar(255) DEFAULT NULL,
 //~     `user_email` varchar(255) DEFAULT NULL,
-//~     `Datum` datetime DEFAULT NULL
+//~     `Datum` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+//~     `ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 //~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

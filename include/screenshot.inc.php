@@ -54,6 +54,8 @@ function updateAllTestStatus($test, $projekt) {
 }
 
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
+    global $sCmd;
+
     $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
     if (file_exists("$sStem-difference.png")) {
         $iTimeD = filemtime("$sStem-difference.png");
