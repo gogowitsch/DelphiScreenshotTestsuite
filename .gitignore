@@ -6,3 +6,4 @@
 /html/Bilder
 /html/*.html
 *.bak
+/include/smtp-settings.inc.php

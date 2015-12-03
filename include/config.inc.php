@@ -1,6 +1,6 @@
 <?php
 
-$lang = $_SERVER['SERVER_NAME']=='screenshot01-pc' ? 'de' : 'en';
+$lang = preg_match('/screenshot[0-9]+-pc/i', gethostname()) ? 'de' : 'en';
 
 if (!empty($_GET['l'])) $lang = $_GET['l'];
 if (!empty($_GET['lang'])) $lang = $_GET['lang'];
