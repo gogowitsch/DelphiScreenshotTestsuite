@@ -116,6 +116,14 @@ function save_job() {
 
     db_connect('');
     $sSafeEmail = $conn->quote($sEmail);
+
+    /*InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
+     * da noch kein job_done Parameter von InterVAL übergeben wird.
+     */
+    if ($_GET['project'] == "InterVAL") {
+        return;
+    }
+
     $project = $conn->quote($_GET['project']);
 
     $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
