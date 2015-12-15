@@ -27,7 +27,8 @@ function sendMailToUser($subject, $message, $sMailTo) {
         $mail->Subject = $subject;
         $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
                 . "<a href='https://wiki.quodata.de/?title=DelphiScreenshotTestsuite'>wiki.quodata.de/?title=DelphiScreenshotTestsuite</a>.</small>";
-        if (!$mail->Send()) die("Check your mail-Einstellungen!");
+        if (!$mail->Send())
+            die("Check your mail-Einstellungen!");
     }
     catch (phpmailerException $e) {
         echo "<h1>PHPMailer Exception: </h1><br>" . $e->getMessage();
@@ -35,19 +36,19 @@ function sendMailToUser($subject, $message, $sMailTo) {
 }
 
 function db_connect($sSQL) {
-	global $conn;
+    global $conn;
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "delphiscreenshottestsuite";
 
     try {
-		if (empty($conn)) {
-			$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		}
-		if (!$sSQL) 
-			return;
+        if (empty($conn)) {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+        if (!$sSQL)
+            return;
         $stmt = $conn->prepare($sSQL);
         $stmt->execute();
         if (stristr($sSQL, 'SELECT')) {
@@ -61,10 +62,10 @@ function db_connect($sSQL) {
 }
 
 function ProjectDone_RemoveFromQueue() {
-	global $conn;
-	
+    global $conn;
+
     // Abschlossenes Projekt aus List löschen
-	db_connect('');
+    db_connect('');
     $project = $conn->quote($_GET['project']);
     $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = $project;";
     $aMail = db_connect($sSQL);
@@ -94,13 +95,21 @@ function ProjectDone_RemoveFromQueue() {
 }
 
 function save_job() {
-	global $conn;
+    global $conn;
     $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
     if ($sEmail)
         $_SESSION['email'] = $sEmail;
 
-	db_connect('');
+    db_connect('');
     $sSafeEmail = $conn->quote($sEmail);
+
+    /*InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
+     * da noch kein job_done Parameter von InterVAL übergeben wird.
+     */
+    if ($_GET['project'] == "InterVAL") {
+        return;
+    }
+
     $project = $conn->quote($_GET['project']);
 
     $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
