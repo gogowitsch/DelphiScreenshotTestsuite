@@ -1,9 +1,22 @@
 <?php
 
-function sendMailToUser($subject, $message, $sMailTo) {
+// benötigt MySQL-Datenbank, zu Erstellen mit
+//~   CREATE DATABASE IF NOT EXISTS `delphiscreenshottestsuite`;
+//~   USE delphiscreenshottestsuite;
+//~   CREATE TABLE IF NOT EXISTS `job_warteschlange` (
+//~     `project` varchar(255) DEFAULT NULL,
+//~     `user_email` varchar(255) DEFAULT NULL,
+//~     `Datum` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+//~     `ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+//~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+function sendMailToUser($subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
-    if (file_exists("../$path"))
+    if (file_exists("../$path")) {
+        // TODO: auch class smtp laden
         require_once("../$path");
+    }
     else {
         echo `echo %cd%`;
         require_once("../../lvu/$path");
@@ -19,7 +32,7 @@ function sendMailToUser($subject, $message, $sMailTo) {
         $mail->SMTPAuth = !empty($mail->Password);
         $mail->CharSet = "UTF-8";
         $mail->IsHTML(true);
-        $mail->SMTPDebug = 0;
+        $mail->SMTPDebug = 2;
 
         //E-mail-Inhalt
         $mail->From = "peter.oertel@quodata.de";
@@ -52,6 +65,7 @@ function db_connect($sSQL) {
         $stmt = $conn->prepare($sSQL);
         $stmt->execute();
         if (stristr($sSQL, 'SELECT')) {
+            // bei UPDATE und DELETE gibt es kein Ergebnis
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             return $stmt->fetchAll();
         }
