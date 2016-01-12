@@ -11,7 +11,7 @@
 //~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-function sendMailToUser($subject, $message) {
+function sendMailToUser($subject, $message, $sMailTo) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
         // TODO: auch class smtp laden
@@ -78,22 +78,25 @@ function db_connect($sSQL) {
 function ProjectDone_RemoveFromQueue() {
     global $conn;
 
-    // Abschlossenes Projekt aus List löschen
     db_connect('');
     $project = $conn->quote($_GET['project']);
-    $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = $project;";
-    $aMail = db_connect($sSQL);
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
-    db_connect($sSQL);
+    $sSQL = "SELECT DISTINCT user_email
+            FROM `job_warteschlange` WHERE `project` = $project
+            AND user_email <> '';";
+    $aMailAddresses = db_connect($sSQL);
 
     // E-mail an Nutzer: Projekt wurde beendet
-    if (!empty($aMail[0]['user_email'])) {
-        $sServername = $_SERVER['SERVER_NAME'];
-        $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
-        $sBody = "Diese E-Mail wurde automatisch von " . __FILE__ . " auf $sServername erstellt.<br><br>"
-                . "Der Test des Projektes <a href='http://$sServername/?project=$project'>$project</a> wurde abgeschlossen.";
-        sendMailToUser($sSubject, $sBody, $aMail[0]['user_email']);
+    $sServername = $_SERVER['SERVER_NAME'];
+    $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
+    $sBody = "Diese E-Mail wurde automatisch von " . __FILE__ . " auf $sServername erstellt.<br><br>"
+            . "Der Test des Projektes <a href='http://$sServername/?project=$project'>$project</a> wurde abgeschlossen.";
+    foreach ($aMailAddresses as $sMailAddress) {
+        sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
     }
+
+    // Abschlossenes Projekt aus List löschen
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
+    db_connect($sSQL);
 
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
@@ -117,7 +120,7 @@ function save_job() {
     db_connect('');
     $sSafeEmail = $conn->quote($sEmail);
 
-    /*InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
+    /* InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
      * da noch kein job_done Parameter von InterVAL übergeben wird.
      */
     if ($_GET['project'] == "InterVAL") {
