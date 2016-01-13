@@ -91,7 +91,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests) {
     $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
 
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
-            . "Testergebnisse: " . $iStatusSum . "/" . count($aTests) . "<br><br>"
+            . "Testergebnisse: " . $iStatusSum . "/" . count($aTests) . " erfolgreich.<br><br>"
             . "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
