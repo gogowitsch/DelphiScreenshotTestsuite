@@ -38,7 +38,7 @@ function sendMailToUser($subject, $message, $sMailTo) {
         $mail->From = "peter.oertel@quodata.de";
         $mail->AddAddress($sMailTo);
         $mail->Subject = $subject;
-        $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+        $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter: "
                 . "<a href='https://wiki.quodata.de/?title=DelphiScreenshotTestsuite'>wiki.quodata.de/?title=DelphiScreenshotTestsuite</a>.</small>";
         if (!$mail->Send())
             die("Check your mail-Einstellungen!");
@@ -75,7 +75,7 @@ function db_connect($sSQL) {
     }
 }
 
-function ProjectDone_RemoveFromQueue() {
+function ProjectDone_RemoveFromQueue($iStatusSum, $aTests) {
     global $conn;
 
     db_connect('');
@@ -86,10 +86,13 @@ function ProjectDone_RemoveFromQueue() {
     $aMailAddresses = db_connect($sSQL);
 
     // E-mail an Nutzer: Projekt wurde beendet
-    $sServername = $_SERVER['SERVER_NAME'];
+    $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
-    $sBody = "Diese E-Mail wurde automatisch von " . __FILE__ . " auf $sServername erstellt.<br><br>"
-            . "Der Test des Projektes <a href='http://$sServername/?project=$project'>$project</a> wurde abgeschlossen.";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+
+    $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
+            . "Testergebnisse: " . $iStatusSum . "/" . count($aTests) . "<br><br>"
+            . "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
     }
