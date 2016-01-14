@@ -141,6 +141,50 @@ function save_job() {
         db_connect("ALTER TABLE `job_warteschlange` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
 }
 
+function save_comment($aTest) {
+    global $conn;
+    db_connect('');
+
+    // Screenshot-Kommentar aus Datenbank laden
+    $sOldComment = load_comment($aTest);
+
+    $sComment = empty($_POST['textarea']) ? '' : $_POST['textarea'];
+    $sSafeComment = $conn->quote($sComment);
+    $aTest = $conn->quote($aTest['title']);
+    $project = $conn->quote($_GET['project']);
+
+    if (!empty($_POST['textarea'])) {
+        // Screenshot-Kommentar aktualisieren
+        if (!empty($sOldComment)) {
+            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment WHERE `test` = $aTest";
+            db_connect($sSQL);
+        }
+        else {
+            // Screenshot-Kommentar einfügen
+            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`) VALUES ($sSafeComment, $aTest, $project)";
+            db_connect($sSQL);
+        }
+    }
+    else {
+        $sSQL = "DELETE FROM `comments` WHERE `test` = $aTest";
+        db_connect($sSQL);
+    }
+}
+
+function load_comment($aTest) {
+    global $conn;
+    db_connect('');
+
+    $project = $conn->quote($_GET['project']);
+    $aTest = $conn->quote($aTest['title']);
+
+    // Screenshot-Kommentar aus DB laden
+    $sSQL = "SELECT `comment` FROM `comments` WHERE `project` = $project AND `test` = $aTest";
+    $sComment = db_connect($sSQL);
+
+    return !empty($sComment[0]['comment']) ? $sComment[0]['comment'] : '';
+}
+
 session_start();
 
 if (!empty($smarty)) {

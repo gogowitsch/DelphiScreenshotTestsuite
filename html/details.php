@@ -19,9 +19,8 @@ $aDesigns = array(
 
 $aLangs = array_merge($aLangs, $aDesigns);
 
-
-
 require '../include/smarty.inc.php';
+require '../include/queue.inc.php';
 require '../include/screenshot.inc.php';
 
 $sTestName = empty($_GET['sTestName']) ? '' : $_GET['sTestName'];
@@ -58,6 +57,15 @@ if ($bHasLang) {
       href='details.php?project=$sAltProj&sTestName=" . urlencode($sAlternativeTestName) . "'>$sLink</a>";
   }
 }
+
+// Screenshot-Kommentar in Datenbank speichern
+if(isset($_POST['save_button'])){
+    save_comment($aTest);
+}
+
+// Screenshot-Kommentar aus Datenbank laden
+$sComment = load_comment($aTest);
+$smarty->assign("sComment", $sComment);
 
 $smarty->assign("aFlags", $aFlags);
 
