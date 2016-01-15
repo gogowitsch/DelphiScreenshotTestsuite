@@ -96,6 +96,8 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests) {
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
     }
+    // E-Mail an peter.oertel@quodata.de
+    sendMailToUser($sSubject, $sBody, "peter.oertel@quodata.de");
 
     // Abschlossenes Projekt aus List löschen
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
