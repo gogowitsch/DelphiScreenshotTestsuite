@@ -102,6 +102,15 @@
     {$SollD}
 {/if}
 <br>
+<br>
+
+<form name="submit_comment" method="post">
+    <div id='comment_textarea'>
+        <label for="textarea" style="display: block">Write comment:</label>
+        <textarea id="textarea" name="textarea" style="width: 406px; height: 156px; display: block;">{$sComment}</textarea>
+        <input type="submit" id="submit_button" name='save_button' value="Submit"></input>
+    </div>
+</form>
 
 <div class='buttons' style='z-index:22'>
     <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">

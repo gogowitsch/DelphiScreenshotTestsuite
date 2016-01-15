@@ -21,11 +21,11 @@ $(document).bind('keydown', 'd', function (event) {
 });
 
 {*Beim eingeben der E-Mail Tastenkürzel ignorieren*}
-$("#email").focus(function () {
+$("#email, #textarea").focus(function () {
     $(document).unbind('keydown');
 });
 
-$("#email").focusout(function () {
+$("#email, #textarea").focusout(function () {
     $(document).bind('keydown', 'a', function (event) {
         if (event.keyCode == 65 && !event.ctrlKey) {
             $('#done-button').click();
