@@ -45,6 +45,7 @@
     <div style='background:{$color}'><span class='label'>   {$label}:</span>
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
             <img src="{$file|urlencode}?{$sTime|urlencode}" title="{$label} {$time}">
+            <p>{$time}</p>
         {else}
             {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
                 {if file_exists($file)}
