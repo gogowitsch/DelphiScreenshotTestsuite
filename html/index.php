@@ -12,7 +12,7 @@ getStatusOfAllProjects();
 
 // Abgeschlossene Jobs löschen und neuen starten
 if (!empty($_GET['job_done'])) {
-    ProjectDone_RemoveFromQueue($iStatusSum, $aTests);
+    ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
 }
 
 $smarty->assign("aProjects", $aProjects);
