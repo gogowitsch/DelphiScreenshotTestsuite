@@ -158,7 +158,7 @@ function save_comment($aTest) {
     db_connect('');
 
     // Screenshot-Kommentar aus Datenbank laden
-    $sOldComment = load_comment($aTest);
+    $aComment = load_comment_data($aTest);
 
     $sComment = empty($_POST['textarea']) ? '' : $_POST['textarea'];
     $sSafeComment = $conn->quote($sComment);
@@ -167,13 +167,13 @@ function save_comment($aTest) {
 
     if (!empty($_POST['textarea'])) {
         // Screenshot-Kommentar aktualisieren
-        if (!empty($sOldComment)) {
-            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment WHERE `test` = $aTest";
+        if (!empty($aComment[0]['comment'])) {
+            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment, `time` = NOW() WHERE `test` = $aTest";
             db_connect($sSQL);
         }
         else {
             // Screenshot-Kommentar einfügen
-            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`) VALUES ($sSafeComment, $aTest, $project)";
+            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`, `time`) VALUES ($sSafeComment, $aTest, $project, NOW())";
             db_connect($sSQL);
         }
     }
@@ -183,7 +183,7 @@ function save_comment($aTest) {
     }
 }
 
-function load_comment($aTest) {
+function load_comment_data($aTest) {
     global $conn;
     db_connect('');
 
@@ -191,10 +191,10 @@ function load_comment($aTest) {
     $aTest = $conn->quote($aTest['title']);
 
     // Screenshot-Kommentar aus DB laden
-    $sSQL = "SELECT `comment` FROM `comments` WHERE `project` = $project AND `test` = $aTest";
-    $sComment = db_connect($sSQL);
+    $sSQL = "SELECT * FROM `comments` WHERE `project` = $project AND `test` = $aTest";
+    $aComment = db_connect($sSQL);
 
-    return !empty($sComment[0]['comment']) ? $sComment[0]['comment'] : '';
+    return $aComment;
 }
 
 session_start();

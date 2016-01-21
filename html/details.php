@@ -64,8 +64,12 @@ if(isset($_POST['save_button'])){
 }
 
 // Screenshot-Kommentar aus Datenbank laden
-$sComment = load_comment($aTest);
+$aComment = load_comment_data($aTest);
+$sComment = !empty($aComment[0]['comment']) ? $aComment[0]['comment'] : '';
+$sTime = !empty($aComment[0]['time']) ? $aComment[0]['time'] : '';
+
 $smarty->assign("sComment", $sComment);
+$smarty->assign("sTime", $sTime);
 
 $smarty->assign("aFlags", $aFlags);
 

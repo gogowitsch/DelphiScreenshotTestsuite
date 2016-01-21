@@ -108,6 +108,9 @@
     <div id='comment_textarea'>
         <label for="textarea" style="display: block">Write comment:</label>
         <textarea id="textarea" name="textarea" style="width: 406px; height: 156px; display: block;">{$sComment}</textarea>
+        {if !empty($sTime)}
+            <p>Comment-time: {$sTime}</p>
+        {/if}
         <input type="submit" id="submit_button" name='save_button' value="Submit"></input>
     </div>
 </form>
