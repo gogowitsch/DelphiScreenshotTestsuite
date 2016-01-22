@@ -7,6 +7,7 @@ require '../include/projectstatus.inc.php';
 $aTests = array();
 $aProjects = array();
 $iStatusSum = 0;
+$aVeraltet = array();
 
 getStatusOfAllProjects();
 
@@ -14,7 +15,14 @@ getStatusOfAllProjects();
 if (!empty($_GET['job_done'])) {
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
 }
+foreach ($aNewTests as $key => $value) {
+    if (strpos($value['desc'], 'Ist-Datei kommt nicht von aktueller Alter_des_Masterbranches') !== false) {
+        array_push($aVeraltet, $value['desc']);
+    }
+}
+$iVeraltet = count($aVeraltet);
 
+$smarty->assign("iVeraltet", $iVeraltet);
 $smarty->assign("aProjects", $aProjects);
 $smarty->assign("bHasHiddenProjects", 0);
 $smarty->assign("aTests", $aTests);

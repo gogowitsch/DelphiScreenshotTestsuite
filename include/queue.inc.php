@@ -84,7 +84,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
             array_push($aVeraltet, $value['desc']);
         }
     }
-    $sVeraltet = count($aVeraltet);
+    $iVeraltet = count($aVeraltet);
 
     db_connect('');
     $project = $conn->quote($_GET['project']);
@@ -101,7 +101,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
             . "<span style='background-color: #99ff99'>" . $iStatusSum . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht aktuellen Masterbranch)</span ><br>"
-            . "<span style='background-color: yellow'>" . $sVeraltet . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht nicht aktuellen Masterbranch)</span><br><br>"
+            . "<span style='background-color: yellow'>" . $iVeraltet . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht nicht aktuellen Masterbranch)</span><br><br>"
             . "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
