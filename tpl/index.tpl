@@ -3,7 +3,7 @@
 {if $Sprache=='de'}
     {$Proj="Projektübersicht"}
     {$Erf="erfolgreich Ist-Datei entspricht aktuellen Masterbranch"}
-    {$IstVer="erfolgreich (Ist-Datei entspricht nicht aktuellen Masterbranch)"}
+    {$IstVer="erfolgreich, jedoch entspricht Ist-Datei nicht aktuellen Masterbranch"}
     {$AllM="Alle markieren"}
     {$IstZu="Ist-Zustand als neuen Sollwert abspeichern"}
     {$ZurVer="Ist-Zustand verwerfen"}
@@ -12,7 +12,7 @@
 {else}
     {$Proj="Project Overview"}
     {$Erf="successful (Actual state equal to masterbranch)"}
-    {$IstVer="successful (Actual state not equal to masterbranch)"}
+    {$IstVer="successful but actual state is not equal to masterbranch"}
     {$AllM="Select all"}
     {$IstZu="Save actual state as new target state"}
     {$ZurVer="Discard actual state"}
@@ -34,7 +34,9 @@
             {$project}
         </div>
             <span style='background-color: #99ff99'>{$iStatusSum} / {$aTests|count} {$Erf}</span><br>
-            <span style='background-color: yellow'>{$iVeraltet} / {$aTests|count} {$IstVer}</span><br><br>
+            {if $iVeraltet !== 0 }
+                <span style='background-color: yellow'>{$iVeraltet} {$IstVer}</span><br><br>
+            {/if}
 
         {include file="run_project.tpl" aProject=$aProjects.0}
 
