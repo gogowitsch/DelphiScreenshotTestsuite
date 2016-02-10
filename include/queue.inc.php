@@ -109,8 +109,24 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
     }
-    // E-Mail an peter.oertel@quodata.de
-    sendMailToUser($sSubject, $sBody, "peter.oertel@quodata.de");
+
+    // E-Mail an Projekt-Verantwortlichen senden
+    $aProjektVerantwortliche [] = array(
+        'Chrisian Blaeul' => 'blaeul@quodata.de',
+        'Susann Sgorzaly' => 'Sgorzaly@quodata.de',
+        'Omri Teufert' => 'teufert@quodata.de',
+        'Oscar Reinecke' => 'Oscar.Reinecke@quodata.de',
+        'Jens-Uwe Helling' => 'Helling@quodata.de',
+        'Peter Oertel' => 'Peter.Oertel@quodata.de'
+    );
+    // RingDat_Online
+    if (strpos($project, 'RingDat_Online') !== false) {
+        sendMailToUser($sSubject, $sBody, $aProjektVerantwortliche[0]['Peter Oertel']);
+    }
+    // CalcInterface
+    if (strpos($project, 'CalcInterface') !== false) {
+        sendMailToUser($sSubject, $sBody, $aProjektVerantwortliche[0]['Chrisian Blaeul']);
+    }
 
     // Abschlossenes Projekt aus List löschen
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
