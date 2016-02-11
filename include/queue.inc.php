@@ -194,7 +194,7 @@ function save_comment($aTest) {
     if (!empty($_POST['textarea'])) {
         // Screenshot-Kommentar aktualisieren
         if (!empty($aComment[0]['comment'])) {
-            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment, `time` = NOW() WHERE `test` = $aTest";
+            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment, `time` = NOW() WHERE `project` = $project AND `test` = $aTest";
             db_connect($sSQL);
         }
         else {
