@@ -44,7 +44,7 @@
 {function showDifferences}
     <div style='background:{$color}'><span class='label'>   {$label}:</span>
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
-            <img src="{$file|urlencode}?{$sTime|urlencode}" title="{$label} {$time}">
+            <img src="{$file|htmlentities}?{$sTime|urlencode}" title="{$label} {$time}">
         {else}
             {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
                 {if file_exists($file)}
@@ -102,6 +102,18 @@
     {$SollD}
 {/if}
 <br>
+<br>
+
+<form name="submit_comment" method="post">
+    <div id='comment_textarea'>
+        <label for="textarea" style="display: block">Write comment:</label>
+        <textarea id="textarea" name="textarea" style="width: 406px; height: 156px; display: block;">{$sComment}</textarea>
+        {if !empty($sTime)}
+            <p>Comment-time: {$sTime}</p>
+        {/if}
+        <input type="submit" id="submit_button" name='save_button' value="Submit"></input>
+    </div>
+</form>
 
 <div class='buttons' style='z-index:22'>
     <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">

@@ -7,14 +7,18 @@ require '../include/projectstatus.inc.php';
 $aTests = array();
 $aProjects = array();
 $iStatusSum = 0;
+$aVeraltet = array();
 
 getStatusOfAllProjects();
 
 // Abgeschlossene Jobs löschen und neuen starten
 if (!empty($_GET['job_done'])) {
-    ProjectDone_RemoveFromQueue();
+    ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
 }
 
+$iVeraltet = countOutdatedFiles($aNewTests);
+
+$smarty->assign("iVeraltet", $iVeraltet);
 $smarty->assign("aProjects", $aProjects);
 $smarty->assign("bHasHiddenProjects", 0);
 $smarty->assign("aTests", $aTests);
