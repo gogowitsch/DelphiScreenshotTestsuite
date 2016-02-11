@@ -26,7 +26,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     $aNewTests = array();
     $iLocalStatusSum = 0;
     array_walk(glob("Bilder/$sPicturePath*-ist.???"), function($sFile) {
-        global $aNewTests, $iLocalStatusSum;
+        global $aNewTests, $iLocalStatusSum, $sScreenshotName;
+
         $aNewTests[] = $aTest = getScreenshotStatus($sFile);
         $iLocalStatusSum += $aTest['status'];
         if ($aTest['ext'] == 'pdf' || $aTest['ext'] == 'bmp') {
@@ -35,6 +36,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
                 $bNeedsFurtherConversions = 1;
             else
                 $bNeedsFurtherConversions++;
+
+            $sScreenshotName = $aTest['name'];
         }
     });
 
@@ -87,11 +90,12 @@ function getStatusOfAllProjects() {
 }
 
 function checkFurtherImageConversions() {
-    global $bNeedsFurtherConversions, $smarty;
+    global $bNeedsFurtherConversions, $sScreenshotName, $smarty;
     if (empty($bNeedsFurtherConversions))
         return;
     if (empty($smarty))
         return;
 
     $smarty->assign("iframeFurtherImageConversions", $bNeedsFurtherConversions);
+    $smarty->assign("sScreenshotName", $sScreenshotName);
 }
