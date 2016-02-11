@@ -11,7 +11,7 @@
 //~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-function sendMailToUser($subject, $message, $sMailTo) {
+function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
         // TODO: auch class smtp laden
@@ -107,7 +107,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
     foreach ($aMailAddresses as $sMailAddress) {
-        sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
+        sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
     // E-Mail an Projekt-Verantwortlichen senden
@@ -121,11 +121,11 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     );
     // RingDat_Online
     if (strpos($project, 'RingDat_Online') !== false) {
-        sendMailToUser($sSubject, $sBody, $aProjektVerantwortliche[0]['Peter Oertel']);
+        sendMailToUser($aProjektVerantwortliche[0]['Peter Oertel'], $sSubject, $sBody);
     }
     // CalcInterface
     if (strpos($project, 'CalcInterface') !== false) {
-        sendMailToUser($sSubject, $sBody, $aProjektVerantwortliche[0]['Chrisian Blaeul']);
+        sendMailToUser($aProjektVerantwortliche[0]['Chrisian Blaeul'], $sSubject, $sBody);
     }
 
     // Abschlossenes Projekt aus List löschen
