@@ -75,9 +75,8 @@ function db_connect($sSQL) {
     }
 }
 
-function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    global $conn;
-
+// Count all outdated files
+function countOutdatedFiles($aNewTests) {
     $aVeraltet = array();
     foreach ($aNewTests as $key => $value) {
         if (strpos($value['desc'], 'Ist-Datei kommt nicht von aktueller Alter_des_Masterbranches') !== false) {
@@ -85,6 +84,14 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
         }
     }
     $iVeraltet = count($aVeraltet);
+
+    return $iVeraltet;
+}
+
+function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
+    global $conn;
+
+    $iVeraltet = countOutdatedFiles($aNewTests);
 
     db_connect('');
     $project = $conn->quote($_GET['project']);
