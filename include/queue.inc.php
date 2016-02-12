@@ -32,7 +32,7 @@ function sendMailToUser($sMailTo, $subject, $message) {
         $mail->SMTPAuth = !empty($mail->Password);
         $mail->CharSet = "UTF-8";
         $mail->IsHTML(true);
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
 
         //E-mail-Inhalt
         $mail->From = "peter.oertel@quodata.de";
