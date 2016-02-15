@@ -99,3 +99,11 @@ function checkFurtherImageConversions() {
     $smarty->assign("iframeFurtherImageConversions", $bNeedsFurtherConversions);
     $smarty->assign("sScreenshotName", $sScreenshotName);
 }
+
+function KillRunningProcces () {
+    $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
+    $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\';
+    $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";
+
+    exec($sCmd);
+}

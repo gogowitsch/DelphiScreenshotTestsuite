@@ -16,6 +16,10 @@ if (!empty($_GET['job_done'])) {
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
 }
 
+if (!empty($_GET['killJobs'])) {
+    KillRunningProcces ();
+}
+
 $iVeraltet = countOutdatedFiles($aNewTests);
 
 $smarty->assign("iVeraltet", $iVeraltet);
