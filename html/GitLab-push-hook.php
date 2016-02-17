@@ -1,6 +1,5 @@
 <?php
 
-
 // hier müssen alle Repos eingetragen werden, die dieses Skript verarbeiten kann:
 if ($_REQUEST['repo'] == 'ringdat-online')
   chdir("C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS");
@@ -15,9 +14,18 @@ if(!file_exists($sDatei))
   $iErrorLevel = 2;
 else {
   $data = json_decode(file_get_contents('php://input'), true);
-  if ($data['ref'] == 'refs/heads/master') {
+  if ($data['ref'] == 'refs/heads/reviewed-code-for-screenshots') {
     file_put_contents($sDatei, strftime('%c'));
     file_put_contents($sDatei, print_r($data, true), FILE_APPEND);
+    $iStamp = 0;
+    foreach($data['commits'] as $aCommit) {
+      $iStamp = max($iStamp, strtotime($aCommit['timestamp']));
+    }
+    if ($iStamp)
+      touch($sDatei, $iStamp);
+    `curl.exe -o - "http://localhost/run_project.php?project=RingDat_Online.IBBL&run=1"`;
+    #sleep(5);
+    #`curl.exe -o - "http://localhost/run_project.php?project=RingDat_Online.InstitutEignungspruefung&run=1"`;
   }
 }
 
