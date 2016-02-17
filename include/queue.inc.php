@@ -11,7 +11,7 @@
 //~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-function sendMailToUser($subject, $message, $sMailTo) {
+function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
         // TODO: auch class smtp laden
@@ -75,16 +75,23 @@ function db_connect($sSQL) {
     }
 }
 
-function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    global $conn;
-
+// Count all outdated files
+function countOutdatedFiles($aNewTests) {
     $aVeraltet = array();
     foreach ($aNewTests as $key => $value) {
         if (strpos($value['desc'], 'Ist-Datei kommt nicht von aktueller Alter_des_Masterbranches') !== false) {
             array_push($aVeraltet, $value['desc']);
         }
     }
-    $sVeraltet = count($aVeraltet);
+    $iVeraltet = count($aVeraltet);
+
+    return $iVeraltet;
+}
+
+function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
+    global $conn;
+
+    $iVeraltet = countOutdatedFiles($aNewTests);
 
     db_connect('');
     $project = $conn->quote($_GET['project']);
@@ -100,14 +107,33 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
-            . "<span style='background-color: #99ff99'>" . $iStatusSum . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht aktuellen Masterbranch)</span ><br>"
-            . "<span style='background-color: yellow'>" . $sVeraltet . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht nicht aktuellen Masterbranch)</span><br><br>"
-            . "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
-    foreach ($aMailAddresses as $sMailAddress) {
-        sendMailToUser($sSubject, $sBody, $sMailAddress['user_email']);
+            . "<span style='background-color: #99ff99'>" . $iStatusSum . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht aktuellen Masterbranch)</span ><br>";
+    if ($iVeraltet !== 0) {
+        $sBody .= "<span style='background-color: yellow'>" . $iVeraltet . " Bilder stimmen überein, jedoch entspricht Ist-Datei nicht aktuellen Masterbranch.</span><br><br>";
     }
-    // E-Mail an peter.oertel@quodata.de
-    sendMailToUser($sSubject, $sBody, "peter.oertel@quodata.de");
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+
+    foreach ($aMailAddresses as $sMailAddress) {
+        sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
+    }
+
+    // E-Mail an Projekt-Verantwortlichen senden
+    $aProjektVerantwortliche [] = array(
+        'Chrisian Blaeul' => 'blaeul@quodata.de',
+        'Susann Sgorzaly' => 'Sgorzaly@quodata.de',
+        'Omri Teufert' => 'teufert@quodata.de',
+        'Oscar Reinecke' => 'Oscar.Reinecke@quodata.de',
+        'Jens-Uwe Helling' => 'Helling@quodata.de',
+        'Peter Oertel' => 'Peter.Oertel@quodata.de'
+    );
+    // RingDat_Online
+    if (strpos($project, 'RingDat_Online') !== false) {
+        sendMailToUser($aProjektVerantwortliche[0]['Peter Oertel'], $sSubject, $sBody);
+    }
+    // CalcInterface
+    if (strpos($project, 'CalcInterface') !== false) {
+        sendMailToUser($aProjektVerantwortliche[0]['Chrisian Blaeul'], $sSubject, $sBody);
+    }
 
     // Abschlossenes Projekt aus List löschen
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
@@ -158,7 +184,7 @@ function save_comment($aTest) {
     db_connect('');
 
     // Screenshot-Kommentar aus Datenbank laden
-    $sOldComment = load_comment($aTest);
+    $aComment = load_comment_data($aTest);
 
     $sComment = empty($_POST['textarea']) ? '' : $_POST['textarea'];
     $sSafeComment = $conn->quote($sComment);
@@ -167,13 +193,13 @@ function save_comment($aTest) {
 
     if (!empty($_POST['textarea'])) {
         // Screenshot-Kommentar aktualisieren
-        if (!empty($sOldComment)) {
-            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment WHERE `test` = $aTest";
+        if (!empty($aComment[0]['comment'])) {
+            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment, `time` = NOW() WHERE `project` = $project AND `test` = $aTest";
             db_connect($sSQL);
         }
         else {
             // Screenshot-Kommentar einfügen
-            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`) VALUES ($sSafeComment, $aTest, $project)";
+            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`, `time`) VALUES ($sSafeComment, $aTest, $project, NOW())";
             db_connect($sSQL);
         }
     }
@@ -183,7 +209,7 @@ function save_comment($aTest) {
     }
 }
 
-function load_comment($aTest) {
+function load_comment_data($aTest) {
     global $conn;
     db_connect('');
 
@@ -191,10 +217,10 @@ function load_comment($aTest) {
     $aTest = $conn->quote($aTest['title']);
 
     // Screenshot-Kommentar aus DB laden
-    $sSQL = "SELECT `comment` FROM `comments` WHERE `project` = $project AND `test` = $aTest";
-    $sComment = db_connect($sSQL);
+    $sSQL = "SELECT * FROM `comments` WHERE `project` = $project AND `test` = $aTest";
+    $aComment = db_connect($sSQL);
 
-    return !empty($sComment[0]['comment']) ? $sComment[0]['comment'] : '';
+    return $aComment;
 }
 
 session_start();
