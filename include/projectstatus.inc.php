@@ -14,6 +14,17 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     if (!empty($_GET['run'])) {
         if (!empty($sCmd)) {
             $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt. <pre style='color:red'>" . `$sCmd 2>&1` . "</pre>";
+
+            // Create directory (current design) and LOCK-File (running procces)
+            $sRunningProccesFolderPl = 'C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcces/';
+            $sFileName = $sRunningProccesFolderPl . $sProject . '.LOCK';
+
+            if (!file_exists($sRunningProccesFolderPl)) {
+                mkdir($sRunningProccesFolderPl, 0777, true);
+            }
+            if (!file_exists($sFileName)) {
+                file_put_contents($sFileName, '');
+            }
         }
         else {
             $_GET['message'] = 'Fuer dieses Projekt wurde keine Kommandozeile hinterlegt.';
@@ -100,10 +111,17 @@ function checkFurtherImageConversions() {
     $smarty->assign("sScreenshotName", $sScreenshotName);
 }
 
-function KillRunningProcces () {
+function removeRunningTestFolder() {
+    $sRunningProccesFolerPl = '"C:\\xampp\\htdocs\\DelphiScreenshotTestsuite\\html\\RunningProcces" /s /q';
+    $sCmd = "rmdir " . $sRunningProccesFolerPl;
+    exec($sCmd);
+}
+
+function killRunningProcces() {
     $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
     $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\';
     $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";
 
+    removeRunningTestFolder();
     exec($sCmd);
 }
