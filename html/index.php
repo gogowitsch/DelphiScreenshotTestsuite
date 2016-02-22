@@ -17,7 +17,7 @@ if (!empty($_GET['job_done'])) {
     removeRunningTestFolder();
 }
 
-if (!empty($_GET['killJobs'])) {
+if (!empty($_POST['killJobs'])) {
     killRunningProcces();
 }
 
