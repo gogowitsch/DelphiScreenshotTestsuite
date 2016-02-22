@@ -6,7 +6,7 @@ require '../include/projectstatus.inc.php';
 $sDirectoryPath = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcces/";
 $sFilePath = '';
 
-if (file_exists($sDirectoryPath) && count(scandir($sDirectoryPath)) !== 2) {
+if (file_exists($sDirectoryPath) && glob($sDirectoryPath . '*.LOCK')) {
     $aDirectory = scandir($sDirectoryPath);
     $sFileName = !empty($aDirectory[2]) ? $aDirectory[2] : '';
     $sFilePath = $sDirectoryPath . $sFileName;
