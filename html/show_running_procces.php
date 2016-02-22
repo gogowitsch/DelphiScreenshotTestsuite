@@ -12,11 +12,11 @@ if (file_exists($sDirectoryPath) && count(scandir($sDirectoryPath)) !== 2) {
     $sFilePath = $sDirectoryPath . $sFileName;
 
     if (is_file($sFilePath)) {
-        $iFileTime = date("[F d Y H:i:s]", filemtime($sFilePath));
+        $sFileTime = date("[F d Y H:i:s]", filemtime($sFilePath));
     }
 }
 
 $smarty->assign("bProccesRunning", is_file($sFilePath));
-$smarty->assign("iFileTime", isset($iFileTime) ? $iFileTime : 0);
+$smarty->assign("iFileTime", isset($sFileTime) ? $sFileTime : '');
 $smarty->assign("sCurrentProcces", is_file($sFilePath) ? $sFileName : '');
 $smarty->display('show_running_procces.tpl');
