@@ -22,7 +22,9 @@ if (!empty($_POST['killJobs'])) {
 }
 
 $iVeraltet = countOutdatedFiles($aNewTests);
+$iPercentage = ($iStatusSum / count($aTests)) * 100;
 
+$smarty->assign("iPercentage", round($iPercentage));
 $smarty->assign("iVeraltet", $iVeraltet);
 $smarty->assign("aProjects", $aProjects);
 $smarty->assign("bHasHiddenProjects", 0);
