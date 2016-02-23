@@ -104,7 +104,7 @@
 <br>
 <br>
 
-<form name="submit_comment" method="post">
+<form name="submit_comment" id="submit_comment" method="post">
     <div id='comment_textarea'>
         <label for="textarea" style="display: block">Write comment:</label>
         <textarea id="textarea" name="textarea" style="width: 406px; height: 156px; display: block;">{$sComment}</textarea>
