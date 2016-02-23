@@ -3,7 +3,6 @@
 {if $Sprache=='de'}
     {$Proj="Projektübersicht"}
     {$Erf="erfolgreich"}
-    {$IstVer="erfolgreich, jedoch entspricht Ist-Datei nicht aktuellen Masterbranch"}
     {$AllM="Alle markieren"}
     {$IstZu="Ist-Zustand als neuen Sollwert abspeichern"}
     {$ZurVer="Ist-Zustand verwerfen"}
@@ -12,7 +11,6 @@
 {else}
     {$Proj="Project Overview"}
     {$Erf="successful"}
-    {$IstVer="successful but actual state is not equal to masterbranch"}
     {$AllM="Select all"}
     {$IstZu="Save actual state as new target state"}
     {$ZurVer="Discard actual state"}
