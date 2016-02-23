@@ -8,6 +8,8 @@
     {$ZurVer="Ist-Zustand verwerfen"}
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
+    {$ShowProcces="Laufende Tests anzeigen"}
+    {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
 {else}
     {$Proj="Project Overview"}
     {$Erf="successful"}
@@ -16,6 +18,8 @@
     {$ZurVer="Discard actual state"}
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
+    {$ShowProcces="Show running procces"}
+    {$ShowAll="show 100 % successful projects as well"}
 {/if}
 
 
@@ -105,7 +109,7 @@
             });
             showhide_submit();
         </script>
-        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">auch erfolgreiche Tests zeigen</a>{/if}
+        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
 
         {include file="footer.tpl"}
     {/strip}
