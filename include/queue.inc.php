@@ -100,6 +100,8 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
             AND user_email <> '';";
     $aMailAddresses = db_connect($sSQL);
 
+    $iPercentage = ($iStatusSum / count($aTests)) * 100;
+    
     // E-mail an Nutzer: Projekt wurde beendet
     $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
@@ -107,10 +109,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
-            . "<span style='background-color: #99ff99'>" . $iStatusSum . "/" . count($aTests) . " Bilder stimmen überein. (Ist-Datei entspricht aktuellen Masterbranch)</span ><br>";
-    if ($iVeraltet !== 0) {
-        $sBody .= "<span style='background-color: yellow'>" . $iVeraltet . " Bilder stimmen überein, jedoch entspricht Ist-Datei nicht aktuellen Masterbranch.</span><br><br>";
-    }
+            . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
     foreach ($aMailAddresses as $sMailAddress) {
