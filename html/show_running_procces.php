@@ -8,8 +8,9 @@ $sFilePath = '';
 
 if (file_exists($sDirectoryPath) && glob($sDirectoryPath . '*.LOCK')) {
     $aDirectory = scandir($sDirectoryPath);
-    $sFileName = !empty($aDirectory[2]) ? $aDirectory[2] : '';
-    $sFilePath = $sDirectoryPath . $sFileName;
+    $aFilePath = glob($sDirectoryPath . '*.LOCK');
+    $sFilePath = !empty($aFilePath[0]) ? $aFilePath[0] : '';
+    $sFileName = basename($sFilePath);
 
     if (is_file($sFilePath)) {
         $sFileTime = date("[F d Y H:i:s]", filemtime($sFilePath));
