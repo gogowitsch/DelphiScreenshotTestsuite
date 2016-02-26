@@ -2,22 +2,24 @@
 
 {if $Sprache=='de'}
     {$Proj="Projektübersicht"}
-    {$Erf="erfolgreich Ist-Datei entspricht aktuellen Masterbranch"}
-    {$IstVer="erfolgreich, jedoch entspricht Ist-Datei nicht aktuellen Masterbranch"}
+    {$Erf="erfolgreich"}
     {$AllM="Alle markieren"}
     {$IstZu="Ist-Zustand als neuen Sollwert abspeichern"}
     {$ZurVer="Ist-Zustand verwerfen"}
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
+    {$ShowProcces="Laufende Tests anzeigen"}
+    {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
 {else}
     {$Proj="Project Overview"}
-    {$Erf="successful (Actual state equal to masterbranch)"}
-    {$IstVer="successful but actual state is not equal to masterbranch"}
+    {$Erf="successful"}
     {$AllM="Select all"}
     {$IstZu="Save actual state as new target state"}
     {$ZurVer="Discard actual state"}
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
+    {$ShowProcces="Show running procces"}
+    {$ShowAll="show 100 % successful projects as well"}
 {/if}
 
 
@@ -33,10 +35,7 @@
             </a> &#187;&nbsp;
             {$project}
         </div>
-            <span style='background-color: #99ff99'>{$iStatusSum} / {$aTests|count} {$Erf}</span><br>
-            {if $iVeraltet !== 0 }
-                <span style='background-color: yellow'>{$iVeraltet} {$IstVer}</span><br><br>
-            {/if}
+            <span style='background-color: #99ff99'>{$iPercentage} % {$Erf}</span><br>
 
         {include file="run_project.tpl" aProject=$aProjects.0}
 
@@ -110,7 +109,7 @@
             });
             showhide_submit();
         </script>
-        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">auch erfolgreiche Tests zeigen</a>{/if}
+        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
 
         {include file="footer.tpl"}
     {/strip}

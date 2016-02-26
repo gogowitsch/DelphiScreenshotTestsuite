@@ -32,3 +32,10 @@ function ignoreShortcuts () {
         }
     });
 }
+
+{* Submit Form mit CTRL + Enter *}
+$('#textarea').keydown(function (e) {
+    if (e.ctrlKey && e.keyCode == 13) {
+        $('#submit_button').click();
+    }
+});
