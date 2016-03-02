@@ -42,7 +42,13 @@ function convertToPngIfNeeded($sName, &$sExt) {
         $sCmd .= "$sConvert -density 75 -strip $sFile -append \"$sBaseName.png\"";
 
         #die( "$sCmd<hr>");
-        $sRetVal = `$sCmd 2>&1`;
+        // Bevor convert.exe immer wieder versucht, ein leeres
+        // PDF umzuwandeln, wird es vorsorglich entfernt.
+        if (filesize($sFile)===0) {
+          unlink($sFile)
+          $sRetVal = '';
+        } else
+            $sRetVal = `$sCmd 2>&1`;
     } elseif (stristr($sExt, 'bmp')) {
         require_once('../include/ImageCreateFromBMP.inc.php');
         $res = ImageCreateFromBMP($sName . '.bmp');
