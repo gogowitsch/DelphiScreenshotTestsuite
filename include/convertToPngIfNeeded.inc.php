@@ -30,7 +30,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         die("GS_PATH not set: You must specity the path to ghostscript's gs.exe in include/path.ini");
     else $sGsPath = $aIni['GS_PATH'];
 
-    $sConvert = "set path=%path%;$sGsPath && \"$sConvertPath\\convert.exe\"";
+    $sConvert = "set path=%path%;$sGsPath; && \"$sConvertPath\\convert.exe\"";
 
     if (stristr($sExt, 'pdf')) {
         $sPath = dirname($sName);
