@@ -16,7 +16,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         return $sName . '.' . $sExt;
 
 
-    $sConvert = 'set path=%path%;C:\\Program Files\\ImageMagick-6.8.9-Q16;C:\\Program Files\\gs\\gs9.14\\bin && convert.exe';
+    $sConvert = 'set path=%path%;C:\\Program Files\\gs\\gs9.14\\bin && C:\\Program Files\\ImageMagick-6.8.9-Q16\\convert.exe';
     if (stristr($sExt, 'pdf')) {
         $sPath = dirname($sName);
         $sBaseName = basename($sName);
