@@ -15,12 +15,12 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         if (!empty($sCmd)) {
             $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt. <pre style='color:red'>" . `$sCmd 2>&1` . "</pre>";
 
-            // Create directory (current design) and LOCK-File (running procces)
-            $sRunningProccesFolderPl = 'C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcces/';
-            $sFileName = $sRunningProccesFolderPl . $sProject . '.LOCK';
+            // Create directory (current design) and LOCK-File (running process)
+            $sRunningProcessFolderPl = 'C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/';
+            $sFileName = $sRunningProcessFolderPl . $sProject . '.LOCK';
 
-            if (!file_exists($sRunningProccesFolderPl)) {
-                mkdir($sRunningProccesFolderPl, 0777, true);
+            if (!file_exists($sRunningProcessFolderPl)) {
+                mkdir($sRunningProcessFolderPl, 0777, true);
             }
             if (!file_exists($sFileName)) {
                 file_put_contents($sFileName, '');
@@ -71,6 +71,9 @@ function getStatusOfAllProjects() {
             'cd tests\\PhantomJS && ' . $sAhkCmd;
     $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\Test starten -';
     $sHost = strtolower(gethostname());
+    if (in_array($sHost, array('localhost', 'reinecke01-pc'))) {
+        getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
+    }
     if (in_array($sHost, array('screenshot01-pc'))) {
         getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
         getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
@@ -113,12 +116,12 @@ function checkFurtherImageConversions() {
 }
 
 function removeRunningTestFolder() {
-    $sRunningProccesFolerPl = '"C:\\xampp\\htdocs\\DelphiScreenshotTestsuite\\html\\RunningProcces" /s /q';
-    $sCmd = "rmdir " . $sRunningProccesFolerPl;
+    $sRunningProcessFolerPl = '"C:\\xampp\\htdocs\\DelphiScreenshotTestsuite\\html\\RunningProcess" /s /q';
+    $sCmd = "rmdir " . $sRunningProcessFolerPl;
     exec($sCmd);
 }
 
-function killRunningProcces() {
+function killRunningProcess() {
     $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
     $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\';
     $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";

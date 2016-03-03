@@ -18,7 +18,7 @@ if (!empty($_GET['job_done'])) {
 }
 
 if (!empty($_POST['killJobs'])) {
-    killRunningProcces();
+    killRunningProcess();
 }
 
 $iVeraltet = countOutdatedFiles($aNewTests);
