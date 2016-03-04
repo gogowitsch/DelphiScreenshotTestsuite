@@ -8,7 +8,7 @@
     {$ZurVer="Ist-Zustand verwerfen"}
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
-    {$ShowProcces="Laufende Tests anzeigen"}
+    {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
 {else}
     {$Proj="Project Overview"}
@@ -18,7 +18,7 @@
     {$ZurVer="Discard actual state"}
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
-    {$ShowProcces="Show running procces"}
+    {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
 {/if}
 

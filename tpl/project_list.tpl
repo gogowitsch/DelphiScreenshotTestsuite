@@ -1,11 +1,11 @@
 {* wird von index.php aufgerufen, zeigt Übersicht über alle Projekte *}
 {if $Sprache=='de'}
     {$Erf="erfolgreich"}
-    {$ShowProcces="Laufende Tests anzeigen"}
+    {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
 {else}
     {$Erf="successful"}
-    {$ShowProcces="Show running procces"}
+    {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
 {/if}
 
@@ -40,7 +40,7 @@
             {/foreach}
         </table>
         {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">{$ShowAll}</a><br><br>{/if}
-        <a href="show_running_procces.php">{$ShowProcces}</a>
+        <a href="show_running_process.php">{$ShowProcess}</a>
         {include file="footer.tpl"}
     {/strip}
 {/if}
