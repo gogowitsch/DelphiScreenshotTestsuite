@@ -44,9 +44,9 @@ function convertToPngIfNeeded($sName, &$sExt) {
         #die( "$sCmd<hr>");
         // Bevor convert.exe immer wieder versucht, ein leeres
         // PDF umzuwandeln, wird es vorsorglich entfernt.
-        if (filesize($sFile)===0) {
-          unlink($sFile)
-          $sRetVal = '';
+        if ( filesize($sFile) === 0 ) {
+            unlink($sFile);
+            $sRetVal = '';
         } else
             $sRetVal = `$sCmd 2>&1`;
     } elseif (stristr($sExt, 'bmp')) {
@@ -65,7 +65,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         return "$sName.png";
     }
 
-        if (!$sRetVal)
-            return $sName . '.png';
+    if (!$sRetVal)
+        return $sName . '.png';
     //die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
 }
