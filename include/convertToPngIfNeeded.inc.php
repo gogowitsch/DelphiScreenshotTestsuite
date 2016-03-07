@@ -32,6 +32,8 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     $sConvert = "set path=%path%;$sGsPath; && \"$sConvertPath\\convert.exe\"";
 
+    $sRetVal = '';
+
     if (stristr($sExt, 'pdf')) {
         $sPath = dirname($sName);
         $sBaseName = basename($sName);
@@ -44,10 +46,9 @@ function convertToPngIfNeeded($sName, &$sExt) {
         #die( "$sCmd<hr>");
         // Bevor convert.exe immer wieder versucht, ein leeres
         // PDF umzuwandeln, wird es vorsorglich entfernt.
-        if (filesize($sFile)===0) {
-          unlink($sFile)
-          $sRetVal = '';
-        } else
+        if ( filesize($sFile) === 0 )
+            unlink($sFile);
+        else
             $sRetVal = `$sCmd 2>&1`;
     } elseif (stristr($sExt, 'bmp')) {
         require_once('../include/ImageCreateFromBMP.inc.php');
@@ -55,7 +56,6 @@ function convertToPngIfNeeded($sName, &$sExt) {
         if (!is_resource($res))
             die("ImageCreateFromBMP($sName) failed with $res");
         imagepng($res, $sName . '.png');
-        $sRetVal = '';
     } else {
         die("unexpected extension: convertToPngIfNeeded($sName, $sExt)");
     }
@@ -65,7 +65,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         return "$sName.png";
     }
 
-        if (!$sRetVal)
-            return $sName . '.png';
+    if (!$sRetVal)
+        return $sName . '.png';
     //die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
 }
