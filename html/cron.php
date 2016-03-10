@@ -19,7 +19,7 @@ function delete_old_comments($aTests) {
 
         if (!empty($aTests)) {
             foreach ($aTests as $keys => $val) {
-                array_push($aTitle, $aTests[$keys]['title']);
+                array_push($aTitle, $val['title']);
             }
         }
 
