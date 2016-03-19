@@ -36,6 +36,7 @@ function sendMailToUser($sMailTo, $subject, $message) {
 
         //E-mail-Inhalt
         $mail->From = "peter.oertel@quodata.de";
+        $mail->FromName = "DelphiScreenshotTestsuite";
         $mail->AddAddress($sMailTo);
         $mail->Subject = $subject;
         $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter: "
@@ -101,7 +102,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $aMailAddresses = db_connect($sSQL);
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
-    
+
     // E-mail an Nutzer: Projekt wurde beendet
     $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
