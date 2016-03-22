@@ -46,8 +46,8 @@ function convertToPngIfNeeded($sName, &$sExt) {
         #die( "$sCmd<hr>");
         // Bevor convert.exe immer wieder versucht, ein leeres
         // PDF umzuwandeln, wird es vorsorglich entfernt.
-        if ( filesize($sFile) === 0 )
-            unlink($sFile);
+        if ( filesize("$sName.$sExt") === 0 )
+            unlink("$sName.$sExt");
         else
             $sRetVal = `$sCmd 2>&1`;
     } elseif (stristr($sExt, 'bmp')) {
