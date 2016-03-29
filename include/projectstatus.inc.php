@@ -13,8 +13,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
 
     if (!empty($_GET['run'])) {
         if (!empty($sCmd)) {
-            exec("$sCmd 2>&1", $output, $status);
-            $output = join('\n', $output);
+            $output = system("$sCmd 2>&1", $status);
 
             $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt" . "(return code $status)."
                              . "<pre style='color:red'>" . $output . "</pre>";
