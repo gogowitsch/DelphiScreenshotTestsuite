@@ -13,7 +13,11 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
 
     if (!empty($_GET['run'])) {
         if (!empty($sCmd)) {
-            $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt. <pre style='color:red'>" . `$sCmd 2>&1` . "</pre>";
+            exec("$sCmd 2>&1", $output, $status);
+            $output = join('\n', $output);
+
+            $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt" . "(return code $status)."
+                             . "<pre style='color:red'>" . $output . "</pre>";
 
             // Create directory (current design) and LOCK-File (running process)
             $sRunningProcessFolderPl = 'C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/';
@@ -22,7 +26,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
             if (!file_exists($sRunningProcessFolderPl)) {
                 mkdir($sRunningProcessFolderPl, 0777, true);
             }
-            if (!file_exists($sFileName)) {
+            if ($status === 0 && !file_exists($sFileName)) {
                 file_put_contents($sFileName, '');
             }
         }
