@@ -88,8 +88,8 @@ function handleActions(&$retval) {
     }
     if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || $bCheckedInIndexList)) {
         // Taste "C": In Papierkorb verschieben
-        exec('..\include\FileToRecycleBin.ahk "' . $retval['fileIst'] . '"');
-        
+        exec('..\include\moveFileToRecycleBin.ahk "' . $retval['fileIst'] . '"');
+
         $retval['desc'] = "Test wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
@@ -97,7 +97,7 @@ function handleActions(&$retval) {
 
     if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
         // Taste "D": In Papierkorb verschieben
-        exec('..\include\FileToRecycleBin.ahk "' . $retval['fileSoll'] . '"');
+        exec('..\include\moveFileToRecycleBin.ahk "' . $retval['fileSoll'] . '"');
 
         $retval['desc'] = "Solldatei wurde gelöscht";
         $retval['status'] = 1;
