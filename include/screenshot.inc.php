@@ -87,15 +87,18 @@ function handleActions(&$retval) {
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
     }
     if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || $bCheckedInIndexList)) {
-        // Taste "C"
-        unlink($retval['fileIst']);
+        // Taste "C": In Papierkorb verschieben
+        exec('..\include\moveFileToRecycleBin.ahk "' . $retval['fileIst'] . '"');
+
         $retval['desc'] = "Test wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
     }
 
     if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
-        unlink($retval['fileSoll']);
+        // Taste "D": In Papierkorb verschieben
+        exec('..\include\moveFileToRecycleBin.ahk "' . $retval['fileSoll'] . '"');
+
         $retval['desc'] = "Solldatei wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
