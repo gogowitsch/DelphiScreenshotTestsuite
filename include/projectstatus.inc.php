@@ -2,8 +2,33 @@
 
 require_once '../include/queue.inc.php';
 
+function startProjectTest($sProject, $sCmd) {
+    if (!empty($sCmd)) {
+        exec("$sCmd 2>&1", $aOutput, $iStatus);
+        $sOutput = join("\n", $aOutput);
+        $sColor = $iStatus ? 'red' : 'green';
+        $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt " .
+                "(Rückgabewert $iStatus). " .
+                "<pre style='color:$sColor'>$sOutput</pre>";
+
+        // Create directory (current design) and LOCK-File (running process)
+        $sRunningProcessFolderPl = dirname(__FILE__) . '/../html/RunningProcess/';
+        $sFileName = $sRunningProcessFolderPl . $sProject . '.LOCK';
+
+        if (!file_exists($sRunningProcessFolderPl)) {
+            mkdir($sRunningProcessFolderPl, 0777, true);
+        }
+        if ($iStatus === 0 && !file_exists($sFileName)) {
+            file_put_contents($sFileName, '');
+        }
+    }
+    else {
+        $_GET['message'] = 'Fuer dieses Projekt wurde keine Kommandozeile hinterlegt.';
+    }
+}
+
 /**
- * @param string $p_sExePath wird f�r Ermittlung des Verfallsdatums verwendet, wird nicht zum Start verwendet
+ * @param string $p_sExePath wird für Ermittlung des Verfallsdatums verwendet, wird nicht zum Start verwendet
  */
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
@@ -12,26 +37,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         return;
 
     if (!empty($_GET['run'])) {
-        if (!empty($sCmd)) {
-            $output = system("$sCmd 2>&1", $status);
-
-            $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt" . "(return code $status)."
-                             . "<pre style='color:red'>" . $output . "</pre>";
-
-            // Create directory (current design) and LOCK-File (running process)
-            $sRunningProcessFolderPl = 'C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/';
-            $sFileName = $sRunningProcessFolderPl . $sProject . '.LOCK';
-
-            if (!file_exists($sRunningProcessFolderPl)) {
-                mkdir($sRunningProcessFolderPl, 0777, true);
-            }
-            if ($status === 0 && !file_exists($sFileName)) {
-                file_put_contents($sFileName, '');
-            }
-        }
-        else {
-            $_GET['message'] = 'Fuer dieses Projekt wurde keine Kommandozeile hinterlegt.';
-        }
+        startProjectTest($sProject, $sCmd);
     }
 
     $sPicturePath = "$sProject/";
