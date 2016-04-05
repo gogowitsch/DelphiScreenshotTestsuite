@@ -166,11 +166,18 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
         $iIstTime = filemtime($sFileIst);
         $retval['istTime'] = date(DATE_RSS, $iIstTime);
-        if ($iIstTime < $iExeTime) {
+
+        $sDoneFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess/".$_GET['project'].".DONE";
+        if (file_exists($sDoneFile) && filemtime($sDoneFile) > $iIstTime) {
+            $retval['desc'] .= "; Ist-Datei wurde nicht während des letzten Tests angelegt";
+            $retval['iWouldBeStatus'] = -1;
+            $retval['status'] = 0;
+        } else if ($iIstTime < $iExeTime) {
             $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller " . basename($sExePath);
             $retval['iWouldBeStatus'] = $retval['status'];
             $retval['status'] = 0;
         }
+
     }
 
 
