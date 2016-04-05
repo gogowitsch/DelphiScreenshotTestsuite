@@ -13,6 +13,8 @@
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
             tr .wouldbe1 { background: yellow; }
+            tr .wouldbe-1 { background: black; }
+            tr .wouldbe-1 a { text-decoration:none; color:white; }
             .status0 { background: #ff9999 {* schlecht - rot *} }
             .label { width: 82px; display: inline-block; }
             img {
