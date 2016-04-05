@@ -22,6 +22,11 @@ if (!empty($_GET['project'])) {
 
 // Abgeschlossene Jobs löschen und neuen starten
 if (!empty($_GET['job_done'])) {
+    $sDoneFolder = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess";
+    if (!file_exists($sDoneFolder))
+        mkdir($sDoneFolder, 0777, true);
+    $sDoneFile = "$sDoneFolder/$project.DONE";
+    rename($sLockFile, $sDoneFile);
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
     removeRunningTestFolder();
 }
