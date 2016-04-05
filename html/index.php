@@ -22,7 +22,7 @@ if (!empty($_POST['killJobs'])) {
 }
 
 $iVeraltet = countOutdatedFiles($aNewTests);
-$iPercentage = ($iStatusSum / count($aTests)) * 100;
+$iPercentage = count($aTests) > 0 ? $iStatusSum / count($aTests) * 100 : 100;
 
 $smarty->assign("iPercentage", round($iPercentage));
 $smarty->assign("iVeraltet", $iVeraltet);
@@ -37,7 +37,7 @@ $smarty->assign("project", !empty($_GET['project']) ? $_GET['project'] : '');
 $iProj = count($aProjects);
 if ($iProj == 0)
     die("
-    Für diesen Rechner <b style='color:blue'>$_SERVER[SERVER_NAME]</b> sind momentan keine Projekte vorgesehen. <br><br>
+    Für diesen Rechner <b style='color:blue'>" . gethostname() . "</b> sind momentan keine Projekte vorgesehen. <br><br>
     Sie können die Liste der Projekte in <tt>" . dirname(dirname(__FILE__)) . "\include\projectstatus.inc.php</tt> bearbeiten.");
 
 $smarty->display($iProj < 2 ? 'index.tpl' : 'project_list.tpl');

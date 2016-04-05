@@ -28,14 +28,15 @@
     {include file="status.tpl"}
 {else}
     {strip}
-        {include file="header.tpl" title=Start}
+        {if empty($project)}{$project = "Start"}{/if}
+        {include file="header.tpl" title=$project}
         <div id="breadcrumbs">
             <a href='.'>
                 {$Proj}
             </a> &#187;&nbsp;
             {$project}
         </div>
-            <span style='background-color: #99ff99'>{$iPercentage} % {$Erf}</span><br>
+            <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
 
         {include file="run_project.tpl" aProject=$aProjects.0}
 
