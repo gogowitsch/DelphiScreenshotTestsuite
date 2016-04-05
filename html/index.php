@@ -11,6 +11,15 @@ $aVeraltet = array();
 
 getStatusOfAllProjects();
 
+if (!empty($_GET['project'])) {
+    $project = $_GET['project'];
+    $smarty->assign("project", $project);
+    $sLockFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/$project.LOCK";
+    if (file_exists($sLockFile))
+        $smarty->assign("started", date("[F d Y H:i:s]", filemtime($sLockFile)));
+} else
+    $smarty->assign("project", '');
+
 // Abgeschlossene Jobs löschen und neuen starten
 if (!empty($_GET['job_done'])) {
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
@@ -32,7 +41,6 @@ $smarty->assign("aTests", $aTests);
 $smarty->assign("iStatusSum", $iStatusSum);
 $smarty->assign("ini", isset($_GET['ini']));
 $smarty->assign("show_all", isset($_GET['show_all']));
-$smarty->assign("project", !empty($_GET['project']) ? $_GET['project'] : '');
 
 $iProj = count($aProjects);
 if ($iProj == 0)

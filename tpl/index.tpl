@@ -2,6 +2,8 @@
 
 {if $Sprache=='de'}
     {$Proj="Projektübersicht"}
+    {$Running="Test läuft noch, gestartet am"}
+    {$Finished="Test abgeschlossen"}
     {$Erf="erfolgreich"}
     {$AllM="Alle markieren"}
     {$IstZu="Ist-Zustand als neuen Sollwert abspeichern"}
@@ -12,6 +14,8 @@
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
 {else}
     {$Proj="Project Overview"}
+    {$Running="Test in progress, initiated on"}
+    {$Finished="Test finished"}
     {$Erf="successful"}
     {$AllM="Select all"}
     {$IstZu="Save actual state as new target state"}
@@ -30,12 +34,20 @@
     {strip}
         {if empty($project)}{$project = "Start"}{/if}
         {include file="header.tpl" title=$project}
+
         <div id="breadcrumbs">
             <a href='.'>
                 {$Proj}
             </a> &#187;&nbsp;
             {$project}
         </div>
+
+        {if !empty($started)}
+            <span> {$Running} {$started} </span>
+        {else}
+            <span> {$Finished} </span>
+        {/if}
+
             <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
 
         {include file="run_project.tpl" aProject=$aProjects.0}
