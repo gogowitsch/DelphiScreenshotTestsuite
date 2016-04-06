@@ -31,7 +31,7 @@ function startProjectTest($sProject, $sCmd) {
  * @param string $p_sExePath wird für Ermittlung des Verfallsdatums verwendet, wird nicht zum Start verwendet
  */
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
-    global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests;
+    global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
 
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
@@ -39,6 +39,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     if (!empty($_GET['run'])) {
         startProjectTest($sProject, $sCmd);
     }
+
+    $sDoneFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess/$sProject.DONE";
 
     $sPicturePath = "$sProject/";
     $sExePath = $p_sExePath;

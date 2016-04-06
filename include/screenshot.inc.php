@@ -167,7 +167,8 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         $iIstTime = filemtime($sFileIst);
         $retval['istTime'] = date(DATE_RSS, $iIstTime);
 
-        $sDoneFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess/".$_GET['project'].".DONE";
+        global $sDoneFile;
+
         if (file_exists($sDoneFile) && filemtime($sDoneFile) > $iIstTime) {
             $retval['desc'] .= "; Ist-Datei wurde nicht während des letzten Tests angelegt";
             $retval['iWouldBeStatus'] = -1;
