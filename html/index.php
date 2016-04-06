@@ -26,7 +26,7 @@ if (!empty($_GET['job_done'])) {
     if (!file_exists($sDoneFolder))
         mkdir($sDoneFolder, 0777, true);
     $sDoneFile = "$sDoneFolder/$project.DONE";
-    rename($sLockFile, $sDoneFile);
+    rename($sLockFile, $sDoneFile); // damit ist das Änderungsdatum des DoneFiles vom Start des Tests
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
     removeRunningTestFolder();
 }

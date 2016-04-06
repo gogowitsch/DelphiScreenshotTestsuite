@@ -170,6 +170,7 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         global $sDoneFile;
 
         if (file_exists($sDoneFile) && filemtime($sDoneFile) > $iIstTime) {
+            // Das Änderungsdatum des DoneFiles ist vom Start des Tests
             $retval['desc'] .= "; Ist-Datei wurde nicht während des letzten Tests angelegt";
             $retval['iWouldBeStatus'] = -1;
             $retval['status'] = 0;
