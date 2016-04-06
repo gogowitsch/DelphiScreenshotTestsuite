@@ -28,102 +28,102 @@
 
 
 
-﻿{if $ini}
+{if $ini}
     {include file="status.tpl"}
 {else}
     {strip}
-        {if empty($project)}{$project = "Start"}{/if}
-        {include file="header.tpl" title=$project}
+    {if empty($project)}{$project = "Start"}{/if}
+    {include file="header.tpl" title=$project}
 
-        <div id="breadcrumbs">
-            <a href='.'>
-                {$Proj}
-            </a> &#187;&nbsp;
-            {$project}
-        </div>
+    <div id="breadcrumbs">
+        <a href='.'>
+            {$Proj}
+        </a> &#187;&nbsp;
+        {$project}
+    </div>
 
-        {if !empty($started)}
-            <span> {$Running} {$started} </span>
-        {else}
-            <span> {$Finished} </span>
-        {/if}
+    {if !empty($started)}
+        <span> {$Running} {$started} </span>
+    {else}
+        <span> {$Finished} </span>
+    {/if}
 
-            <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
+    <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
 
-        {include file="run_project.tpl" aProject=$aProjects.0}
+    {include file="run_project.tpl" aProject=$aProjects.0}
 
-        <form method="post" action="#">
-            <table>
-                {foreach $aTests as $i => $aTest}
-                    {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp' && $aTest.ext != 'pdf'}
-                        <tr>
-                            <td>
-                                {if $aTest.status==0}
-                                    {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
-                                    <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
-                                {/if}
-                            </td>
-                            <td>
-                                <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
-                            </td>
-                            <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
-                                <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
-                                    {$aTest.desc}
-                                </a>
-                            </td>
-                        </tr>
-                    {/if}
-                {/foreach}
-            </table>
-            <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
+    <form method="post" action="#">
+        <table>
+            {foreach $aTests as $i => $aTest}
+                {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp' && $aTest.ext != 'pdf'}
+                    <tr>
+                        <td>
+                            {if $aTest.status==0}
+                                {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
+                                <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
+                            {/if}
+                        </td>
+                        <td>
+                            <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
+                        </td>
+                        <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
+                            <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
+                                {$aTest.desc}
+                            </a>
+                        </td>
+                    </tr>
+                {/if}
+            {/foreach}
+        </table>
+        <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
 
-            <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
-            <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+        <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
+        <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
 
-        </form>
-        <script>
-            {include file="key_binding.inc.tpl"}
+    </form>
+    <script>
+        {include file="key_binding.inc.tpl"}
 
-            function check_all(bValue) {
-                $('input[type=checkbox]').attr('checked', bValue);
-                $('input[type=submit]').show();
-            }
-            var $chkboxes = null;
-            var lastChecked = null;
-            function checkbox_click(e) {
-                if(!lastChecked) {
-                    lastChecked = this;
-                    return;
-                }
-
-                if (e.shiftKey) {
-                    var start = $chkboxes.index(this);
-                    var end = $chkboxes.index(lastChecked);
-                    $chkboxes.slice(Math.min(start,end), Math.max(start,end) + 1).attr('checked', lastChecked.checked);
-
-                }
-
+        function check_all(bValue) {
+            $('input[type=checkbox]').attr('checked', bValue);
+            $('input[type=submit]').show();
+        }
+        var $chkboxes = null;
+        var lastChecked = null;
+        function checkbox_click(e) {
+            if (!lastChecked) {
                 lastChecked = this;
+                return;
             }
-            function showhide_submit() {
-                $('input[type=submit]').hide();
-                $('input[type=checkbox]').each(function() {
-                    if ($(this).is(':checked')) {
-                        $('input[type=submit]').show();
-                    }
-                });
-            }
-            $(function () {
-                $chkboxes = $('input[type=checkbox]');
-                $chkboxes.click(checkbox_click).change(showhide_submit);
-                var iFailedTests = $chkboxes.length;
-                if (!iFailedTests)
-                    $('#check_all').hide();
-            });
-            showhide_submit();
-        </script>
-        {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
 
-        {include file="footer.tpl"}
-    {/strip}
+            if (e.shiftKey) {
+                var start = $chkboxes.index(this);
+                var end = $chkboxes.index(lastChecked);
+                $chkboxes.slice(Math.min(start, end), Math.max(start, end) + 1).attr('checked', lastChecked.checked);
+
+            }
+
+            lastChecked = this;
+        }
+        function showhide_submit() {
+            $('input[type=submit]').hide();
+            $('input[type=checkbox]').each(function () {
+                if ($(this).is(':checked')) {
+                    $('input[type=submit]').show();
+                }
+            });
+        }
+        $(function () {
+            $chkboxes = $('input[type=checkbox]');
+            $chkboxes.click(checkbox_click).change(showhide_submit);
+            var iFailedTests = $chkboxes.length;
+            if (!iFailedTests)
+                $('#check_all').hide();
+        });
+        showhide_submit();
+    </script>
+    {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
+
+    {include file="footer.tpl"}
+{/strip}
 {/if}
