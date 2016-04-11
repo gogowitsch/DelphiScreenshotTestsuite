@@ -117,6 +117,11 @@ function getStatusOfAllProjects() {
             'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
             'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
     }
+    if (in_array($sHost, array( 'noack-kopie01-pc' ))) {
+        getProjectStatus('LPP.AOCS',
+            'C:\railo\tomcat\webapps\ROOT\.git\refs\heads\master',
+            'cd C:\railo\tomcat\webapps\ROOT\admin\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
+    }
 
     checkFurtherImageConversions();
 }
