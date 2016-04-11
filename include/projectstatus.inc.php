@@ -153,5 +153,6 @@ function killRunningProcess() {
     $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";
 
     removeRunningTestFolder();
-    exec($sCmd);
+    $sLastLine = exec($sCmd, $aOutput, $iStatus);
+    if ($iStatus) die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
 }
