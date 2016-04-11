@@ -112,6 +112,12 @@ function getStatusOfAllProjects() {
         getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
         getProjectStatus('RingDat_Online.NIST-OWM', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk NIST-OWM"');
     }
+    if (in_array($sHost, array( 'reinecke01-pc' ))) {
+        getProjectStatus('LPP.AOCS',
+            'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
+            'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
+    }
+
     checkFurtherImageConversions();
 }
 
