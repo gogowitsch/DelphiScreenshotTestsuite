@@ -4,7 +4,7 @@ require_once '../include/queue.inc.php';
 
 function startProjectTest($sProject, $sCmd) {
     if (!empty($sCmd)) {
-        exec("$sCmd 2>&1", $aOutput, $iStatus);
+        exec("( $sCmd ) 2>&1", $aOutput, $iStatus);
         $sOutput = join("\n", $aOutput);
         $sColor = $iStatus ? 'red' : 'green';
         $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt " .
@@ -112,6 +112,17 @@ function getStatusOfAllProjects() {
         getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
         getProjectStatus('RingDat_Online.NIST-OWM', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk NIST-OWM"');
     }
+    if (in_array($sHost, array( 'reinecke01-pc' ))) {
+        getProjectStatus('LPP.AOCS',
+            'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
+            'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
+    }
+    if (in_array($sHost, array( 'noack-kopie01-pc' ))) {
+        getProjectStatus('LPP.AOCS',
+            'C:\railo\tomcat\webapps\ROOT\.git\refs\heads\master',
+            'cd C:\railo\tomcat\webapps\ROOT\admin\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
+    }
+
     checkFurtherImageConversions();
 }
 
