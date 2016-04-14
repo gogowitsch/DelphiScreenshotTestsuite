@@ -11,6 +11,12 @@ $aVeraltet = array();
 
 getStatusOfAllProjects();
 
+$iProj = count($aProjects);
+if ($iProj == 1) {
+    $aProject = reset($aProjects);
+    $_GET['project'] = $aProject['title'];
+}
+
 if (!empty($_GET['project'])) {
     $project = $_GET['project'];
     $smarty->assign("project", $project);
@@ -47,10 +53,10 @@ $smarty->assign("iStatusSum", $iStatusSum);
 $smarty->assign("ini", isset($_GET['ini']));
 $smarty->assign("show_all", isset($_GET['show_all']));
 
-$iProj = count($aProjects);
-if ($iProj == 0)
-    die("
-    Für diesen Rechner <b style='color:blue'>" . gethostname() . "</b> sind momentan keine Projekte vorgesehen. <br><br>
+if ($iProj == 0) {
+    $sMsg = "Für diesen Rechner <b style='color:blue'>" . gethostname() . "</b> sind momentan keine Projekte vorgesehen.";
+    if (!empty($_GET['project'])) $sMsg = "Das Projekt <b>$_GET[project]</b> wurde nicht gefunden.";
+    die("<h1>Fehler</h1>$sMsg<br><br>
     Sie können die Liste der Projekte in <tt>" . dirname(dirname(__FILE__)) . "\include\projectstatus.inc.php</tt> bearbeiten.");
-
+}
 $smarty->display($iProj < 2 ? 'index.tpl' : 'project_list.tpl');
