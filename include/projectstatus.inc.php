@@ -115,11 +115,17 @@ function getStatusOfAllProjects() {
         getProjectStatus('RingDat_Online.UBA-Wien', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA-Wien"');
         getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
         getProjectStatus('RingDat_Online.NIST-OWM', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk NIST-OWM"');
+        getProjectStatus('RingDat_Online.NIST-MML',
+            'C:\xampp\htdocs\lvu\.git\refs\heads\reviewed-code-for-screenshots',
+            'cd C:\xampp\htdocs\lvu\tests\PhantomJS && git pull && ( fork_test.sh NIST-MML || echo ok )');
     }
     if (in_array($sHost, array( 'reinecke01-pc' ))) {
         getProjectStatus('LPP.AOCS',
             'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
             'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
+        getProjectStatus('RingDat_Online.NIST-MML',
+            'C:\xampp.htdocs\rdo\.git\refs\heads\master',
+            'cd C:\xampp\htdocs\rdo\tests\PhantomJS && ( fork_test.sh NIST-MML || echo ok )');
     }
     if (in_array($sHost, array( 'noack-kopie01-pc' ))) {
         getProjectStatus('LPP.AOCS',
