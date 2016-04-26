@@ -90,6 +90,10 @@ function getStatusOfAllProjects() {
         getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
         getProjectStatus('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_fr.ahk\"");
         getProjectStatus('PROLab_es', 'c:/daten/prolab_plus_es_AD\\PROLab_es.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_es.ahk\"");
+
+        getProjectStatus('PROLab_Torte', 'c:/daten/prolab_plus_Torte\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Torte.ahk\"");
+        getProjectStatus('PROLab_RVTypKurz', 'c:/daten/prolab_plus_RVTypKurz\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_RVTypKurz.ahk\"");
+
         getProjectStatus('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe', "$sAhkCmd \"$sAhkFolderPl mqVAL_DE.ahk\"");
         getProjectStatus('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_DE.ahk\"");
         getProjectStatus('RingDat_en', 'c:/daten/RingDat_EN\\RingDat4_en.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_EN.ahk\"");
