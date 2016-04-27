@@ -115,6 +115,7 @@ function getStatusOfAllProjects() {
         getProjectStatus('RingDat_Online.Eurofins', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh Eurofins || echo ok )");
         getProjectStatus('RingDat_Online.NIST-OWM', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-OWM || echo ok )");
         getProjectStatus('RingDat_Online.NIST-MML', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-MML || echo ok )");
+        getProjectStatus('RingDat_Online.RKI',      $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh RKI || echo ok )");
     }
     if (in_array($sHost, array( 'reinecke01-pc' ))) {
         getProjectStatus('LPP.AOCS',
