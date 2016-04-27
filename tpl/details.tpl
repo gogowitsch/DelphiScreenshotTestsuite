@@ -47,11 +47,14 @@
             <img src="{$file|dirname}/{$file|basename|rawurlencode|htmlentities}?{$time|urlencode}" title="{$label} {$time}">
         {else}
             {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
+                {$file = $file|utf8_decode}
                 {if file_exists($file)}
                     <div class='iframe_container'>
                         {$aTest.sRtfLink|default}
                         <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
                     </div>
+                {else}
+                    <i>Datei '{$file}' wurde nicht gefunden.</i>
                 {/if}
             {else}
                 <div class='iframe_container'><iframe src="{$file}?{$sTime|urlencode}" title={$label}></iframe></div>
