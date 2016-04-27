@@ -87,15 +87,18 @@ function handleActions(&$retval) {
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
     }
     if (isset($_REQUEST['discard']) && ($_REQUEST['discard'] == $retval['name'] || $bCheckedInIndexList)) {
-        // Taste "C"
-        unlink($retval['fileIst']);
+        // Taste "C": In Papierkorb verschieben
+        exec('"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" ..\include\moveFileToRecycleBin.ahk "' . $retval['fileIst'] . '"');
+
         $retval['desc'] = "Test wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
     }
 
     if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
-        unlink($retval['fileSoll']);
+        // Taste "D": In Papierkorb verschieben
+        exec('"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" ..\include\moveFileToRecycleBin.ahk "' . $retval['fileSoll'] . '"');
+
         $retval['desc'] = "Solldatei wurde gelöscht";
         $retval['status'] = 1;
         return $retval;
@@ -163,11 +166,20 @@ function getScreenshotStatus($sTestName = 'download-seite') {
 
         $iIstTime = filemtime($sFileIst);
         $retval['istTime'] = date(DATE_RSS, $iIstTime);
-        if ($iIstTime < $iExeTime) {
+
+        global $sDoneFile;
+
+        if (file_exists($sDoneFile) && filemtime($sDoneFile) > $iIstTime) {
+            // Das Änderungsdatum des DoneFiles ist vom Start des Tests
+            $retval['desc'] .= "; Ist-Datei wurde nicht während des letzten Tests angelegt";
+            $retval['iWouldBeStatus'] = -1;
+            $retval['status'] = 0;
+        } else if ($iIstTime < $iExeTime) {
             $retval['desc'] .= "; Ist-Datei kommt nicht von aktueller " . basename($sExePath);
             $retval['iWouldBeStatus'] = $retval['status'];
             $retval['status'] = 0;
         }
+
     }
 
 

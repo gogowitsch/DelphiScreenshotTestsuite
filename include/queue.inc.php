@@ -11,7 +11,7 @@
 //~   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-function sendMailToUser($subject, $message) {
+function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
         // TODO: auch class smtp laden
@@ -32,13 +32,14 @@ function sendMailToUser($subject, $message) {
         $mail->SMTPAuth = !empty($mail->Password);
         $mail->CharSet = "UTF-8";
         $mail->IsHTML(true);
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
 
         //E-mail-Inhalt
         $mail->From = "peter.oertel@quodata.de";
+        $mail->FromName = "DelphiScreenshotTestsuite";
         $mail->AddAddress($sMailTo);
         $mail->Subject = $subject;
-        $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter:"
+        $mail->Body = "$message<br><br><hr><small>Weitere Informationen über die DelphiScreenshotTestsuite finden Sie unter: "
                 . "<a href='https://wiki.quodata.de/?title=DelphiScreenshotTestsuite'>wiki.quodata.de/?title=DelphiScreenshotTestsuite</a>.</small>";
         if (!$mail->Send())
             die("Check your mail-Einstellungen!");
@@ -75,25 +76,68 @@ function db_connect($sSQL) {
     }
 }
 
-function ProjectDone_RemoveFromQueue() {
+// Count all outdated files
+function countOutdatedFiles($aNewTests) {
+    $aVeraltet = array();
+    foreach ($aNewTests as $key => $value) {
+        if (strpos($value['desc'], 'Ist-Datei kommt nicht von aktueller Alter_des_Masterbranches') !== false) {
+            array_push($aVeraltet, $value['desc']);
+        }
+    }
+    $iVeraltet = count($aVeraltet);
+
+    return $iVeraltet;
+}
+
+function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     global $conn;
 
-    // Abschlossenes Projekt aus List löschen
+    $iVeraltet = countOutdatedFiles($aNewTests);
+
     db_connect('');
     $project = $conn->quote($_GET['project']);
-    $sSQL = "SELECT user_email FROM `job_warteschlange` WHERE `project` = $project;";
-    $aMail = db_connect($sSQL);
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
-    db_connect($sSQL);
+    $sSQL = "SELECT DISTINCT user_email
+            FROM `job_warteschlange` WHERE `project` = $project
+            AND user_email <> '';";
+    $aMailAddresses = db_connect($sSQL);
+
+    $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
     // E-mail an Nutzer: Projekt wurde beendet
-    if (!empty($aMail[0]['user_email'])) {
-        $sServername = $_SERVER['SERVER_NAME'];
-        $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
-        $sBody = "Diese E-Mail wurde automatisch von " . __FILE__ . " auf $sServername erstellt.<br><br>"
-                . "Der Test des Projektes <a href='http://$sServername/?project=$project'>$project</a> wurde abgeschlossen.";
-        sendMailToUser($sSubject, $sBody, $aMail[0]['user_email']);
+    $hostname = gethostname();
+    $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+
+    $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
+            . "Testergebnisse:<br>"
+            . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+
+    foreach ($aMailAddresses as $sMailAddress) {
+        sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
+
+    // E-Mail an Projekt-Verantwortlichen senden
+    $aProjektVerantwortliche [] = array(
+        'Chrisian Blaeul' => 'blaeul@quodata.de',
+        'Susann Sgorzaly' => 'Sgorzaly@quodata.de',
+        'Omri Teufert' => 'teufert@quodata.de',
+        'Oscar Reinecke' => 'Oscar.Reinecke@quodata.de',
+        'Jens-Uwe Helling' => 'Helling@quodata.de',
+        'Peter Oertel' => 'Peter.Oertel@quodata.de'
+    );
+    // RingDat_Online
+    if (strpos($project, 'RingDat_Online') !== false) {
+        sendMailToUser($aProjektVerantwortliche[0]['Peter Oertel'], $sSubject, $sBody);
+    }
+    // CalcInterface
+    if (strpos($project, 'CalcInterface') !== false) {
+        sendMailToUser($aProjektVerantwortliche[0]['Chrisian Blaeul'], $sSubject, $sBody);
+    }
+
+    // Abschlossenes Projekt aus List löschen
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
+    db_connect($sSQL);
 
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
@@ -116,6 +160,14 @@ function save_job() {
 
     db_connect('');
     $sSafeEmail = $conn->quote($sEmail);
+
+    /* InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
+     * da noch kein job_done Parameter von InterVAL übergeben wird.
+     */
+    if ($_GET['project'] == "InterVAL") {
+        return;
+    }
+
     $project = $conn->quote($_GET['project']);
 
     $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
@@ -125,6 +177,50 @@ function save_job() {
     $aHasId = db_connect("SHOW COLUMNS FROM `job_warteschlange` LIKE 'ID'");
     if (empty($aHasId))
         db_connect("ALTER TABLE `job_warteschlange` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
+}
+
+function save_comment($aTest) {
+    global $conn;
+    db_connect('');
+
+    // Screenshot-Kommentar aus Datenbank laden
+    $aComment = load_comment_data($aTest);
+
+    $sComment = empty($_POST['textarea']) ? '' : $_POST['textarea'];
+    $sSafeComment = $conn->quote($sComment);
+    $aTest = $conn->quote($aTest['title']);
+    $project = $conn->quote($_GET['project']);
+
+    if (!empty($_POST['textarea'])) {
+        // Screenshot-Kommentar aktualisieren
+        if (!empty($aComment[0]['comment'])) {
+            $sSQL = "UPDATE `comments` SET `comment` = $sSafeComment, `time` = NOW() WHERE `project` = $project AND `test` = $aTest";
+            db_connect($sSQL);
+        }
+        else {
+            // Screenshot-Kommentar einfügen
+            $sSQL = "INSERT INTO `comments` (`comment`, `test`, `project`, `time`) VALUES ($sSafeComment, $aTest, $project, NOW())";
+            db_connect($sSQL);
+        }
+    }
+    else {
+        $sSQL = "DELETE FROM `comments` WHERE `test` = $aTest";
+        db_connect($sSQL);
+    }
+}
+
+function load_comment_data($aTest) {
+    global $conn;
+    db_connect('');
+
+    $project = $conn->quote($_GET['project']);
+    $aTest = $conn->quote($aTest['title']);
+
+    // Screenshot-Kommentar aus DB laden
+    $sSQL = "SELECT * FROM `comments` WHERE `project` = $project AND `test` = $aTest";
+    $aComment = db_connect($sSQL);
+
+    return $aComment;
 }
 
 session_start();

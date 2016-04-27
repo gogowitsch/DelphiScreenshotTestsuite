@@ -12,11 +12,28 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     if (stristr($sExt, 'png'))
         return $sName . '.png';
-    if ($iConvertedBmpsDuringThisCall > 3 || empty($_REQUEST['andConvertImages']))
+    if ($iConvertedBmpsDuringThisCall > 3 && empty($_REQUEST['job_done']))
         return $sName . '.' . $sExt;
 
 
-    $sConvert = 'set path=%path%;C:\\Program Files\\ImageMagick-6.8.9-Q16;C:\\Program Files\\gs\\gs9.14\\bin && convert.exe';
+    if (!file_exists("../include/path.ini")) {
+        die("You must add include/path.ini");
+    }
+
+    $aIni = parse_ini_file("../include/path.ini");
+
+    if (empty($aIni['CONVERT_PATH']))
+        die("CONVERT_PATH not set: You must specity the path to Imagemagick's convert.exe in include/path.ini");
+    else $sConvertPath = $aIni['CONVERT_PATH'];
+
+    if (empty($aIni['GS_PATH']))
+        die("GS_PATH not set: You must specity the path to ghostscript's gs.exe in include/path.ini");
+    else $sGsPath = $aIni['GS_PATH'];
+
+    $sConvert = "set path=%path%;$sGsPath; && \"$sConvertPath\\convert.exe\"";
+
+    $sRetVal = '';
+
     if (stristr($sExt, 'pdf')) {
         $sPath = dirname($sName);
         $sBaseName = basename($sName);
@@ -27,14 +44,18 @@ function convertToPngIfNeeded($sName, &$sExt) {
         $sCmd .= "$sConvert -density 75 -strip $sFile -append \"$sBaseName.png\"";
 
         #die( "$sCmd<hr>");
-        $sRetVal = `$sCmd 2>&1`;
+        // Bevor convert.exe immer wieder versucht, ein leeres
+        // PDF umzuwandeln, wird es vorsorglich entfernt.
+        if ( filesize("$sName.$sExt") === 0 )
+            unlink("$sName.$sExt");
+        else
+            $sRetVal = `$sCmd 2>&1`;
     } elseif (stristr($sExt, 'bmp')) {
         require_once('../include/ImageCreateFromBMP.inc.php');
         $res = ImageCreateFromBMP($sName . '.bmp');
         if (!is_resource($res))
             die("ImageCreateFromBMP($sName) failed with $res");
         imagepng($res, $sName . '.png');
-        $sRetVal = '';
     } else {
         die("unexpected extension: convertToPngIfNeeded($sName, $sExt)");
     }
@@ -44,7 +65,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
         return "$sName.png";
     }
 
-        if (!$sRetVal)
-            return $sName . '.png';
+    if (!$sRetVal)
+        return $sName . '.png';
     //die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
 }

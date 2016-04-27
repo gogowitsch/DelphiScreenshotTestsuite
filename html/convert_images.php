@@ -25,4 +25,4 @@ if (empty($bNeedsFurtherConversions)) die;
 
 echo '<meta http-equiv="refresh" content="5; URL=convert_images.php" ></head>';
 
-echo "Noch $bNeedsFurtherConversions Bilder zu konvertieren...";
+echo "Noch $bNeedsFurtherConversions Bilder zu konvertieren... <span title='$sScreenshotName'>[?]</span>";

@@ -1,4 +1,13 @@
 {* wird von index.php aufgerufen, zeigt Übersicht über alle Projekte *}
+{if $Sprache=='de'}
+    {$Erf="erfolgreich"}
+    {$ShowProcess="Laufende Tests anzeigen"}
+    {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
+{else}
+    {$Erf="successful"}
+    {$ShowProcess="Show running process"}
+    {$ShowAll="show 100 % successful projects as well"}
+{/if}
 
 {if $ini}
     {include file="status.tpl"}
@@ -6,7 +15,7 @@
     {strip}
         {include file="header.tpl" title=Start}
 
-        Tests: {$iStatusSum} / {$aTests|count} erfolgreich.
+        Tests: {$iStatusSum} / {$aTests|count} {$Erf}.
         {if isset($iframeFurtherImageConversions)}
             <iframe src='convert_images.php' style='overflow: hidden; height:1em;width:300px;border:none'></iframe>
         {/if}
@@ -30,7 +39,8 @@
                 {/if}
             {/foreach}
         </table>
-        {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">auch 100 % erfolgreiche Projekte zeigen</a>{/if}
+        {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">{$ShowAll}</a><br><br>{/if}
+        <a href="show_running_process.php">{$ShowProcess}</a>
         {include file="footer.tpl"}
     {/strip}
 {/if}
