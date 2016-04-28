@@ -107,7 +107,7 @@ function getStatusOfAllProjects() {
                 'noack-pc',
                 'rot2-pc')) || strstr($sHost, 'blaeul')) {
         $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
-        $sLvuGitRef = $sLvuGitRef.'\Alter_des_Branches-reviewed-code-for-screenshots.txt';
+        $sLvuGitRef = $sLvuTestPath.'\Alter_des_Branches-reviewed-code-for-screenshots.txt';
         getProjectStatus('RingDat_Online.Human',    $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh Human || echo ok )");
         getProjectStatus('RingDat_Online.IBBL',     $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh IBBL || echo ok )");
         getProjectStatus('RingDat_Online.InstitutEignungspruefung', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh InstitutEignungspruefung || echo ok )");
