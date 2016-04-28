@@ -77,9 +77,6 @@ function getStatusOfAllProjects() {
     global $aTests;
     $aTests = array();
     $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-    $sCasperJS = 'cmd /c "cd /d C:\\xampp\\htdocs\\lvu && ' .
-            'git pull && ' .
-            'cd tests\\PhantomJS && ' . $sAhkCmd;
     $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\Test starten -';
     $sHost = strtolower(gethostname());
     if (in_array($sHost, array('localhost', 'reinecke01-pc'))) {
@@ -109,17 +106,24 @@ function getStatusOfAllProjects() {
                 'screenshot02-pc', 'screenshot01-pc',
                 'noack-pc',
                 'rot2-pc')) || strstr($sHost, 'blaeul')) {
-        getProjectStatus('RingDat_Online.Human', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk human"');
-        getProjectStatus('RingDat_Online.IBBL', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk ibbl"');
-        getProjectStatus('RingDat_Online.InstitutEignungspruefung', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk InstitutEignungspruefung"');
-        getProjectStatus('RingDat_Online.UBA-Wien', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk UBA-Wien"');
-        getProjectStatus('RingDat_Online.Eurofins', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk eurofins"');
-        getProjectStatus('RingDat_Online.NIST-OWM', 'C:\\xampp\\htdocs\\lvu\\tests\\PhantomJS\Alter_des_Branches-reviewed-code-for-screenshots.txt', $sCasperJS . 'casperjs_kickstart.ahk NIST-OWM"');
+        $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
+        $sLvuGitRef = $sLvuGitRef.'\Alter_des_Branches-reviewed-code-for-screenshots.txt';
+        getProjectStatus('RingDat_Online.Human',    $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh Human || echo ok )");
+        getProjectStatus('RingDat_Online.IBBL',     $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh IBBL || echo ok )");
+        getProjectStatus('RingDat_Online.InstitutEignungspruefung', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh InstitutEignungspruefung || echo ok )");
+        getProjectStatus('RingDat_Online.UBA-Wien', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh UBA-Wien || echo ok )");
+        getProjectStatus('RingDat_Online.Eurofins', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh Eurofins || echo ok )");
+        getProjectStatus('RingDat_Online.NIST-OWM', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-OWM || echo ok )");
+        getProjectStatus('RingDat_Online.NIST-MML', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-MML || echo ok )");
+        getProjectStatus('RingDat_Online.RKI',      $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh RKI || echo ok )");
     }
     if (in_array($sHost, array( 'reinecke01-pc' ))) {
         getProjectStatus('LPP.AOCS',
             'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
             'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
+        getProjectStatus('RingDat_Online.NIST-MML',
+            'C:\xampp.htdocs\rdo\.git\refs\heads\master',
+            'cd C:\xampp\htdocs\rdo\tests\PhantomJS && ( fork_test.sh NIST-MML || echo ok )');
     }
     if (in_array($sHost, array( 'noack-kopie01-pc' ))) {
         getProjectStatus('LPP.AOCS',
