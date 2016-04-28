@@ -108,14 +108,14 @@ function getStatusOfAllProjects() {
                 'rot2-pc')) || strstr($sHost, 'blaeul')) {
         $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
         $sLvuGitRef = $sLvuGitRef.'\Alter_des_Branches-reviewed-code-for-screenshots.txt';
-        getProjectStatus('RingDat_Online.Human',    $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh Human || echo ok )");
-        getProjectStatus('RingDat_Online.IBBL',     $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh IBBL || echo ok )");
-        getProjectStatus('RingDat_Online.InstitutEignungspruefung', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh InstitutEignungspruefung || echo ok )");
-        getProjectStatus('RingDat_Online.UBA-Wien', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh UBA-Wien || echo ok )");
-        getProjectStatus('RingDat_Online.Eurofins', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh Eurofins || echo ok )");
-        getProjectStatus('RingDat_Online.NIST-OWM', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-OWM || echo ok )");
-        getProjectStatus('RingDat_Online.NIST-MML', $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh NIST-MML || echo ok )");
-        getProjectStatus('RingDat_Online.RKI',      $sLvuGitRef, "cd \d $sLvuTestPath && git pull && ( fork_test.sh RKI || echo ok )");
+        getProjectStatus('RingDat_Online.Human',    $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh Human || echo ok )");
+        getProjectStatus('RingDat_Online.IBBL',     $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh IBBL || echo ok )");
+        getProjectStatus('RingDat_Online.InstitutEignungspruefung', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh InstitutEignungspruefung || echo ok )");
+        getProjectStatus('RingDat_Online.UBA-Wien', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh UBA-Wien || echo ok )");
+        getProjectStatus('RingDat_Online.Eurofins', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh Eurofins || echo ok )");
+        getProjectStatus('RingDat_Online.NIST-OWM', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh NIST-OWM || echo ok )");
+        getProjectStatus('RingDat_Online.NIST-MML', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh NIST-MML || echo ok )");
+        getProjectStatus('RingDat_Online.RKI',      $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh RKI || echo ok )");
     }
     if (in_array($sHost, array( 'reinecke01-pc' ))) {
         getProjectStatus('LPP.AOCS',
