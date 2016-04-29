@@ -125,7 +125,7 @@ function getStatusOfAllProjects() {
             'C:\xampp.htdocs\rdo\.git\refs\heads\master',
             'cd C:\xampp\htdocs\rdo\tests\PhantomJS && ( fork_test.sh NIST-MML || echo ok )');
     }
-    if (in_array($sHost, array( 'noack-kopie01-pc' ))) {
+    if (in_array($sHost, array('noack-kopie01-pc', 'noack-pc'))) {
         getProjectStatus('LPP.AOCS',
             'C:\railo\tomcat\webapps\ROOT\.git\refs\heads\master',
             'cd C:\railo\tomcat\webapps\ROOT\admin\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
