@@ -85,9 +85,6 @@ function getStatusOfAllProjects() {
     global $aTests;
     $aTests = array();
     $sHost = strtolower(gethostname());
-    if (in_array($sHost, array('localhost', 'reinecke01-pc'))) {
-        getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
-    }
     if (in_array($sHost, array('screenshot01-pc'))) {
         getProjectStatusPl('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe');
         getProjectStatusPl('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe');
