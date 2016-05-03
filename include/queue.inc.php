@@ -89,6 +89,15 @@ function countOutdatedFiles($aNewTests) {
     return $iVeraltet;
 }
 
+function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
+    if (strpos($_GET['project'], $sProject) === false)
+        return;
+    $bNotInList = array_search(strtolower($sMail), array_map('strtolower', $aMailAddresses)) === false;
+    if ($bNotInList) {
+        $aMailAddresses[] = $sMail;
+    }
+}
+
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     global $conn;
 
@@ -113,26 +122,12 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
             . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
+    // E-Mail an Projekt-Verantwortlichen senden
+    addToListOfEmailAddresses('RingDat_Online', 'Oscar.Reinecke@quodata.de', $aMailAddresses);
+    addToListOfEmailAddresses('CalcInterface', 'blaeul@quodata.de', $aMailAddresses);
+
     foreach ($aMailAddresses as $sMailAddress) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
-    }
-
-    // E-Mail an Projekt-Verantwortlichen senden
-    $aProjektVerantwortliche [] = array(
-        'Chrisian Blaeul' => 'blaeul@quodata.de',
-        'Susann Sgorzaly' => 'Sgorzaly@quodata.de',
-        'Omri Teufert' => 'teufert@quodata.de',
-        'Oscar Reinecke' => 'Oscar.Reinecke@quodata.de',
-        'Jens-Uwe Helling' => 'Helling@quodata.de',
-        'Peter Oertel' => 'Peter.Oertel@quodata.de'
-    );
-    
-    if (strpos($project, 'RingDat_Online') !== false) {
-        sendMailToUser('Oscar.Reinecke@quodata.de', $sSubject, $sBody);
-    }
-    
-    if (strpos($project, 'CalcInterface') !== false) {
-        sendMailToUser('blaeul@quodata.de', $sSubject, $sBody);
     }
 
     // Abschlossenes Projekt aus List löschen
