@@ -35,7 +35,7 @@ function sendMailToUser($sMailTo, $subject, $message) {
         $mail->SMTPDebug = 0;
 
         //E-mail-Inhalt
-        $mail->From = "peter.oertel@quodata.de";
+        $mail->From = "oscar.reinecke@quodata.de";
         $mail->FromName = "DelphiScreenshotTestsuite";
         $mail->AddAddress($sMailTo);
         $mail->Subject = $subject;
@@ -126,13 +126,13 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
         'Jens-Uwe Helling' => 'Helling@quodata.de',
         'Peter Oertel' => 'Peter.Oertel@quodata.de'
     );
-    // RingDat_Online
+    
     if (strpos($project, 'RingDat_Online') !== false) {
-        sendMailToUser($aProjektVerantwortliche[0]['Peter Oertel'], $sSubject, $sBody);
+        sendMailToUser('Oscar.Reinecke@quodata.de', $sSubject, $sBody);
     }
-    // CalcInterface
+    
     if (strpos($project, 'CalcInterface') !== false) {
-        sendMailToUser($aProjektVerantwortliche[0]['Chrisian Blaeul'], $sSubject, $sBody);
+        sendMailToUser('blaeul@quodata.de', $sSubject, $sBody);
     }
 
     // Abschlossenes Projekt aus List löschen
