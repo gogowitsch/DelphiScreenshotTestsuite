@@ -40,7 +40,6 @@ if ($iErrorLevel > 0) {
     $sHeader = "From: " . basename(__FILE__) . '@quodata.de';
     $aRecip = array(
         'Blaeul@quodata.de',
-        'Oertel@quodata.de',
         'Sgorzaly@quodata.de',
         'Oscar.Reinecke@quodata.de',
     );
