@@ -63,8 +63,13 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
           "x" => 0,
           "y" => 0,
         );
-        imagepng(imagecrop(imagecreatefrompng($sFileIst), $aRect), $sFileIst);
-        imagepng(imagecrop(imagecreatefrompng($sFileSoll), $aRect), $sFileSoll);
+        $img = imagecrop(imagecreatefrompng($sFileIst), $aRect);
+        $sFileIst = "$sFileIst.cropped.png";
+        imagepng($img, $sFileIst);
+
+        $img = imagecrop(imagecreatefrompng($sFileSoll), $aRect);
+        $sFileSoll = "$sFileSoll.cropped.png";
+        imagepng($img, $sFileSoll);
     }
 
     global $sCmd;
