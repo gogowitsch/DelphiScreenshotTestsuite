@@ -54,6 +54,24 @@ function updateAllTestStatus($test, $projekt) {
 }
 
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
+    $aSizeIst = getimagesize($sFileIst);
+    $aSizeSoll = getimagesize($sFileSoll);
+    if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
+        $aRect = array(
+          "width" => min($aSizeIst[0], $aSizeSoll[0]),
+          "height" => min($aSizeIst[1], $aSizeSoll[1]),
+          "x" => 0,
+          "y" => 0,
+        );
+        $img = imagecrop(imagecreatefrompng($sFileIst), $aRect);
+        $sFileIst = "$sFileIst.cropped.png";
+        imagepng($img, $sFileIst);
+
+        $img = imagecrop(imagecreatefrompng($sFileSoll), $aRect);
+        $sFileSoll = "$sFileSoll.cropped.png";
+        imagepng($img, $sFileSoll);
+    }
+
     global $sCmd;
 
     $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
