@@ -3,7 +3,11 @@
 require_once '../include/queue.inc.php';
 
 function startProjectTest($sProject, $sCmd) {
+    global $sAhkCmd, $sAhkFolderPl;
     if (!empty($sCmd)) {
+        $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
+        if (file_exists($sCheckRunningTestsScript))
+            $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" && $sCmd";
         exec("( $sCmd ) 2>&1", $aOutput, $iStatus);
         $sOutput = join("\n", $aOutput);
         $sColor = $iStatus ? 'red' : 'green';
@@ -18,7 +22,7 @@ function startProjectTest($sProject, $sCmd) {
         if (!file_exists($sRunningProcessFolderPl)) {
             mkdir($sRunningProcessFolderPl, 0777, true);
         }
-        if ($iStatus === 0 && !file_exists($sFileName)) {
+        if ($iStatus === 0) {
             file_put_contents($sFileName, '');
         }
     }
@@ -73,31 +77,36 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     $iStatusSum += $iLocalStatusSum;
 }
 
+$sAhkCmd = '"C:\Program Files\AutoHotkey\AutoHotkey.exe" /ErrorStdOut';
+$sAhkFolderPl = getenv('USERPROFILE') . '\Desktop\ScreenshotsPROLab';
+
+function getProjectStatusPl($sProject, $sExePath) {
+    global $sAhkCmd, $sAhkFolderPl;
+    $sAhkScriptFile = $sAhkFolderPl.'\\'."Test starten - $sProject.ahk";
+    if (file_exists($sAhkScriptFile))
+        getProjectStatus($sProject, $sExePath, "$sAhkCmd \"$sAhkScriptFile\"");
+}
+
 function getStatusOfAllProjects() {
     global $aTests;
     $aTests = array();
-    $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-    $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\Test starten -';
     $sHost = strtolower(gethostname());
-    if (in_array($sHost, array('localhost', 'reinecke01-pc'))) {
-        getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
-    }
     if (in_array($sHost, array('screenshot01-pc'))) {
-        getProjectStatus('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_de.ahk\"");
-        getProjectStatus('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_en.ahk\"");
-        getProjectStatus('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_fr.ahk\"");
-        getProjectStatus('PROLab_es', 'c:/daten/prolab_plus_es_AD\\PROLab_es.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_es.ahk\"");
+        getProjectStatusPl('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe');
+        getProjectStatusPl('PROLab_en', 'c:/daten/prolab_plus_en_AD\\PROLab_en.exe');
+        getProjectStatusPl('PROLab_fr', 'c:/daten/prolab_plus_fr_AD\\PROLab_fr.exe');
+        getProjectStatusPl('PROLab_es', 'c:/daten/prolab_plus_es_AD\\PROLab_es.exe');
 
-        getProjectStatus('PROLab_Torte', 'c:/daten/prolab_Torte\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Torte.ahk\"");
-        getProjectStatus('PROLab_RVTypKurz', 'c:/daten/prolab_RVTypKurz\\PROLab_de.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_RVTypKurz.ahk\"");
+        getProjectStatusPl('PROLab_Torte', 'c:/daten/prolab_Torte\\PROLab_de.exe');
+        getProjectStatusPl('PROLab_RVTypKurz', 'c:/daten/prolab_RVTypKurz\\PROLab_de.exe');
 
-        getProjectStatus('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe', "$sAhkCmd \"$sAhkFolderPl mqVAL_DE.ahk\"");
-        getProjectStatus('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_Smart_DE.ahk\"");
-        getProjectStatus('RingDat_en', 'c:/daten/RingDat_EN\\RingDat4_en.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_EN.ahk\"");
-        getProjectStatus('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe', "$sAhkCmd \"$sAhkFolderPl RingDat_DE.ahk\"");
-        getProjectStatus('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_POD_EN.ahk\"");
-        getProjectStatus('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe', "$sAhkCmd \"$sAhkFolderPl PROLab_D2010.ahk\"");
-        getProjectStatus('CalcInterface_LPP', 'c:/daten/CalcInterface_LPP\\CalcInterface.exe', "$sAhkCmd \"$sAhkFolderPl CalcInterface_LPP.ahk\"");
+        getProjectStatusPl('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe');
+        getProjectStatusPl('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe');
+        getProjectStatusPl('RingDat_en', 'c:/daten/RingDat_EN\\RingDat4_en.exe');
+        getProjectStatusPl('RingDat_de', 'c:/daten/RingDat_DE\\RingDat4_de.exe');
+        getProjectStatusPl('PROLab_POD_EN', 'c:/daten/PROLab_POD_EN\\PROLabSmart.exe');
+        getProjectStatusPl('PROLab_D2010', 'c:/daten/prolab_D2010\\PROLab_D2010.exe');
+        getProjectStatusPl('CalcInterface_LPP', 'c:/daten/CalcInterface_LPP\\CalcInterface.exe');
 
         // InterVAL soll im Moment nicht in die Jobliste gespeichert werden, da noch kein job_done Parameter von InterVAL übergeben wird.
         getProjectStatus('InterVAL', 'c:/daten/InterVAL\\InterVAL.exe', "C:\\Daten\\InterVAL\\InterVAL.exe /create_test_images C:\\xampp\\htdocs\\DelphiScreenshotTestsuite\\html\\Bilder\\InterVAL");
@@ -152,9 +161,9 @@ function removeRunningTestFolder() {
 }
 
 function killRunningProcess() {
-    $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-    $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\';
-    $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";
+    global $sAhkCmd, $sAhkFolderPl;
+    $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
+    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" killProcess";
 
     removeRunningTestFolder();
     $sLastLine = exec($sCmd, $aOutput, $iStatus);
