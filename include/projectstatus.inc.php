@@ -5,7 +5,7 @@ require_once '../include/queue.inc.php';
 function startProjectTest($sProject, $sCmd) {
     global $sAhkCmd, $sAhkFolderPl;
     if (!empty($sCmd)) {
-        $sCheckRunningTestsScript = $sAhkFolderPl.'/auf laufende Tests pruefen.ahk';
+        $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
         if (file_exists($sCheckRunningTestsScript))
             $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" && $sCmd";
         exec("( $sCmd ) 2>&1", $aOutput, $iStatus);
@@ -161,9 +161,9 @@ function removeRunningTestFolder() {
 }
 
 function killRunningProcess() {
-    $sAhkCmd = '"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" /ErrorStdOut ';
-    $sAhkFolderPl = getenv('USERPROFILE') . '\\Desktop\\ScreenshotsPROLab\\';
-    $sCmd = "$sAhkCmd \"$sAhkFolderPl" . "auf laufende Tests pruefen.ahk\"" . " KillProcess";
+    global $sAhkCmd, $sAhkFolderPl;
+    $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
+    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" killProcess";
 
     removeRunningTestFolder();
     $sLastLine = exec($sCmd, $aOutput, $iStatus);
