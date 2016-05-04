@@ -3,7 +3,11 @@
 require_once '../include/queue.inc.php';
 
 function startProjectTest($sProject, $sCmd) {
+    global $sAhkCmd, $sAhkFolderPl;
     if (!empty($sCmd)) {
+        $sCheckRunningTestsScript = $sAhkFolderPl.'/auf laufende Tests pruefen.ahk';
+        if (file_exists($sCheckRunningTestsScript)
+            $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" && $sCmd";
         exec("( $sCmd ) 2>&1", $aOutput, $iStatus);
         $sOutput = join("\n", $aOutput);
         $sColor = $iStatus ? 'red' : 'green';
