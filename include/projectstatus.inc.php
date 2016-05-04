@@ -73,9 +73,11 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     $iStatusSum += $iLocalStatusSum;
 }
 
+$sAhkCmd = '"C:\Program Files\AutoHotkey\AutoHotkey.exe" /ErrorStdOut';
+$sAhkFolderPl = getenv('USERPROFILE') . '\Desktop\ScreenshotsPROLab';
+
 function getProjectStatusPl($sProject, $sExePath) {
-    $sAhkCmd = '"C:\Program Files\AutoHotkey\AutoHotkey.exe" /ErrorStdOut';
-    $sAhkFolderPl = getenv('USERPROFILE') . '\Desktop\ScreenshotsPROLab';
+    global $sAhkCmd, $sAhkFolderPl;
     $sAhkScriptFile = $sAhkFolderPl.'\\'."Test starten - $sProject.ahk";
     if (file_exists($sAhkScriptFile))
         getProjectStatus($sProject, $sExePath, "$sAhkCmd \"$sAhkScriptFile\"");
