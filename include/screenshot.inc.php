@@ -54,24 +54,6 @@ function updateAllTestStatus($test, $projekt) {
 }
 
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
-    $aSizeIst = getimagesize($sFileIst);
-    $aSizeSoll = getimagesize($sFileSoll);
-    if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
-        $aRect = array(
-          "width" => min($aSizeIst[0], $aSizeSoll[0]),
-          "height" => min($aSizeIst[1], $aSizeSoll[1]),
-          "x" => 0,
-          "y" => 0,
-        );
-        $img = imagecrop(imagecreatefrompng($sFileIst), $aRect);
-        $sFileIst = "$sFileIst.cropped.png";
-        imagepng($img, $sFileIst);
-
-        $img = imagecrop(imagecreatefrompng($sFileSoll), $aRect);
-        $sFileSoll = "$sFileSoll.cropped.png";
-        imagepng($img, $sFileSoll);
-    }
-
     global $sCmd;
 
     $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
@@ -85,8 +67,51 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         // Unterschiede sind veraltet
         unlink("$sStem-difference.png");
     }
+    $aSizeIst = getimagesize($sFileIst);
+    $aSizeSoll = getimagesize($sFileSoll);
+    if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
+        $aRect = array(
+          "width" => min($aSizeIst[0], $aSizeSoll[0]),
+          "height" => min($aSizeIst[1], $aSizeSoll[1]),
+          "x" => 0,
+          "y" => 0,
+        );
+        $img = imagecrop($imgIst = imagecreatefrompng($sFileIst), $aRect);
+        $sFileIst = "$sFileIst.cropped.png";
+        imagepng($img, $sFileIst);
+
+        $img = imagecrop($imgSoll = imagecreatefrompng($sFileSoll), $aRect);
+        $sFileSoll = "$sFileSoll.cropped.png";
+        imagepng($img, $sFileSoll);
+    }
+
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
-    return `$sCmd 2>&1`;
+    $sOutput = `$sCmd 2>&1`;
+    if ($aSizeIst[1] < $aSizeSoll[1]) {
+        $aRect['y'] = $aSizeSoll[1] - $aSizeIst[1];
+        $img = imagecrop($imgSoll, $aRect); // Unterkanten bündig
+        $sFileSoll .= "2.png";
+        imagepng($img, $sFileSoll);
+
+        $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference2.png\"";
+        $sOutput = `$sCmd 2>&1`;
+        if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
+           copy("$sStem-difference2.png", "$sStem-difference.png");
+        }
+    }
+    if ($aSizeIst[1] > $aSizeSoll[1]) {
+        $aRect['y'] = $aSizeIst[1] - $aSizeSoll[1];
+        $img = imagecrop($imgIst, $aRect); // Unterkanten bündig
+        $sFileIst .= "2.png";
+        imagepng($img, $sFileIst);
+
+        $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference2.png\"";
+        $sOutput = `$sCmd 2>&1`;
+        if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
+           copy("$sStem-difference2.png", "$sStem-difference.png");
+        }
+    }
+    return $sOutput;
 }
 
 function handleActions(&$retval) {
