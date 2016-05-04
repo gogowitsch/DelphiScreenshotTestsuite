@@ -22,7 +22,7 @@ function startProjectTest($sProject, $sCmd) {
         if (!file_exists($sRunningProcessFolderPl)) {
             mkdir($sRunningProcessFolderPl, 0777, true);
         }
-        if ($iStatus === 0 && !file_exists($sFileName)) {
+        if ($iStatus === 0) {
             file_put_contents($sFileName, '');
         }
     }
