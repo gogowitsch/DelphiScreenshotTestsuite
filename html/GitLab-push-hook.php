@@ -21,9 +21,10 @@ if (true || $sBranch == 'reviewed-code-for-screenshots') {
         // der Hook periodisch wiederholt. Was für die Testaktualität zählt,
         // ist die Commit-Zeit $iStamp, nicht die Ausführungszeit des Skriptes
         touch($sDatei, $iStamp);
-        $sCmd = 'curl.exe -o - "http://localhost/run_project.php?project=RingDat_Online.IBBL&run=1"';
-        $result = system("$sCmd 2>&1", $iErrorLevel);
-        file_put_contents($sDatei, $result, FILE_APPEND);
+
+        // $sCmd = 'curl.exe -o - "http://localhost/run_project.php?project=RingDat_Online.IBBL&run=1"';
+        // $result = system("$sCmd 2>&1", $iErrorLevel);
+        // file_put_contents($sDatei, $result, FILE_APPEND);
         #sleep(5);
         #`curl.exe -o - "http://localhost/run_project.php?project=RingDat_Online.InstitutEignungspruefung&run=1"`;
     }
