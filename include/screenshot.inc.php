@@ -56,6 +56,7 @@ function updateAllTestStatus($test, $projekt) {
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
     $aSizeIst = getimagesize($sFileIst);
     $aSizeSoll = getimagesize($sFileSoll);
+    $cropped = false;
     if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
         $aRect = array(
           "width" => min($aSizeIst[0], $aSizeSoll[0]),
@@ -70,6 +71,7 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         $img = imagecrop(imagecreatefrompng($sFileSoll), $aRect);
         $sFileSoll = "$sFileSoll.cropped.png";
         imagepng($img, $sFileSoll);
+        $cropped = true;
     }
 
     global $sCmd;
@@ -86,7 +88,12 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         unlink("$sStem-difference.png");
     }
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
-    return `$sCmd 2>&1`;
+    $result = `$sCmd 2>&1`;
+    if ($cropped) {
+        unlink($sFileIst);
+        unlink($sFileSoll);
+    }
+    return $result;
 }
 
 function handleActions(&$retval) {
