@@ -17,7 +17,9 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
 
     if (!file_exists("../include/path.ini")) {
-        die("You must add include/path.ini");
+        $sUrl = 'http://screenshot01-pc/DelphiScreenshotTestsuite/include/path.ini';
+        die("You must add include/path.ini,
+          e.g. modified version from <a href='$sUrl' target=path>$sUrl</a>.");
     }
 
     $aIni = parse_ini_file("../include/path.ini");
