@@ -39,7 +39,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
     $sRetVal = '';
 
     if (stristr($sExt, 'pdf')) {
-        $sPath = dirname($sName);
+        $sPath = str_replace("/", "\\", dirname($sName));
         $sBaseName = basename($sName);
         $sCmd = "cd $sPath && ";
         // $sMagic = stristr($sExt, 'bmp') ? 'DIB:' : '';
@@ -58,7 +58,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
                 // es handelt sich um eine HTML-Datei mit PDF-Erweiterung - das produziert zeige_seite_as_PDF.php manchmal.
                 rename("$sName.$sExt", "$sName.html");
                 $sExt = 'html';
-                $sCmd = 'cd $sPath && echo %cd% && phantomjs c:\xampp\htdocs\lvu\html\js\rasterize.js "file:///' . urlencode("$sBaseName.$sExt") . '" "' . $sBaseName . '.png"';
+                $sCmd = "cd $sPath & " . 'phantomjs c:\xampp\htdocs\lvu\html\js\rasterize.js "' . "$sBaseName.$sExt" . '" "' . $sBaseName . '.png"';
                 $sRetVal = `$sCmd 2>&1`;
             }
         }
