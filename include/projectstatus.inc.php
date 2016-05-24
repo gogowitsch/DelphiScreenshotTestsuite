@@ -82,9 +82,16 @@ $sAhkFolderPl = getenv('USERPROFILE') . '\Desktop\ScreenshotsPROLab';
 
 function getProjectStatusPl($sProject, $sExePath) {
     global $sAhkCmd, $sAhkFolderPl;
-    $sAhkScriptFile = $sAhkFolderPl.'\\'."Test starten - $sProject.ahk";
+    $sAhkScriptFile = $sAhkFolderPl . '\\' . "Test starten - $sProject.ahk";
     if (file_exists($sAhkScriptFile))
         getProjectStatus($sProject, $sExePath, "$sAhkCmd \"$sAhkScriptFile\"");
+}
+
+function getRdoProjectStatus($sDesign) {
+    $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
+    $sLvuGitRef = $sLvuTestPath . '\Alter_des_Branches-reviewed-code-for-screenshots.txt';
+    $sGitCmds = "cd /d $sLvuTestPath && git pull";
+    getProjectStatus("RingDat_Online.$sDesign", $sLvuGitRef, "$sGitCmds && ( fork_test.sh $sDesign || echo ok )");
 }
 
 function getStatusOfAllProjects() {
@@ -115,18 +122,16 @@ function getStatusOfAllProjects() {
                 'screenshot02-pc', 'screenshot01-pc',
                 'noack-pc',
                 'rot2-pc')) || strstr($sHost, 'blaeul')) {
-        $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
-        $sLvuGitRef = $sLvuTestPath.'\Alter_des_Branches-reviewed-code-for-screenshots.txt';
-        getProjectStatus('RingDat_Online.Human',    $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh Human || echo ok )");
-        getProjectStatus('RingDat_Online.IBBL',     $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh IBBL || echo ok )");
-        getProjectStatus('RingDat_Online.InstitutEignungspruefung', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh InstitutEignungspruefung || echo ok )");
-        getProjectStatus('RingDat_Online.UBA-Wien', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh UBA-Wien || echo ok )");
-        getProjectStatus('RingDat_Online.Eurofins', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh Eurofins || echo ok )");
-        getProjectStatus('RingDat_Online.NIST-OWM', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh NIST-OWM || echo ok )");
-        getProjectStatus('RingDat_Online.NIST-MML', $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh NIST-MML || echo ok )");
-        getProjectStatus('RingDat_Online.RKI',      $sLvuGitRef, "cd /d $sLvuTestPath && git pull && ( fork_test.sh RKI || echo ok )");
+        getRdoProjectStatus('Human');
+        getRdoProjectStatus('IBBL');
+        getRdoProjectStatus('InstitutEignungspruefung');
+        getRdoProjectStatus('UBA-Wien');
+        getRdoProjectStatus('Eurofins');
+        getRdoProjectStatus('NIST-OWM');
+        getRdoProjectStatus('NIST-MML');
+        getRdoProjectStatus('RKI');
     }
-    if (in_array($sHost, array( 'reinecke01-pc' ))) {
+    if (in_array($sHost, array('reinecke01-pc'))) {
         getProjectStatus('LPP.AOCS',
             'C:\Users\oscar.reinecke\lpp\.git\refs\heads\master',
             'cd C:\Users\oscar.reinecke\lpp\admin\tests\PhantomJS && ( fork_test.sh || echo ok )');
@@ -167,5 +172,6 @@ function killRunningProcess() {
 
     removeRunningTestFolder();
     $sLastLine = exec($sCmd, $aOutput, $iStatus);
-    if ($iStatus) die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
+    if ($iStatus)
+        die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
 }
