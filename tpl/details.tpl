@@ -76,6 +76,7 @@
     {include file="key_binding.inc.tpl"}
     });
 </script>
+
 {if file_exists($aTest.fileSoll)}
 
     {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}
@@ -84,7 +85,7 @@
 
         <span class='label'>{$UntDif}: </span>
 
-        <div style='position:relative;display:inline-block;background-image:url("{$aTest.fileIst|escape}?{$sTime|urlencode}")'>
+        <div style='position:relative;display:inline-block;background-image:url("{$aTest.fileIst|utf8_encode|escape}?{$sTime|urlencode}")'>
             <img src='compare.php?sTestName={$aTest.name|urlencode}'  style='opacity:0.95' title=Unterschiede >
         </div>
     {/if}
