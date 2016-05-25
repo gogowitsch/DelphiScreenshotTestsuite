@@ -112,6 +112,7 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
            copy("$sStem-difference2.png", "$sStem-difference.png");
         }
+    }
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
     $result = `$sCmd 2>&1`;
     if ($cropped) {
