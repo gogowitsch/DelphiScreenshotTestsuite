@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../include/config.inc.php';
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
