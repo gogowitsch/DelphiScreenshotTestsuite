@@ -4,6 +4,8 @@
  * @return string Neuer Dateiname
  */
 function convertToPngIfNeeded($sName, &$sExt) {
+    if (!file_exists("$sName.$sExt"))
+        return;
     global $iConvertedBmpsDuringThisCall;
     if (empty($iConvertedBmpsDuringThisCall))
         $iConvertedBmpsDuringThisCall = 1;
@@ -17,7 +19,9 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
 
     if (!file_exists("../include/path.ini")) {
-        die("You must add include/path.ini");
+        $sUrl = 'http://screenshot01-pc/DelphiScreenshotTestsuite/include/path.ini';
+        die("You must add include/path.ini,
+          e.g. modified version from <a href='$sUrl' target=path>$sUrl</a>.");
     }
 
     $aIni = parse_ini_file("../include/path.ini");
@@ -35,7 +39,7 @@ function convertToPngIfNeeded($sName, &$sExt) {
     $sRetVal = '';
 
     if (stristr($sExt, 'pdf')) {
-        $sPath = dirname($sName);
+        $sPath = str_replace("/", "\\", dirname($sName));
         $sBaseName = basename($sName);
         $sCmd = "cd $sPath && ";
         // $sMagic = stristr($sExt, 'bmp') ? 'DIB:' : '';
@@ -46,10 +50,18 @@ function convertToPngIfNeeded($sName, &$sExt) {
         #die( "$sCmd<hr>");
         // Bevor convert.exe immer wieder versucht, ein leeres
         // PDF umzuwandeln, wird es vorsorglich entfernt.
-        if ( filesize("$sName.$sExt") === 0 )
+        if (filesize("$sName.$sExt") === 0)
             unlink("$sName.$sExt");
-        else
+        else {
             $sRetVal = `$sCmd 2>&1`;
+            if (stristr($sRetVal, "Error: /syntaxerror") && stristr(file_get_contents("$sName.$sExt"), "<br")) {
+                // es handelt sich um eine HTML-Datei mit PDF-Erweiterung - das produziert zeige_seite_as_PDF.php manchmal.
+                rename("$sName.$sExt", "$sName.html");
+                $sExt = 'html';
+                $sCmd = "cd $sPath & " . 'phantomjs c:\xampp\htdocs\lvu\html\js\rasterize.js "' . "$sBaseName.$sExt" . '" "' . $sBaseName . '.png"';
+                $sRetVal = `$sCmd 2>&1`;
+            }
+        }
     } elseif (stristr($sExt, 'bmp')) {
         require_once('../include/ImageCreateFromBMP.inc.php');
         $res = ImageCreateFromBMP($sName . '.bmp');
@@ -67,5 +79,5 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     if (!$sRetVal)
         return $sName . '.png';
-    //die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
+    die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
 }

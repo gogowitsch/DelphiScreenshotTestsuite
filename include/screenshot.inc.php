@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once '../include/config.inc.php';
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
@@ -69,6 +69,7 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
     }
     $aSizeIst = getimagesize($sFileIst);
     $aSizeSoll = getimagesize($sFileSoll);
+    $cropped = false;
     if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
         $aRect = array(
           "width" => min($aSizeIst[0], $aSizeSoll[0]),
@@ -83,6 +84,7 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         $img = imagecrop($imgSoll = imagecreatefrompng($sFileSoll), $aRect);
         $sFileSoll = "$sFileSoll.cropped.png";
         imagepng($img, $sFileSoll);
+        $cropped = true;
     }
 
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
@@ -110,8 +112,13 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
            copy("$sStem-difference2.png", "$sStem-difference.png");
         }
+    $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
+    $result = `$sCmd 2>&1`;
+    if ($cropped) {
+        unlink($sFileIst);
+        unlink($sFileSoll);
     }
-    return $sOutput;
+    return $result;
 }
 
 function handleActions(&$retval) {
