@@ -9,7 +9,7 @@ if (basename($data['repository']['url']) == 'rdo.git')
 
 $sBranch = basename($data['ref']); // Beispielwert ist 'refs/heads/master'
 $sDatei = "Alter_des_Branches-$sBranch.txt";
-if (true || $sBranch == 'reviewed-code-for-screenshots') {
+if ($sBranch == 'reviewed-code-for-screenshots') {
     file_put_contents($sDatei, strftime('%c'));
     file_put_contents($sDatei, print_r($data, true), FILE_APPEND);
     $iStamp = 0;
@@ -17,8 +17,8 @@ if (true || $sBranch == 'reviewed-code-for-screenshots') {
         $iStamp = max($iStamp, strtotime($aCommit['timestamp']));
     }
     if ($iStamp) {
-        // wenn der Rechner nicht beim Push/Merge verfügbar ist, wird
-        // der Hook periodisch wiederholt. Was für die Testaktualität zählt,
+        // wenn der Rechner nicht beim Push/Merge verfügbar ist, wird der Hook
+        // von GitLab periodisch wiederholt. Was für die Testaktualität zählt,
         // ist die Commit-Zeit $iStamp, nicht die Ausführungszeit des Skriptes
         touch($sDatei, $iStamp);
 
