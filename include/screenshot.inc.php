@@ -29,13 +29,11 @@ function compareImages($image1, $image2) {
 
 function compareAllTestFiles($project) {
     $path = "Bilder/$project";
-    $files = glob("$path/*.png");
+    $files = glob("$path/*-ist.png");
     foreach ($files as $sFileIst) {
-        if (strpos($sFileIst, '-ist.png') !== false) {
-            $sStem = substr($sFileIst, 0, -8);
-            $sFileSoll = $sStem . '-soll.png';
-            createDifferenceImage($sFileIst, $sFileSoll, $sStem);
-        }
+        $sStem = substr($sFileIst, 0, -8);
+        $sFileSoll = $sStem . '-soll.png';
+        createDifferenceImage($sFileIst, $sFileSoll, $sStem);
     }
 }
 
