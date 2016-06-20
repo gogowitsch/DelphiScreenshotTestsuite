@@ -111,13 +111,11 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
            copy("$sStem-difference2.png", "$sStem-difference.png");
         }
     }
-    $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
-    $result = `$sCmd 2>&1`;
     if ($cropped) {
         unlink($sFileIst);
         unlink($sFileSoll);
     }
-    return $result;
+    return $sOutput;
 }
 
 function handleActions(&$retval) {
