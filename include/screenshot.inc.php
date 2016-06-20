@@ -33,7 +33,8 @@ function compareAllTestFiles($project) {
     foreach ($files as $sFileIst) {
         $sStem = substr($sFileIst, 0, -8);
         $sFileSoll = $sStem . '-soll.png';
-        createDifferenceImage($sFileIst, $sFileSoll, $sStem);
+        if (file_exists($sFileSoll))
+          createDifferenceImage($sFileIst, $sFileSoll, $sStem);
     }
 }
 
