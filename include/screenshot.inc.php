@@ -65,9 +65,13 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         // Unterschiede sind veraltet
         unlink("$sStem-difference.png");
     }
+
     $aSizeIst = getimagesize($sFileIst);
     $aSizeSoll = getimagesize($sFileSoll);
-    $cropped = false;
+
+    // Diese Bilder werden am Ende der Funktion wieder gelöscht.
+    $aTempImages = array();
+
     if ($aSizeIst[0] !== $aSizeSoll[0] || $aSizeIst[1] !== $aSizeSoll[1]) {
         $aRect = array(
           "width" => min($aSizeIst[0], $aSizeSoll[0]),
@@ -77,12 +81,14 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         );
         $img = imagecrop($imgIst = imagecreatefrompng($sFileIst), $aRect);
         $sFileIst = "$sFileIst.cropped.png";
+        $aTempImages[] = $sFileIst;
         imagepng($img, $sFileIst);
 
         $img = imagecrop($imgSoll = imagecreatefrompng($sFileSoll), $aRect);
         $sFileSoll = "$sFileSoll.cropped.png";
+        $aTempImages[] = $sFileSoll;
         imagepng($img, $sFileSoll);
-        $cropped = true;
+
     }
 
     $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference.png\"";
@@ -92,28 +98,31 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
         $img = imagecrop($imgSoll, $aRect); // Unterkanten bündig
         $sFileSoll .= "2.png";
         imagepng($img, $sFileSoll);
+        $aTempImages[] = $sFileSoll;
 
         $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference2.png\"";
         $sOutput = `$sCmd 2>&1`;
         if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
            copy("$sStem-difference2.png", "$sStem-difference.png");
         }
+        $aTempImages[] = "$sStem-difference2.png";
     }
     if ($aSizeIst[1] > $aSizeSoll[1]) {
         $aRect['y'] = $aSizeIst[1] - $aSizeSoll[1];
         $img = imagecrop($imgIst, $aRect); // Unterkanten bündig
         $sFileIst .= "2.png";
         imagepng($img, $sFileIst);
+        $aTempImages[] = $sFileIst;
 
         $sCmd = "$sCompare -compose src \"$sFileIst\" \"$sFileSoll\" \"$sStem-difference2.png\"";
         $sOutput = `$sCmd 2>&1`;
         if (filesize("$sStem-difference2.png") <  filesize("$sStem-difference.png")) {
            copy("$sStem-difference2.png", "$sStem-difference.png");
         }
+        $aTempImages[] = "$sStem-difference2.png";
     }
-    if ($cropped) {
-        unlink($sFileIst);
-        unlink($sFileSoll);
+    foreach ($aTempImages as $sTempImage) {
+        unlink($sTempImage);
     }
     return $sOutput;
 }
