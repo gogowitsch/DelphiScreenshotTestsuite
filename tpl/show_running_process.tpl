@@ -18,3 +18,9 @@
         window.location.reload(1);
     }, 3000);
 </script>
+
+<style>
+form, body {
+  margin:0;
+}
+</style>
