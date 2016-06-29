@@ -37,6 +37,11 @@ function startProjectTest($sProject, $sCmd) {
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
 
+    db_connect("CREATE TABLE IF NOT EXISTS `projects` ( ".
+               "`title` VARCHAR(255),".
+               "`status` BOOLEAN,".
+               "`ratio` VARCHAR(255))");
+
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
