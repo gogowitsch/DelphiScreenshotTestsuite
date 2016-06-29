@@ -45,6 +45,17 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
+    global $conn;
+    if (empty($_GET['project'])) {
+        $aResult = db_connect("SELECT * FROM `projects` ".
+                              "WHERE `title` = ".$conn->quote($sProject));
+        if (count($aResult)) {
+            $aResult[0]['cmd'] = $sCmd;
+            $aProjects[] = $aResult[0];
+            return;
+        }
+    }
+
     if (!empty($_GET['run'])) {
         startProjectTest($sProject, $sCmd);
     }
