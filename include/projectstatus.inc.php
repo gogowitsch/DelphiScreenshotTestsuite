@@ -79,6 +79,12 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         'cmd' => $sCmd
     );
 
+    db_connect("DELETE from `projects` where `title` = ".$conn->quote($sProject));
+    db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".
+               $conn->quote($aProject['title']).", ".
+               $conn->quote($aProject['status']).", ".
+               $conn->quote($aProject['ratio']).")");
+
     $aProjects[] = $aProject;
 
     $aTests = array_merge($aTests, $aNewTests);
