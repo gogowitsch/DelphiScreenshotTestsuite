@@ -67,12 +67,15 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         }
     });
 
-    $aProjects[] = array(
+    $aProject = array(
         'title' => $sProject,
         'status' => $iLocalStatusSum == count($aNewTests) ? 1 : 0,
         'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
         'cmd' => $sCmd
     );
+
+    $aProjects[] = $aProject;
+
     $aTests = array_merge($aTests, $aNewTests);
     $iStatusSum += $iLocalStatusSum;
 }
