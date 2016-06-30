@@ -37,8 +37,26 @@ function startProjectTest($sProject, $sCmd) {
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
 
+    db_connect("CREATE TABLE IF NOT EXISTS `projects` ( ".
+               "`title` VARCHAR(255),".
+               "`status` BOOLEAN,".
+               "`ratio` VARCHAR(255))");
+
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
+
+    global $conn;
+    if (empty($_GET['project'])) {
+        // die Startseite wird geladen
+        $aResult = db_connect("SELECT * FROM `projects` " .
+                              "WHERE `title` = " . $conn->quote($sProject));
+        if (count($aResult)) {
+            // Cache nutzen
+            $aResult[0]['cmd'] = $sCmd;
+            $aProjects[] = $aResult[0];
+            return;
+        }
+    }
 
     if (!empty($_GET['run'])) {
         startProjectTest($sProject, $sCmd);
@@ -67,12 +85,21 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         }
     });
 
-    $aProjects[] = array(
+    $aProject = array(
         'title' => $sProject,
         'status' => $iLocalStatusSum == count($aNewTests) ? 1 : 0,
         'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
         'cmd' => $sCmd
     );
+
+    db_connect("DELETE from `projects` where `title` = ".$conn->quote($sProject));
+    db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".
+               $conn->quote($aProject['title']).", ".
+               $conn->quote($aProject['status']).", ".
+               $conn->quote($aProject['ratio']).")");
+
+    $aProjects[] = $aProject;
+
     $aTests = array_merge($aTests, $aNewTests);
     $iStatusSum += $iLocalStatusSum;
 }
