@@ -41,11 +41,9 @@ if (!empty($_POST['killJobs'])) {
     killRunningProcess();
 }
 
-$iVeraltet = countOutdatedFiles($aNewTests);
 $iPercentage = count($aTests) > 0 ? $iStatusSum / count($aTests) * 100 : 100;
 
 $smarty->assign("iPercentage", round($iPercentage));
-$smarty->assign("iVeraltet", $iVeraltet);
 $smarty->assign("aProjects", $aProjects);
 $smarty->assign("bHasHiddenProjects", 0);
 $smarty->assign("aTests", $aTests);

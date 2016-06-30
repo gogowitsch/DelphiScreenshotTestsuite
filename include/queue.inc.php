@@ -101,8 +101,6 @@ function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     global $conn;
 
-    $iVeraltet = countOutdatedFiles($aNewTests);
-
     db_connect('');
     $project = $conn->quote($_GET['project']);
     $sSQL = "SELECT DISTINCT user_email
