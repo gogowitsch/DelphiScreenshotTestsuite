@@ -128,10 +128,23 @@ function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
     return $sOutput;
 }
 
+function backupScreenshots() {
+    $date = date("Y-m-d");
+    $project = $_REQUEST['project'];
+
+    $backup = "Bilder\\$project\\backup_$date";
+    if (file_exists($backup))
+        return;
+
+    mkdir($backup, 0777, true);
+    `copy Bilder\\$project\\*-soll.??? $backup`;
+}
+
 function handleActions(&$retval) {
     $bCheckedInIndexList = isset($_POST['check']) && in_array(urlencode($retval['name']), $_POST['check']);
     if (isset($_REQUEST['done'])) {
         if ($_REQUEST['done'] == $retval['name'] || $bCheckedInIndexList) {
+            backupScreenshots();
             // Taste "A"
             $alt = empty($_REQUEST['alternative']) ? '' : '2';
             copy($retval['fileIst'], $retval['fileSoll'] . $alt);
@@ -139,6 +152,7 @@ function handleActions(&$retval) {
     }
     if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || $bCheckedInIndexList)) {
         // Taste "B"
+        backupScreenshots();
         set_time_limit(600);
         compareAllTestFiles($_REQUEST['project']);
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
@@ -154,6 +168,7 @@ function handleActions(&$retval) {
 
     if (isset($_REQUEST['soll_no_longer_needed']) && ($_REQUEST['soll_no_longer_needed'] == $retval['name'] || $bCheckedInIndexList)) {
         // Taste "D": In Papierkorb verschieben
+        backupScreenshots();
         exec('"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" ..\include\moveFileToRecycleBin.ahk "' . $retval['fileSoll'] . '"');
 
         $retval['desc'] = "Solldatei wurde gelöscht";
