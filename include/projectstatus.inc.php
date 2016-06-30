@@ -47,9 +47,11 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
 
     global $conn;
     if (empty($_GET['project'])) {
-        $aResult = db_connect("SELECT * FROM `projects` ".
-                              "WHERE `title` = ".$conn->quote($sProject));
+        // die Startseite wird geladen
+        $aResult = db_connect("SELECT * FROM `projects` " .
+                              "WHERE `title` = " . $conn->quote($sProject));
         if (count($aResult)) {
+            // Cache nutzen
             $aResult[0]['cmd'] = $sCmd;
             $aProjects[] = $aResult[0];
             return;
