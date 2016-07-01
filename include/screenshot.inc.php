@@ -134,6 +134,7 @@ function backupScreenshots() {
 
     $backup = "Bilder\\$project\\backup_$date";
     if (file_exists($backup))
+        // es gibt bereits ein Backup - es wird maximal 1 Backup pro Tag angelegt
         return;
 
     mkdir($backup, 0777, true);
