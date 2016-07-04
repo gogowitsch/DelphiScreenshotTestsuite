@@ -137,8 +137,15 @@ function backupScreenshots() {
         // es gibt bereits ein Backup - es wird maximal 1 Backup pro Tag angelegt
         return;
 
-    mkdir($backup, 0777, true);
-    `copy Bilder\\$project\\*-soll.??? $backup`;
+    if (!mkdir($backup, 0777, true)) {
+        print("Error creating backup dir $backup!");
+        return;
+    }
+    $iStatus = 0;
+    $aOutput = null;
+    exec("copy Bilder\\$project\\*-soll.??? $backup", $aOutput, $iStatus);
+    if ($iStatus)
+        print("Error copying files into $backup!");
 }
 
 function handleActions(&$retval) {
