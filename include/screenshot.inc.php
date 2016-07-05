@@ -132,7 +132,7 @@ function backupScreenshots() {
     $date = date("Y-m-d");
     $project = $_REQUEST['project'];
 
-    $backup = "Bilder\\$project\\backup_$date";
+    $backup = "Bilder/$project/backup_$date";
     if (file_exists($backup))
         // es gibt bereits ein Backup - es wird maximal 1 Backup pro Tag angelegt
         return;
@@ -140,11 +140,8 @@ function backupScreenshots() {
     if (!mkdir($backup, 0777, true))
         die(__FILE__ . ": Error creating backup dir $backup!");
 
-    $iStatus = 0;
-    $aOutput = null;
-    exec("copy Bilder\\$project\\*-soll.??? $backup", $aOutput, $iStatus);
-    if ($iStatus)
-        die(__FILE__ . ": Error copying files into $backup!");
+    foreach (glob("Bilder/$project/*-soll.*") as $file)
+        copy($file, "$backup/" . basename($file));
 }
 
 function handleActions(&$retval) {
