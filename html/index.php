@@ -23,6 +23,7 @@ if (!empty($_GET['project'])) {
     $sLockFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/$project.LOCK";
     if (file_exists($sLockFile))
         $smarty->assign("started", date("[F d Y H:i:s]", filemtime($sLockFile)));
+    $smarty->assign("queued", queued());
 } else
     $smarty->assign("project", '');
 

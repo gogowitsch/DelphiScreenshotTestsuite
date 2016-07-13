@@ -12,6 +12,7 @@
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
     {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
+    {$InQueue="In der Warteschlange"}
 {else}
     {$Proj="Project Overview"}
     {$Running="Test in progress, initiated on"}
@@ -24,6 +25,7 @@
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
     {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
+    {$InQueue="Queued"}
 {/if}
 
 
@@ -44,6 +46,8 @@
 
     {if !empty($started)}
         <span> {$Running} {$started} </span>
+    {elseif !empty($queued)}
+        <span> {$InQueue} </span>
     {else}
         <span> {$Finished} </span>
     {/if}
