@@ -40,7 +40,7 @@
             {/foreach}
         </table>
         {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">{$ShowAll}</a><br><br>{/if}
-        <a href="show_running_process.php">{$ShowProcess}</a>
+        <iframe src='show_running_process.php' style='overflow: hidden; height:1.5em;width:100%;border:none'></iframe>
         {include file="footer.tpl"}
     {/strip}
 {/if}
