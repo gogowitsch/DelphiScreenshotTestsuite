@@ -4,7 +4,7 @@
             Running process: {$sCurrentProcess} {$iFileTime}
             <input name="killJobs" type="submit" value="Stop"></input> |
             <a href="/phpmyadmin/sql.php?server=1&db=delphiscreenshottestsuite&table=job_warteschlange">
-                View Job Queue in PhpMyAdmin </a>
+                View Job Queue in phpMyAdmin </a>
         </div>
     {else}
         <div style="background-color: #ff9999" id="no_running_pocces">
