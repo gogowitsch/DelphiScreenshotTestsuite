@@ -31,7 +31,7 @@
                             {$aProject.ratio} erfolgreich
                         </td>
                         <td>
-                            {include file="run_project.tpl" aProject=$aProject}
+                            {include file="run_project.tpl" sFormTarget="form_target_$i"}
                         </td>
                     </tr>
                 {else}
