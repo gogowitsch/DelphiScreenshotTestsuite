@@ -20,6 +20,9 @@
 
 {if $aProject.cmd}
     <form method="post"
+    {if !empty($sFormTarget)}
+          target="{$sFormTarget}"
+    {/if}
           action="run_project.php?project={$aProject.title|urlencode}&run=1"
           class="{$verb}_project">
 
@@ -29,5 +32,8 @@
         </button>
         <label for="email">wenn fertig, E-Mail an:</label>
         <input type="text" name="email" id="email" value="{$sEmail}" placeholder="(optional)">
+    {if !empty($sFormTarget)}
+        <iframe name="{$sFormTarget}" style="display:none"></iframe>
+    {/if}
     </form>
 {/if}
