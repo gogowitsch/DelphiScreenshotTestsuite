@@ -119,10 +119,12 @@
     </div>
 </form>
 
+{if isset($newGitLabIssueURL)}
 <form>
     <input id="issue-title" placeholder="Titel">
     <input type="button" id="new-issue" value="Issue anlegen">
 </form>
+{/if}
 
 <script>
     $("#new-issue").click(function() {

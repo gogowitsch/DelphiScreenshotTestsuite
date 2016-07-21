@@ -80,9 +80,11 @@
         <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
-        <br>
-        <input id="issue-title" placeholder="Titel">
-        <input type="button" id="new-issue" value="Issue anlegen">
+        {if isset($newGitLabIssueURL)}
+            <br>
+            <input id="issue-title" placeholder="Titel">
+            <input type="button" id="new-issue" value="Issue anlegen">
+        {/if}
         </div>
 
 
