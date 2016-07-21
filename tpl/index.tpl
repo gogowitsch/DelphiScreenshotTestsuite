@@ -77,8 +77,11 @@
         </table>
         <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
 
+        <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+        </div>
+
 
     </form>
     <script>
@@ -86,7 +89,7 @@
 
         function check_all(bValue) {
             $('input[type=checkbox]').attr('checked', bValue);
-            $('input[type=submit]').show();
+            $('#actions').show();
         }
         var $chkboxes = null;
         var lastChecked = null;
@@ -106,10 +109,10 @@
             lastChecked = this;
         }
         function showhide_submit() {
-            $('input[type=submit]').hide();
+            $('#actions').hide();
             $('input[type=checkbox]').each(function () {
                 if ($(this).is(':checked')) {
-                    $('input[type=submit]').show();
+                    $('#actions').show();
                 }
             });
         }
