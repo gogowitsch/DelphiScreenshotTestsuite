@@ -83,7 +83,7 @@
         {if isset($newGitLabIssueURL)}
             <br>
             <input id="issue-title" placeholder="Titel">
-            <input type="button" id="new-issue" value="Issue anlegen">
+            <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
         {/if}
         </div>
 
@@ -137,7 +137,7 @@
                   return '- ' + $(this).find('a').prop('href');
             }).get().join('\n');
 
-            window.open('https://git04.quodata.de/it/rdo/issues/new'
+            window.open($(this).data('url')
               + '?issue[title]=' + encodeURIComponent(title)
               + '&issue[description]=' + encodeURIComponent(description) )
         });
