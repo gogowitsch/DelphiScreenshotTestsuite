@@ -80,6 +80,9 @@
         <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+        <br>
+        <input id="issue-title" placeholder="Titel">
+        <input type="button" id="new-issue" value="Issue anlegen">
         </div>
 
 
@@ -124,6 +127,18 @@
                 $('#check_all').hide();
         });
         showhide_submit();
+        $("#new-issue").click(function() {
+            var title = $('#issue-title').val();
+
+            var description = $("tr").map(function() {
+                if ($(this).find(':checked').length)
+                  return '- ' + $(this).find('a').prop('href');
+            }).get().join('\n');
+
+            window.open('https://git04.quodata.de/it/rdo/issues/new'
+              + '?issue[title]=' + encodeURIComponent(title)
+              + '&issue[description]=' + encodeURIComponent(description) )
+        });
     </script>
     {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
 
