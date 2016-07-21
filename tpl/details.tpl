@@ -119,6 +119,7 @@
     </div>
 </form>
 
+<!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
 {if isset($newGitLabIssueURL)}
 <form>
     <input id="issue-title" placeholder="Titel">
