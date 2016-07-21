@@ -119,6 +119,22 @@
     </div>
 </form>
 
+<form>
+    <input id="issue-title" placeholder="Titel">
+    <input type="button" id="new-issue" value="Issue anlegen">
+</form>
+
+<script>
+    $("#new-issue").click(function() {
+        var title = $('#issue-title').val();
+        var description = window.location.href;
+
+        window.open('https://git04.quodata.de/it/rdo/issues/new'
+          + '?issue[title]=' + encodeURIComponent(title)
+          + '&issue[description]=' + encodeURIComponent(description) )
+    });
+</script>
+
 <div class='buttons' style='z-index:22'>
     <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
         A: {$IstZ}
