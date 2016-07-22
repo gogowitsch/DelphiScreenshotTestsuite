@@ -77,8 +77,20 @@
         </table>
         <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
 
+        <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+        <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
+        {if isset($newGitLabIssueURL)}
+            <br>
+            <fieldset>
+              <legend>GitLab</legend>
+              <input id="issue-title" placeholder="Titel">
+              <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
+            </fieldset>
+        {/if}
+        </div>
+
 
     </form>
     <script>
@@ -86,7 +98,7 @@
 
         function check_all(bValue) {
             $('input[type=checkbox]').attr('checked', bValue);
-            $('input[type=submit]').show();
+            $('#actions').show();
         }
         var $chkboxes = null;
         var lastChecked = null;
@@ -106,10 +118,10 @@
             lastChecked = this;
         }
         function showhide_submit() {
-            $('input[type=submit]').hide();
+            $('#actions').hide();
             $('input[type=checkbox]').each(function () {
                 if ($(this).is(':checked')) {
-                    $('input[type=submit]').show();
+                    $('#actions').show();
                 }
             });
         }
@@ -121,6 +133,18 @@
                 $('#check_all').hide();
         });
         showhide_submit();
+        $("#new-issue").click(function() {
+            var title = $('#issue-title').val();
+
+            var description = $("tr").map(function() {
+                if ($(this).find(':checked').length)
+                  return '- ' + $(this).find('a').prop('href');
+            }).get().join('\n');
+
+            window.open($(this).data('url')
+              + '?issue[title]=' + encodeURIComponent(title)
+              + '&issue[description]=' + encodeURIComponent(description) )
+        });
     </script>
     {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
 

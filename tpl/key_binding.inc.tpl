@@ -2,11 +2,11 @@
 ignoreShortcuts ();
 
 {*Beim eingeben der E-Mail Tastenkürzel ignorieren*}
-$("#email, #textarea").focus(function () {
+$(":text, textarea").focus(function () {
     $(document).unbind('keydown');
 });
 
-$("#email, #textarea").focusout(function() {
+$(":text, textarea").focusout(function() {
     ignoreShortcuts ();
 });
 

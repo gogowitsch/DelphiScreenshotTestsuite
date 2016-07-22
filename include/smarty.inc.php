@@ -16,4 +16,13 @@ $smarty->assign("message", isset($_GET['message']) ? $_GET['message'] : '');
 
 $smarty->assign("Sprache", LANG);
 
+$project = isset($_GET['project']) ? $_GET['project'] : '';
 
+// ADD MORE REPOSITORIES HERE!!!
+if (preg_match('/^RingDat_Online\./', $project))
+    $gitLabURL = "https://git04.quodata.de/it/rdo";
+elseif ($project === "LPP.AOCS")
+    $gitLabURL = "https://git04.quodata.de/it/lpp";
+
+if (isset($gitLabURL))
+    $smarty->assign('newGitLabIssueURL', "$gitLabURL/issues/new");

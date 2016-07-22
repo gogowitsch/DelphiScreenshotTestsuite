@@ -10,6 +10,9 @@
             table tr:hover {
                 background-color: #68B3DB;
             }
+            fieldset {
+                display: inline-block;
+            }
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
             tr .wouldbe1 { background: yellow; }
