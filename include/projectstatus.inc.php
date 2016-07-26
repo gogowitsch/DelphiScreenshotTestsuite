@@ -133,6 +133,7 @@ function getStatusOfAllProjects() {
 
         getProjectStatusPl('PROLab_Torte', 'c:/daten/prolab_Torte\\PROLab_de.exe');
         getProjectStatusPl('PROLab_RVTypKurz', 'c:/daten/prolab_RVTypKurz\\PROLab_de.exe');
+        getProjectStatusPl('PROLab_FDA', 'c:/daten/prolab_FDA\\PROLab_en.exe');
 
         getProjectStatusPl('mqVAL_DE', 'c:/daten/mqVAL_DE\\mqVAL.exe');
         getProjectStatusPl('PROLab_Smart_DE', 'c:/daten/PROLab_Smart_DE_13528\\PROLabSmart.exe');
