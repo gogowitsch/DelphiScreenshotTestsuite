@@ -46,7 +46,7 @@
         {if $aTest.ext=='png' || $aTest.ext=='bmp'}
             <img src="{$file|dirname}/{$file|basename|rawurlencode|htmlentities}?{$time|urlencode}" title="{$label} {$time}">
         {else}
-            {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='csv'}
+            {if in_array($aTest.ext, array('txt', 'rtf', 'csv', 'xls')) }
                 {$file = $file|utf8_decode}
                 {if file_exists($file)}
                     <div class='iframe_container'>
@@ -89,7 +89,7 @@
             <img src='compare.php?sTestName={$aTest.name|urlencode}'  style='opacity:0.95' title=Unterschiede >
         </div>
     {/if}
-    {if $aTest.ext=='txt' || $aTest.ext=='rtf' || $aTest.ext=='ini' || $aTest.ext=='lmo' || $aTest.ext=='csv'}
+    {if in_array($aTest.ext, array('txt', 'rtf', 'ini', 'lmo', 'csv', 'xls')) }
         {* von diesen Dateitypen soll ein FineDiff angezeigt werden *}
         <span class='label'>{$UntDif}: </span>
 
