@@ -172,6 +172,12 @@ function save_job() {
         db_connect("ALTER TABLE `job_warteschlange` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
 }
 
+function queued() {
+    global $conn;
+    $project = $conn->quote($_GET['project']);
+    return count(db_connect("SELECT * from `job_warteschlange` WHERE `project` = $project;"));
+}
+
 function save_comment($aTest) {
     global $conn;
     db_connect('');
