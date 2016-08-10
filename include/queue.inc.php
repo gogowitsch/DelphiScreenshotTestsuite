@@ -128,9 +128,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
-    // Abschlossenes Projekt aus List löschen
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
-    db_connect($sSQL);
+    removeProjectFromQueue();
 
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
@@ -167,9 +165,7 @@ function ProjectKilled_RemoveFromQueue() {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
-    // Abschlossenes Projekt aus List löschen
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
-    db_connect($sSQL);
+    removeProjectFromQueue();
 
     killRunningProcess();
 
@@ -192,6 +188,15 @@ function ProjectKilled_RemoveFromQueue() {
         header("Location: run_project.php?run=1&project=$sNextProject");
         die;
     }
+}
+
+function removeProjectFromQueue() {
+    global $conn;
+    $project = $conn->quote($_GET['project']);
+
+    // Abschlossenes Projekt aus List löschen
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
+    db_connect($sSQL);
 }
 
 function save_job() {
