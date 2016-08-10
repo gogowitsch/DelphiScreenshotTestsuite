@@ -21,6 +21,7 @@ if (file_exists($sDirectoryPath) && glob($sDirectoryPath . '*.LOCK')) {
     $smarty->assign("bProcessRunning", true);
     $smarty->assign("iFileTime", $sFileTime);
     $smarty->assign("sCurrentProcess", $sFileName);
+    $smarty->assign("project", substr($sFileName, 0, -5));
 }
 
 $smarty->display('show_running_process.tpl');
