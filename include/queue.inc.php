@@ -94,19 +94,12 @@ function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
         return;
     $bNotInList = array_search(strtolower($sMail), array_map('strtolower', $aMailAddresses)) === false;
     if ($bNotInList) {
-        $aMailAddresses[] = $sMail;
+        $aMailAddresses[]['user_email'] = $sMail;
     }
 }
 
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    global $conn;
-
-    db_connect('');
-    $project = $conn->quote($_GET['project']);
-    $sSQL = "SELECT DISTINCT user_email
-            FROM `job_warteschlange` WHERE `project` = $project
-            AND user_email <> '';";
-    $aMailAddresses = db_connect($sSQL);
+    $aMailAddresses = getProjectSubscribers();
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
@@ -118,19 +111,78 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
             . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
-    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small> ";
 
     // E-Mail an Projekt-Verantwortlichen senden
     addToListOfEmailAddresses('RingDat_Online', 'Oscar.Reinecke@quodata.de', $aMailAddresses);
     addToListOfEmailAddresses('CalcInterface', 'blaeul@quodata.de', $aMailAddresses);
+    addToListOfEmailAddresses('PROLab', 'helling@quodata.de', $aMailAddresses);
 
-    foreach ($aMailAddresses as $sMailAddress) {
+    $sRecipients = '';
+    foreach ($aMailAddresses as $aMailAddress) {
+        $sRecipients .= ", " . $aMailAddress['user_email'];
+    }
+    $sRecipients = "Sie ging an folgende Empfänger: " . substr($sRecipients, 2);
+    $sBody .= "<span style='background-color: #c6fed1; font-weight: bold'>$sRecipients</span ><br>";
+    foreach ($aMailAddresses as $aMailAddress) {
+        sendMailToUser($aMailAddress['user_email'], $sSubject, $sBody);
+    }
+
+    removeProjectFromQueue();
+
+    startNextProject();
+}
+
+function ProjectKilled_RemoveFromQueue() {
+    // E-mail an Nutzer: Test wurde abgebrochen
+    $hostname = gethostname();
+    $sSubject = "[DelphiScreenshotTestsuite] $project abgebrochen!!";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+
+    $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+
+    foreach (getProjectSubscribers() as $sMailAddress) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
+
+    removeProjectFromQueue();
+
+    killRunningProcess();
+
+    // Even if we kill all mintty's and bash'es at once, I guess bash still
+    // manages to curl /index.php?job_done=1&etc, which, at the end, launches
+    // an extra CasperJS terminal window. This happens only on screenshot01-pc.
+    // I inserted a tiny delay to allow startProjectTest() to detect the existing
+    // PhantomJS process. Otherwise PhantomJS wouldn't have started yet and we
+    // ended up with two CasperJS terminal windows.
+    sleep(5);
+
+    startNextProject();
+}
+
+function getProjectSubscribers() {
+    global $conn;
+
+    db_connect('');
+    $project = $conn->quote($_GET['project']);
+    $sSQL = "SELECT DISTINCT user_email
+            FROM `job_warteschlange` WHERE `project` = $project
+            AND user_email <> '';";
+    return db_connect($sSQL);
+}
+
+function removeProjectFromQueue() {
+    global $conn;
+    $project = $conn->quote($_GET['project']);
 
     // Abschlossenes Projekt aus List löschen
     $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
     db_connect($sSQL);
+}
+
+function startNextProject() {
+    global $conn;
 
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
