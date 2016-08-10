@@ -99,14 +99,7 @@ function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
 }
 
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    global $conn;
-
-    db_connect('');
-    $project = $conn->quote($_GET['project']);
-    $sSQL = "SELECT DISTINCT user_email
-            FROM `job_warteschlange` WHERE `project` = $project
-            AND user_email <> '';";
-    $aMailAddresses = db_connect($sSQL);
+    $aMailAddresses = getProjectSubscribers();
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
@@ -134,15 +127,6 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 }
 
 function ProjectKilled_RemoveFromQueue() {
-    global $conn;
-
-    db_connect('');
-    $project = $conn->quote($_GET['project']);
-    $sSQL = "SELECT DISTINCT user_email
-            FROM `job_warteschlange` WHERE `project` = $project
-            AND user_email <> '';";
-    $aMailAddresses = db_connect($sSQL);
-
     // E-mail an Nutzer: Test wurde abgebrochen
     $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgebrochen!!";
@@ -151,7 +135,7 @@ function ProjectKilled_RemoveFromQueue() {
     $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
-    foreach ($aMailAddresses as $sMailAddress) {
+    foreach (getProjectSubscribers() as $sMailAddress) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
@@ -168,8 +152,17 @@ function ProjectKilled_RemoveFromQueue() {
     sleep(5);
 
     startNextProject();
+}
 
+function getProjectSubscribers() {
+    global $conn;
 
+    db_connect('');
+    $project = $conn->quote($_GET['project']);
+    $sSQL = "SELECT DISTINCT user_email
+            FROM `job_warteschlange` WHERE `project` = $project
+            AND user_email <> '';";
+    return db_connect($sSQL);
 }
 
 function removeProjectFromQueue() {
