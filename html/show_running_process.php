@@ -6,6 +6,8 @@ require '../include/projectstatus.inc.php';
 $sDirectoryPath = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/RunningProcess/";
 $sFilePath = '';
 
+$smarty->assign("bProcessRunning", false);
+
 if (file_exists($sDirectoryPath) && glob($sDirectoryPath . '*.LOCK')) {
     $aDirectory = scandir($sDirectoryPath);
     $aFilePath = glob($sDirectoryPath . '*.LOCK');
@@ -15,9 +17,10 @@ if (file_exists($sDirectoryPath) && glob($sDirectoryPath . '*.LOCK')) {
     if (is_file($sFilePath)) {
         $sFileTime = date("[F d Y H:i:s]", filemtime($sFilePath));
     }
+
+    $smarty->assign("bProcessRunning", true);
+    $smarty->assign("iFileTime", $sFileTime);
+    $smarty->assign("sCurrentProcess", $sFileName);
 }
 
-$smarty->assign("bProcessRunning", is_file($sFilePath));
-$smarty->assign("iFileTime", isset($sFileTime) ? $sFileTime : '');
-$smarty->assign("sCurrentProcess", is_file($sFilePath) ? $sFileName : '');
 $smarty->display('show_running_process.tpl');
