@@ -94,7 +94,7 @@ function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
         return;
     $bNotInList = array_search(strtolower($sMail), array_map('strtolower', $aMailAddresses)) === false;
     if ($bNotInList) {
-        $aMailAddresses[] = $sMail;
+        $aMailAddresses[]['user_email'] = $sMail;
     }
 }
 
@@ -111,14 +111,21 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
             . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
-    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small> ";
 
     // E-Mail an Projekt-Verantwortlichen senden
     addToListOfEmailAddresses('RingDat_Online', 'Oscar.Reinecke@quodata.de', $aMailAddresses);
     addToListOfEmailAddresses('CalcInterface', 'blaeul@quodata.de', $aMailAddresses);
+    addToListOfEmailAddresses('PROLab', 'helling@quodata.de', $aMailAddresses);
 
-    foreach ($aMailAddresses as $sMailAddress) {
-        sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
+    $sRecipients = '';
+    foreach ($aMailAddresses as $aMailAddress) {
+        $sRecipients .= ", " . $aMailAddress['user_email'];
+    }
+    $sRecipients = "Sie ging an folgende Empfänger: " . substr($sRecipients, 2);
+    $sBody .= "<span style='background-color: #c6fed1; font-weight: bold'>$sRecipients</span ><br>";
+    foreach ($aMailAddresses as $aMailAddress) {
+        sendMailToUser($aMailAddress['user_email'], $sSubject, $sBody);
     }
 
     removeProjectFromQueue();
