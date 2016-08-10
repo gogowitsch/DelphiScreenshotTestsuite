@@ -173,6 +173,14 @@ function ProjectKilled_RemoveFromQueue() {
 
     killRunningProcess();
 
+    // Even if we kill all mintty's and bash'es at once, I guess bash still
+    // manages to curl /index.php?job_done=1&etc, which, at the end, launches
+    // an extra CasperJS terminal window. This happens only on screenshot01-pc.
+    // I inserted a tiny delay to allow startProjectTest() to detect the existing
+    // PhantomJS process. Otherwise PhantomJS wouldn't have started yet and we
+    // ended up with two CasperJS terminal windows.
+    sleep(5);
+
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
     $result = db_connect($sSQL);
