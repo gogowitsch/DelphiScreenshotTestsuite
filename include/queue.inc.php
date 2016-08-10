@@ -145,6 +145,47 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     }
 }
 
+function ProjectKilled_RemoveFromQueue() {
+    global $conn;
+
+    db_connect('');
+    $project = $conn->quote($_GET['project']);
+    $sSQL = "SELECT DISTINCT user_email
+            FROM `job_warteschlange` WHERE `project` = $project
+            AND user_email <> '';";
+    $aMailAddresses = db_connect($sSQL);
+
+    // E-mail an Nutzer: Test wurde abgebrochen
+    $hostname = gethostname();
+    $sSubject = "[DelphiScreenshotTestsuite] $project abgebrochen!!";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+
+    $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
+    $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
+
+    foreach ($aMailAddresses as $sMailAddress) {
+        sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
+    }
+
+    // Abschlossenes Projekt aus List löschen
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
+    db_connect($sSQL);
+
+    killRunningProcess();
+
+    // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
+    $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
+    $result = db_connect($sSQL);
+
+    if (!empty($result[0]['project'])) {
+        $sNextProject = $result[0]['project'];
+
+        // nächstes Projekt starten
+        header("Location: run_project.php?run=1&project=$sNextProject");
+        die;
+    }
+}
+
 function save_job() {
     global $conn;
     $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
