@@ -39,7 +39,8 @@ if (!empty($_GET['job_done'])) {
 }
 
 if (!empty($_POST['killJobs'])) {
-    killRunningProcess();
+    $_GET['project'] = $_POST['project'];
+    ProjectKilled_RemoveFromQueue();
 }
 
 $iPercentage = count($aTests) > 0 ? $iStatusSum / count($aTests) * 100 : 100;
