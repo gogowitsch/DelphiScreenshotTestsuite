@@ -130,17 +130,7 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 
     removeProjectFromQueue();
 
-    // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
-    $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
-    $result = db_connect($sSQL);
-
-    if (!empty($result[0]['project'])) {
-        $sNextProject = $result[0]['project'];
-
-        // nächstes Projekt starten
-        header("Location: run_project.php?run=1&project=$sNextProject");
-        die;
-    }
+    startNextProject();
 }
 
 function ProjectKilled_RemoveFromQueue() {
@@ -177,6 +167,23 @@ function ProjectKilled_RemoveFromQueue() {
     // ended up with two CasperJS terminal windows.
     sleep(5);
 
+    startNextProject();
+
+
+}
+
+function removeProjectFromQueue() {
+    global $conn;
+    $project = $conn->quote($_GET['project']);
+
+    // Abschlossenes Projekt aus List löschen
+    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
+    db_connect($sSQL);
+}
+
+function startNextProject() {
+    global $conn;
+
     // Ersten Eintrag aus Job-Tabelle laden um neues Projekt zu starten
     $sSQL = "SELECT `project` FROM `job_warteschlange` LIMIT 1;";
     $result = db_connect($sSQL);
@@ -188,15 +195,6 @@ function ProjectKilled_RemoveFromQueue() {
         header("Location: run_project.php?run=1&project=$sNextProject");
         die;
     }
-}
-
-function removeProjectFromQueue() {
-    global $conn;
-    $project = $conn->quote($_GET['project']);
-
-    // Abschlossenes Projekt aus List löschen
-    $sSQL = "DELETE FROM `job_warteschlange` WHERE `project` = $project;";
-    db_connect($sSQL);
 }
 
 function save_job() {
