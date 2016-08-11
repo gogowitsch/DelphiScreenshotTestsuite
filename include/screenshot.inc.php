@@ -140,6 +140,7 @@ function handleActions(&$retval) {
     if (isset($_REQUEST['doneAll']) && ($_REQUEST['doneAll'] == $retval['name'] || $bCheckedInIndexList)) {
         // Taste "B"
         set_time_limit(600);
+        session_write_close(); // damit andere Skripte des selben Browsers nicht blockiert werden
         compareAllTestFiles($_REQUEST['project']);
         updateAllTestStatus($_REQUEST['doneAll'], $_REQUEST['project']);
     }
