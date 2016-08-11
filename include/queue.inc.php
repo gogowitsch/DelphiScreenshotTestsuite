@@ -27,6 +27,7 @@ function sendMailToUser($sMailTo, $subject, $message) {
 
     try {
         //Smtp-Settings
+        $mail->Host = "web-exch.quodata.de";
         if (file_exists('smtp-settings.inc.php'))
             include 'smtp-settings.inc.php';
         $mail->SMTPAuth = !empty($mail->Password);
