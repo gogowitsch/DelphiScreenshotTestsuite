@@ -104,10 +104,11 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
+    $project = $_GET['project'];
     // E-mail an Nutzer: Projekt wurde beendet
     $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgeschlossen";
-    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=$project'>$project</a>";
 
     $sBody = "Der Test des Projektes $sLink wurde abgeschlossen.<br><br>"
             . "Testergebnisse:<br>"
@@ -135,10 +136,11 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
 }
 
 function ProjectKilled_RemoveFromQueue() {
+    $project = $_GET['project'];
     // E-mail an Nutzer: Test wurde abgebrochen
     $hostname = gethostname();
     $sSubject = "[DelphiScreenshotTestsuite] $project abgebrochen!!";
-    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=" . $_GET['project'] . "'>$project</a>";
+    $sLink = "<a href='http://$hostname/DelphiScreenshotTestsuite/html/index.php?project=$project'>$project</a>";
 
     $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
