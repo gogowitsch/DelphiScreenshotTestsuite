@@ -183,7 +183,8 @@ function getScreenshotStatus($sTestName = 'download-seite') {
         }
     }
 
-    if (!file_exists("$sStem-ist.$sExt")) {
+    $sFileIst = "$sStem-ist.$sExt";
+    if (strlen($sFileIst) + 25 >= PHP_MAXPATHLEN && !file_exists($sFileIst)) {
         // kann passieren, wenn der Pfad länger als MAX_PATH=255 wird
         $sPathOrig = getcwd();
         chdir(dirname($sStem));
