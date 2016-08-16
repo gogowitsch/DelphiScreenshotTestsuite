@@ -220,12 +220,12 @@ function save_job() {
     if ($sEmail)
         $_SESSION['email'] = $sEmail;
 
-    $sSafeEmail = $conn->quote($sEmail);
+    $sEmail = $conn->quote($sEmail);
 
 
     $project = $conn->quote($_GET['project']);
 
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
+    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sEmail, NOW());";
     db_connect($sSQL);
 
     // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
