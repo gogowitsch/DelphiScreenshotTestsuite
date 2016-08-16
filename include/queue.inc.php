@@ -16,6 +16,8 @@ db_connect("CREATE TABLE IF NOT EXISTS
   `time` datetime DEFAULT NULL
 );");
 
+require_once '../include/subscribers.inc.php';
+
 function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
@@ -220,13 +222,19 @@ function save_job() {
     if ($sEmail)
         $_SESSION['email'] = $sEmail;
 
-    $sEmail = $conn->quote($sEmail);
 
+    $aEmails = array($sEmail);
+
+    foreach(getSubscribers($_GET['project']) as $subscriber)
+        $aEmails[] = $subscriber['email'];
 
     $project = $conn->quote($_GET['project']);
 
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sEmail, NOW());";
-    db_connect($sSQL);
+    foreach($aEmails as $sEmail) {
+        $sEmail = $conn->quote($sEmail);
+        $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sEmail, NOW());";
+        db_connect($sSQL);
+    }
 
     // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
     $aHasId = db_connect("SHOW COLUMNS FROM `job_warteschlange` LIKE 'ID'");
