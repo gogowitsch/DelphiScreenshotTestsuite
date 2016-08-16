@@ -105,7 +105,7 @@ function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
 }
 
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    $aMailAddresses = getProjectSubscribers();
+    $aMailAddresses = getEmailsFromQueue();
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
@@ -150,7 +150,7 @@ function ProjectKilled_RemoveFromQueue() {
     $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
-    foreach (getProjectSubscribers() as $sMailAddress) {
+    foreach (getEmailsFromQueue() as $sMailAddress) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
@@ -169,7 +169,7 @@ function ProjectKilled_RemoveFromQueue() {
     startNextProject();
 }
 
-function getProjectSubscribers() {
+function getEmailsFromQueue() {
     global $conn;
 
     db_connect('');
