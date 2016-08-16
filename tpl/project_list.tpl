@@ -33,6 +33,11 @@
                         <td>
                             {include file="run_project.tpl" sFormTarget="form_target_$i"}
                         </td>
+                    <td>
+                    {foreach $aProject.subscribers as $subscriber}
+                        {$subscriber.email}
+                    {/foreach}
+                    </td>
                     </tr>
                 {else}
                     {assign var="bHasHiddenProjects" value="1"}
