@@ -35,7 +35,9 @@
                         </td>
                     {/strip}<td>
                     {foreach $aProject.subscribers as $subscriber}
-                        {$subscriber.email}
+                        <a href="/phpmyadmin/sql.php?db=delphiscreenshottestsuite&table=subscribers"
+                           title="Abonenntenliste in phpMyAdmin bearbeiten.">
+                        {$subscriber.email}</a>
                     {/foreach}
                     </td>{strip}
                     </tr>
