@@ -207,12 +207,7 @@ function startNextProject() {
 
 function save_job() {
     global $conn;
-    $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
-    if ($sEmail)
-        $_SESSION['email'] = $sEmail;
-
     db_connect('');
-    $sSafeEmail = $conn->quote($sEmail);
 
     /* InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
      * da noch kein job_done Parameter von InterVAL übergeben wird.
@@ -220,6 +215,13 @@ function save_job() {
     if ($_GET['project'] == "InterVAL") {
         return;
     }
+
+    $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
+    if ($sEmail)
+        $_SESSION['email'] = $sEmail;
+
+    $sSafeEmail = $conn->quote($sEmail);
+
 
     $project = $conn->quote($_GET['project']);
 
