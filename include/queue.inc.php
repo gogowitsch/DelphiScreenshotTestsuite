@@ -97,15 +97,6 @@ function countOutdatedFiles($aNewTests) {
     return $iVeraltet;
 }
 
-function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
-    if (strpos($_GET['project'], $sProject) === false)
-        return;
-    $bNotInList = array_search(strtolower($sMail), array_map('strtolower', $aMailAddresses)) === false;
-    if ($bNotInList) {
-        $aMailAddresses[]['user_email'] = $sMail;
-    }
-}
-
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
     $aMailAddresses = getEmailsFromQueue();
 
@@ -121,11 +112,6 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
             . "Testergebnisse:<br>"
             . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small> ";
-
-    // E-Mail an Projekt-Verantwortlichen senden
-    addToListOfEmailAddresses('RingDat_Online', 'Oscar.Reinecke@quodata.de', $aMailAddresses);
-    addToListOfEmailAddresses('CalcInterface', 'blaeul@quodata.de', $aMailAddresses);
-    addToListOfEmailAddresses('PROLab', 'helling@quodata.de', $aMailAddresses);
 
     $sRecipients = '';
     foreach ($aMailAddresses as $aMailAddress) {
