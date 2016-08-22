@@ -172,6 +172,11 @@ function getStatusOfAllProjects() {
             'C:\railo\tomcat\webapps\ROOT\.git\refs\heads\master',
             'cd C:\railo\tomcat\webapps\ROOT\admin\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
     }
+    if (gethostname() === 'Web02-fuer-BioVAL-Screenshottests') {
+        getProjectStatus('BioVAL',
+            'C:\xampp\htdocs\bioval.quodata.de\.git\refs\heads\master',
+            'cd C:\xampp\htdocs\bioval.quodata.de\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
+    }
 
     checkFurtherImageConversions();
 }
