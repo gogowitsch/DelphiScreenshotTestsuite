@@ -84,19 +84,21 @@
         <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
-        <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
-        {if isset($newGitLabIssueURL)}
-            <br>
-            <fieldset>
-              <legend>GitLab</legend>
-              <input id="issue-title" placeholder="Titel">
-              <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
-            </fieldset>
-        {/if}
+    </form>
+    <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
+    {if isset($newGitLabIssueURL)}
+    <form>
+        <br>
+        <fieldset>
+            <legend>GitLab</legend>
+            <input id="issue-title" placeholder="Titel">
+            <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
+        </fieldset>
+    </form>
+    {/if}
         </div>
 
 
-    </form>
     <script>
         {include file="key_binding.inc.tpl"}
 
