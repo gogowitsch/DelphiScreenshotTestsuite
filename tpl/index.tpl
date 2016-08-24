@@ -92,7 +92,7 @@
         <fieldset>
             <legend>GitLab</legend>
             <input id="issue-title" placeholder="Titel">
-            <input type="button" value="Issue anlegen">
+            <input type="submit" value="Issue anlegen">
         </fieldset>
     </form>
     {/if}
@@ -139,7 +139,9 @@
                 $('#check_all').hide();
         });
         showhide_submit();
-        $("#new-issue").click(function() {
+        $("#new-issue").submit(function(e) {
+            e.preventDefault();
+
             var title = $('#issue-title').val();
 
             var description = $("tr").map(function() {

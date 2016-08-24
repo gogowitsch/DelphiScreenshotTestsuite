@@ -125,13 +125,15 @@
   <fieldset>
     <legend>GitLab</legend>
     <input id="issue-title" placeholder="Titel">
-    <input type="button" value="Issue anlegen">
+    <input type="submit" value="Issue anlegen">
   </fieldset>
 </form>
 {/if}
 
 <script>
-    $("#new-issue").click(function() {
+    $("#new-issue").submit(function(e) {
+        e.preventDefault();
+
         var title = $('#issue-title').val();
         var description = window.location.href;
 
