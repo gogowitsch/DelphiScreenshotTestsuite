@@ -84,19 +84,21 @@
         <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
-        <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
-        {if isset($newGitLabIssueURL)}
-            <br>
-            <fieldset>
-              <legend>GitLab</legend>
-              <input id="issue-title" placeholder="Titel">
-              <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
-            </fieldset>
-        {/if}
+    </form>
+    <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
+    {if isset($newGitLabIssueURL)}
+    <form id="new-issue" data-url="{$newGitLabIssueURL}">
+        <br>
+        <fieldset>
+            <legend>GitLab</legend>
+            <input id="issue-title" placeholder="Titel">
+            <input type="submit" value="Issue anlegen">
+        </fieldset>
+    </form>
+    {/if}
         </div>
 
 
-    </form>
     <script>
         {include file="key_binding.inc.tpl"}
 
@@ -137,7 +139,9 @@
                 $('#check_all').hide();
         });
         showhide_submit();
-        $("#new-issue").click(function() {
+        $("#new-issue").submit(function(e) {
+            e.preventDefault();
+
             var title = $('#issue-title').val();
 
             var description = $("tr").map(function() {

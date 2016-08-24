@@ -121,17 +121,19 @@
 
 <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
 {if isset($newGitLabIssueURL)}
-<form>
+<form id="new-issue" data-url="{$newGitLabIssueURL}">
   <fieldset>
     <legend>GitLab</legend>
     <input id="issue-title" placeholder="Titel">
-    <input type="button" id="new-issue" value="Issue anlegen" data-url="{$newGitLabIssueURL}">
+    <input type="submit" value="Issue anlegen">
   </fieldset>
 </form>
 {/if}
 
 <script>
-    $("#new-issue").click(function() {
+    $("#new-issue").submit(function(e) {
+        e.preventDefault();
+
         var title = $('#issue-title').val();
         var description = window.location.href;
 
