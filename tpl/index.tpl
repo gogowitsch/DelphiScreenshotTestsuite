@@ -58,14 +58,18 @@
 
     <form method="post" action="#">
         <table>
+            {$nSuccess=0}
+            {$nWouldBeSuccess=0}
             {foreach $aTests as $i => $aTest}
                 {if $aTest.ext == 'bmp' || $aTest.ext == 'pdf'}
                     {continue}
                 {/if}
                 {if !$show_all && $aTest.status == 1}
+                    {$nSuccess++}
                     {continue}
                 {/if}
                 {if !$show_all && $aTest.iWouldBeStatus == 1}
+                    {$nWouldBeSuccess++}
                     {continue}
                 {/if}
                 <tr>
