@@ -65,6 +65,9 @@
                 {if !$show_all && $aTest.status == 1}
                     {continue}
                 {/if}
+                {if !$show_all && $aTest.iWouldBeStatus == 1}
+                    {continue}
+                {/if}
                 <tr>
                     <td>
                         {if $aTest.status==0}
