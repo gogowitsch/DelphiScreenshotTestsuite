@@ -69,11 +69,11 @@
                     {continue}
                 {/if}
                 {if !$show_all && $aTest.status == 1}
-                    {$nSuccess++}
+                    {$nSuccess++|truncate:0}
                     {continue}
                 {/if}
                 {if !$show_all && $aTest.iWouldBeStatus == 1}
-                    {$nWouldBeSuccess++}
+                    {$nWouldBeSuccess++|truncate:0}
                     {continue}
                 {/if}
                 <tr>
