@@ -11,7 +11,7 @@
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
     {$ShowProcess="Laufende Tests anzeigen"}
-    {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
+    {$ShowAll="Auch die folgenden Tests anzeigen"}
     {$InQueue="In der Warteschlange"}
     {$green="grün"}
     {$yellow="gelb"}
@@ -26,7 +26,7 @@
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
     {$ShowProcess="Show running process"}
-    {$ShowAll="show 100 % successful projects as well"}
+    {$ShowAll="Also show the following tests"}
     {$InQueue="Queued"}
     {$green="green"}
     {$yellow="yellow"}
@@ -171,7 +171,7 @@
     </script>
     {if !$show_all}
         <a href="?project={$project|urlencode}&show_all=1">
-            {$ShowAll} ({$nSuccess} {$green}, {$nWouldBeSuccess} {$yellow})</a>
+            {$ShowAll}: {$nSuccess} {$green}, {$nWouldBeSuccess} {$yellow}</a>
     {/if}
 
     {include file="footer.tpl"}
