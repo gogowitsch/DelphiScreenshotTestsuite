@@ -59,24 +59,28 @@
     <form method="post" action="#">
         <table>
             {foreach $aTests as $i => $aTest}
-                {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp' && $aTest.ext != 'pdf'}
-                    <tr>
-                        <td>
-                            {if $aTest.status==0}
-                                {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
-                                <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
-                            {/if}
-                        </td>
-                        <td>
-                            <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
-                        </td>
-                        <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
-                            <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
-                                {$aTest.desc}
-                            </a>
-                        </td>
-                    </tr>
+                {if $aTest.ext == 'bmp' || $aTest.ext == 'pdf'}
+                    {continue}
                 {/if}
+                {if !$show_all && $aTest.status == 1}
+                    {continue}
+                {/if}
+                <tr>
+                    <td>
+                        {if $aTest.status==0}
+                            {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
+                            <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
+                        {/if}
+                    </td>
+                    <td>
+                        <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
+                    </td>
+                    <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
+                        <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
+                            {$aTest.desc}
+                        </a>
+                    </td>
+                </tr>
             {/foreach}
         </table>
         <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
