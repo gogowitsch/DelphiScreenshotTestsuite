@@ -11,8 +11,10 @@
     {$MoeSi="M&ouml;chten Sie die Testergebnisse (Ist-Zustand) wirklich l&ouml;schen?"}
     {$DaIsSi="Das ist sinnvoll, wenn es verwaist ist, also nicht mehr generiert wird."}
     {$ShowProcess="Laufende Tests anzeigen"}
-    {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
+    {$ShowAll="Auch die folgenden Tests anzeigen"}
     {$InQueue="In der Warteschlange"}
+    {$green="grün"}
+    {$yellow="gelb"}
 {else}
     {$Proj="Project Overview"}
     {$Running="Test in progress, initiated on"}
@@ -24,8 +26,10 @@
     {$MoeSi="Do you really want to remove the selected test results (Actual state)?"}
     {$DaIsSi="That is useful when the test results don\'t get generated anymore."}
     {$ShowProcess="Show running process"}
-    {$ShowAll="show 100 % successful projects as well"}
+    {$ShowAll="Also show the following tests"}
     {$InQueue="Queued"}
+    {$green="green"}
+    {$yellow="yellow"}
 {/if}
 
 
@@ -58,25 +62,36 @@
 
     <form method="post" action="#">
         <table>
+            {$nSuccess=0}
+            {$nWouldBeSuccess=0}
             {foreach $aTests as $i => $aTest}
-                {if ($show_all || $aTest.status==0) && $aTest.ext != 'bmp' && $aTest.ext != 'pdf'}
-                    <tr>
-                        <td>
-                            {if $aTest.status==0}
-                                {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
-                                <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
-                            {/if}
-                        </td>
-                        <td>
-                            <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
-                        </td>
-                        <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
-                            <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
-                                {$aTest.desc}
-                            </a>
-                        </td>
-                    </tr>
+                {if $aTest.ext == 'bmp' || $aTest.ext == 'pdf'}
+                    {continue}
                 {/if}
+                {if !$show_all && $aTest.status == 1}
+                    {$nSuccess++|truncate:0}
+                    {continue}
+                {/if}
+                {if !$show_all && $aTest.iWouldBeStatus == 1}
+                    {$nWouldBeSuccess++|truncate:0}
+                    {continue}
+                {/if}
+                <tr>
+                    <td>
+                        {if $aTest.status==0}
+                            {* die folgende Checkbox wird von screenshot.inc.php in handleActions() ausgewertet *}
+                            <input id="cb{$i}" type=checkbox name="check[]" value="{$aTest.name|urlencode|htmlentities}" />
+                        {/if}
+                    </td>
+                    <td>
+                        <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
+                    </td>
+                    <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
+                        <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
+                            {$aTest.desc}
+                        </a>
+                    </td>
+                </tr>
             {/foreach}
         </table>
         <a id='check_all' href="javascript:check_all(true)">{$AllM}</a><br>
@@ -154,7 +169,10 @@
               + '&issue[description]=' + encodeURIComponent(description) )
         });
     </script>
-    {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
+    {if !$show_all}
+        <a href="?project={$project|urlencode}&show_all=1">
+            {$ShowAll}: {$nSuccess} {$green}, {$nWouldBeSuccess} {$yellow}</a>
+    {/if}
 
     {include file="footer.tpl"}
 {/strip}
