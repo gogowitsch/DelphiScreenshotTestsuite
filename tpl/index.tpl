@@ -13,6 +13,8 @@
     {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
     {$InQueue="In der Warteschlange"}
+    {$green="grün"}
+    {$yellow="gelb"}
 {else}
     {$Proj="Project Overview"}
     {$Running="Test in progress, initiated on"}
@@ -26,6 +28,8 @@
     {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
     {$InQueue="Queued"}
+    {$green="green"}
+    {$yellow="yellow"}
 {/if}
 
 
@@ -165,7 +169,10 @@
               + '&issue[description]=' + encodeURIComponent(description) )
         });
     </script>
-    {if !$show_all}<a href="?project={$project|urlencode}&show_all=1">{$ShowAll}</a>{/if}
+    {if !$show_all}
+        <a href="?project={$project|urlencode}&show_all=1">
+            {$ShowAll} ({$nSuccess} {$green}, {$nWouldBeSuccess} {$yellow})</a>
+    {/if}
 
     {include file="footer.tpl"}
 {/strip}
