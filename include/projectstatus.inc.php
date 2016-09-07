@@ -42,6 +42,10 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
                "`status` BOOLEAN,".
                "`ratio` VARCHAR(255))");
 
+    ob_start();
+    db_connect("ALTER TABLE `projects` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
+    ob_end_clean();
+
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
