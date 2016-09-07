@@ -30,6 +30,9 @@
                         <td class="status{$aProject.status} ratio">
                             {$aProject.ratio} erfolgreich
                         </td>
+                        <td class="status{$aProject.status}">
+                            {$aProject.duration}
+                        </td>
                         <td>
                             {include file="run_project.tpl" sFormTarget="form_target_$i"}
                         </td>

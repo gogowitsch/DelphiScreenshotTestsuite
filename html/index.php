@@ -36,6 +36,15 @@ if (!empty($_GET['job_done'])) {
     rename($sLockFile, $sDoneFile); // damit ist das Änderungsdatum des DoneFiles vom Start des Tests
     ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
     removeRunningTestFolder();
+
+    $seconds = time() - filemtime($sDoneFile);
+    $duration = array();
+    while (count($duration) < 3) {
+        $duration[] = sprintf("%'.02d", $seconds % 60);
+        $seconds /= 60;
+    }
+    $duration = implode(array_reverse($duration), ':');
+    db_connect("UPDATE `projects` SET `duration` = '$duration' WHERE `title` = '$project';");
 }
 
 if (!empty($_POST['killJobs'])) {
