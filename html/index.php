@@ -34,8 +34,6 @@ if (!empty($_GET['job_done'])) {
         mkdir($sDoneFolder, 0777, true);
     $sDoneFile = "$sDoneFolder/$project.DONE";
     rename($sLockFile, $sDoneFile); // damit ist das Änderungsdatum des DoneFiles vom Start des Tests
-    ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
-    removeRunningTestFolder();
 
     $seconds = time() - filemtime($sDoneFile);
     $duration = array();
@@ -45,6 +43,9 @@ if (!empty($_GET['job_done'])) {
     }
     $duration = implode(array_reverse($duration), ':');
     db_connect("UPDATE `projects` SET `duration` = '$duration' WHERE `title` = '$project';");
+
+    ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests);
+    removeRunningTestFolder();
 }
 
 if (!empty($_POST['killJobs'])) {
