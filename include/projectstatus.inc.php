@@ -45,6 +45,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     ob_start();
     db_connect("ALTER TABLE `projects` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
     db_connect("ALTER TABLE `projects` ADD COLUMN `duration` VARCHAR(32) NULL DEFAULT '';");
+    db_connect("ALTER TABLE `projects` ADD UNIQUE(`title`);");
     ob_end_clean();
 
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
@@ -97,11 +98,11 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         'cmd' => $sCmd
     );
 
-    db_connect("DELETE from `projects` where `title` = ".$conn->quote($sProject));
     db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".
                $conn->quote($aProject['title']).", ".
                $conn->quote($aProject['status']).", ".
-               $conn->quote($aProject['ratio']).")");
+               $conn->quote($aProject['ratio']).")
+        ON DUPLICATE KEY UPDATE `status`=VALUES(`status`), `ratio`=VALUES(`ratio`)");
 
     $aProjects[] = $aProject;
 
