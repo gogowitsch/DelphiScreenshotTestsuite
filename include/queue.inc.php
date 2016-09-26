@@ -168,6 +168,13 @@ function getEmailsFromQueue() {
     return db_connect($sSQL);
 }
 
+function getDoneFile($project) {
+    $sDoneFolder = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess";
+    if (!file_exists($sDoneFolder))
+        mkdir($sDoneFolder, 0777, true);
+    return "$sDoneFolder/$project.DONE";
+}
+
 function removeProjectFromQueue() {
     global $conn;
     $project = $conn->quote($_GET['project']);

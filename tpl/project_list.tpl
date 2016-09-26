@@ -23,6 +23,15 @@
         {/if}
 
         <table>
+            <thead>
+              <th>Title</th>
+              <th>Ratio</th>
+              <th>Duration</th>
+              <th>Last run</th>
+              <th></th>
+              <td>Subscribers</th>
+            </thead>
+            <tbody>
             {foreach $aProjects as $i => $aProject}
                 {if $show_all || $aProject.status==0}
                     <tr>
@@ -34,6 +43,11 @@
                         </td>
                         <td class="status{$aProject.status}">
                             {$aProject.duration}
+                        </td>
+                        <td class="status{$aProject.last_run > $aProject.exe_time}">
+                            {if $aProject.last_run}
+                              {$aProject.last_run|date_format:"%Y-%m-%d %T"}
+                            {/if}
                         </td>
                         <td>
                             {include file="run_project.tpl" sFormTarget="form_target_$i"}
@@ -55,6 +69,7 @@
                     {assign var="bHasHiddenProjects" value="1"}
                 {/if}
             {/foreach}
+            </tbody>
         </table>
         {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">{$ShowAll}</a><br><br>{/if}
         <iframe src='show_running_process.php' style='overflow: hidden; height:1.5em;width:100%;border:none'></iframe>

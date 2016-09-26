@@ -52,6 +52,9 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
+    $sExePath = $p_sExePath;
+    $iExeTime = @filemtime($sExePath);
+
     global $conn;
     if (empty($_GET['project'])) {
         // die Startseite wird geladen
@@ -61,6 +64,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
             // Cache nutzen
             $aResult[0]['cmd'] = $sCmd;
             $aResult[0]['subscribers'] = getSubscribers($sProject);
+            $aResult[0]['last_run'] = getLastRunTime($aResult[0]['title']);
+            $aResult[0]['exe_time'] = $iExeTime;
             $aProjects[] = $aResult[0];
             return;
         }
@@ -70,11 +75,9 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         startProjectTest($sProject, $sCmd);
     }
 
-    $sDoneFile = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess/$sProject.DONE";
+    $sDoneFile = getDoneFile($sProject);
 
     $sPicturePath = "$sProject/";
-    $sExePath = $p_sExePath;
-    $iExeTime = filemtime($sExePath);
     $aNewTests = array();
     $iLocalStatusSum = 0;
     array_walk(glob("Bilder/$sPicturePath*-ist.???"), function($sFile) {
@@ -98,7 +101,9 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         'status' => $iLocalStatusSum == count($aNewTests) ? 1 : 0,
         'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
         'cmd' => $sCmd,
-        'subscribers' => getSubscribers($sProject)
+        'subscribers' => getSubscribers($sProject),
+        'last_run' => getLastRunTime($sProject),
+        'exe_time' => $iExeTime
     );
 
     db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".
@@ -220,4 +225,11 @@ function killRunningProcess() {
     $sLastLine = exec($sCmd, $aOutput, $iStatus);
     if ($iStatus)
         die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
+}
+
+function getLastRunTime($sProject) {
+    $sDoneFile = getDoneFile($sProject);
+    if (!file_exists($sDoneFile)) return 0;
+
+    return filemtime($sDoneFile);
 }

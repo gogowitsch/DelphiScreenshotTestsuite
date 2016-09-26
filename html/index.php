@@ -25,10 +25,7 @@ if (!empty($_GET['project'])) {
 
 // Abgeschlossene Jobs löschen und neuen starten
 if (!empty($_GET['job_done'])) {
-    $sDoneFolder = "C:/xampp/htdocs/DelphiScreenshotTestsuite/html/FinishedProcess";
-    if (!file_exists($sDoneFolder))
-        mkdir($sDoneFolder, 0777, true);
-    $sDoneFile = "$sDoneFolder/$project.DONE";
+    $sDoneFile = getDoneFile($project);
     rename($sLockFile, $sDoneFile); // damit ist das Änderungsdatum des DoneFiles vom Start des Tests
 
     $seconds = time() - filemtime($sDoneFile);
