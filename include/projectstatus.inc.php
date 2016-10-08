@@ -1,6 +1,7 @@
 <?php
 
 require_once '../include/queue.inc.php';
+require_once '../include/subscribers.inc.php';
 
 function startProjectTest($sProject, $sCmd) {
     global $sAhkCmd, $sAhkFolderPl;
@@ -59,6 +60,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         if (count($aResult)) {
             // Cache nutzen
             $aResult[0]['cmd'] = $sCmd;
+            $aResult[0]['subscribers'] = getSubscribers($sProject);
             $aProjects[] = $aResult[0];
             return;
         }
@@ -95,7 +97,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         'title' => $sProject,
         'status' => $iLocalStatusSum == count($aNewTests) ? 1 : 0,
         'ratio' => $iLocalStatusSum . " / " . count($aNewTests),
-        'cmd' => $sCmd
+        'cmd' => $sCmd,
+        'subscribers' => getSubscribers($sProject)
     );
 
     db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".

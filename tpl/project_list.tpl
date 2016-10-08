@@ -3,10 +3,12 @@
     {$Erf="erfolgreich"}
     {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
+    {$sAddSubscriber = "Abonnent hinzu"}
 {else}
     {$Erf="successful"}
     {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
+    {$sAddSubscriber = "Add subscriber"}
 {/if}
 
 {if $ini}
@@ -35,6 +37,18 @@
                         </td>
                         <td>
                             {include file="run_project.tpl" sFormTarget="form_target_$i"}
+                        </td>
+                        <td class='subscribers status{$aProject.status}'>
+
+                            <a href="/phpmyadmin/sql.php?db=delphiscreenshottestsuite&table=subscribers"
+                               title="Abonenntenliste in phpMyAdmin bearbeiten.">
+                                {foreach $aProject.subscribers as $key => $subscriber}
+                                    {if $key > 0}, {/if}
+                                    {$subscriber.email|stripDomainIfQuoData}
+                                {foreachelse}
+                                    + {$sAddSubscriber}
+                                {/foreach}
+                            </a>
                         </td>
                     </tr>
                 {else}

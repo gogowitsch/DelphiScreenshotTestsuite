@@ -16,6 +16,8 @@ db_connect("CREATE TABLE IF NOT EXISTS
   `time` datetime DEFAULT NULL
 );");
 
+require_once '../include/subscribers.inc.php';
+
 function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
     if (file_exists("../$path")) {
@@ -95,17 +97,8 @@ function countOutdatedFiles($aNewTests) {
     return $iVeraltet;
 }
 
-function addToListOfEmailAddresses($sProject, $sMail, &$aMailAddresses) {
-    if (strpos($_GET['project'], $sProject) === false)
-        return;
-    $bNotInList = array_search(strtolower($sMail), array_map('strtolower', $aMailAddresses)) === false;
-    if ($bNotInList) {
-        $aMailAddresses[]['user_email'] = $sMail;
-    }
-}
-
 function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
-    $aMailAddresses = getProjectSubscribers();
+    $aMailAddresses = getEmailsFromQueue();
 
     $iPercentage = ($iStatusSum / count($aTests)) * 100;
 
@@ -119,11 +112,6 @@ function ProjectDone_RemoveFromQueue($iStatusSum, $aTests, $aNewTests) {
             . "Testergebnisse:<br>"
             . "<span style='background-color: #99ff99'>" . round($iPercentage) . ' %' . " erfolgreich.</span ><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small> ";
-
-    // E-Mail an Projekt-Verantwortlichen senden
-    addToListOfEmailAddresses('RingDat_Online', 'Oscar.Reinecke@quodata.de', $aMailAddresses);
-    addToListOfEmailAddresses('CalcInterface', 'blaeul@quodata.de', $aMailAddresses);
-    addToListOfEmailAddresses('PROLab', 'helling@quodata.de', $aMailAddresses);
 
     $sRecipients = '';
     foreach ($aMailAddresses as $aMailAddress) {
@@ -150,7 +138,7 @@ function ProjectKilled_RemoveFromQueue() {
     $sBody = "<span style='background-color:#FF9999'>Der Test des Projektes $sLink wurde abgebrochen</span>.<br><br>";
     $sBody .= "<small>Diese E-Mail wurde automatisch von " . __FILE__ . " auf $hostname erstellt.</small>";
 
-    foreach (getProjectSubscribers() as $sMailAddress) {
+    foreach (getEmailsFromQueue() as $sMailAddress) {
         sendMailToUser($sMailAddress['user_email'], $sSubject, $sBody);
     }
 
@@ -169,7 +157,7 @@ function ProjectKilled_RemoveFromQueue() {
     startNextProject();
 }
 
-function getProjectSubscribers() {
+function getEmailsFromQueue() {
     global $conn;
 
     db_connect('');
@@ -207,12 +195,7 @@ function startNextProject() {
 
 function save_job() {
     global $conn;
-    $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
-    if ($sEmail)
-        $_SESSION['email'] = $sEmail;
-
     db_connect('');
-    $sSafeEmail = $conn->quote($sEmail);
 
     /* InterVAL soll im Moment nicht in die Jobliste gespeichert werden,
      * da noch kein job_done Parameter von InterVAL übergeben wird.
@@ -221,10 +204,23 @@ function save_job() {
         return;
     }
 
+    $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
+    if ($sEmail)
+        $_SESSION['email'] = $sEmail;
+
+
+    $aEmails = array($sEmail);
+
+    foreach(getSubscribers($_GET['project']) as $subscriber)
+        $aEmails[] = $subscriber['email'];
+
     $project = $conn->quote($_GET['project']);
 
-    $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sSafeEmail, NOW());";
-    db_connect($sSQL);
+    foreach($aEmails as $sEmail) {
+        $sEmail = $conn->quote($sEmail);
+        $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sEmail, NOW());";
+        db_connect($sSQL);
+    }
 
     // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
     $aHasId = db_connect("SHOW COLUMNS FROM `job_warteschlange` LIKE 'ID'");
