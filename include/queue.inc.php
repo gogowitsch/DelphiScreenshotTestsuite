@@ -59,13 +59,19 @@ function sendMailToUser($sMailTo, $subject, $message) {
 
 function db_connect($sSQL) {
     global $conn;
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "delphiscreenshottestsuite";
 
     try {
         if (empty($conn)) {
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "delphiscreenshottestsuite";
+
+            // allow instances to override the default settings, e.g. specify a password
+            $sDatabaseConfig = '../config/config.database.inc.php';
+            if (file_exists($sDatabaseConfig))
+                include($sDatabaseConfig);
+
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
