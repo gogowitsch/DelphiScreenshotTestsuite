@@ -12,10 +12,6 @@ $aVeraltet = array();
 getStatusOfAllProjects();
 
 $iProj = count($aProjects);
-if ($iProj == 1) {
-    $aProject = reset($aProjects);
-    $_GET['project'] = $aProject['title'];
-}
 
 if (!empty($_GET['project'])) {
     $project = $_GET['project'];
@@ -69,4 +65,4 @@ if ($iProj == 0) {
     die("<h1>Fehler</h1>$sMsg<br><br>
     Sie können die Liste der Projekte in <tt>" . dirname(dirname(__FILE__)) . "\include\projectstatus.inc.php</tt> bearbeiten.");
 }
-$smarty->display($iProj < 2 ? 'index.tpl' : 'project_list.tpl');
+$smarty->display(empty($_GET['project']) ?  'project_list.tpl' : 'index.tpl');
