@@ -23,6 +23,8 @@ if (preg_match('/^RingDat_Online\./', $project))
     $gitLabURL = "https://git04.quodata.de/it/rdo";
 elseif ($project === "LPP.AOCS")
     $gitLabURL = "https://git04.quodata.de/it/lpp";
+elseif ($project === "OEQUASTA")
+    $gitLabURL = "https://git04.quodata.de/it/oequasta";
 
 if (isset($gitLabURL))
     $smarty->assign('newGitLabIssueURL', "$gitLabURL/issues/new");
