@@ -164,6 +164,7 @@ function getStatusOfAllProjects() {
         getRdoProjectStatus('InstitutEignungspruefung');
         getRdoProjectStatus('UBA-Wien');
         getRdoProjectStatus('Eurofins');
+        getRdoProjectStatus('kwrwater.nl');
         getRdoProjectStatus('NIST-OWM');
         getRdoProjectStatus('NIST-MML');
         getRdoProjectStatus('RKI');
