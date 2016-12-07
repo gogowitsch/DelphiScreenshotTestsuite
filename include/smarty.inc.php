@@ -21,6 +21,8 @@ $project = isset($_GET['project']) ? $_GET['project'] : '';
 // ADD MORE REPOSITORIES HERE!!!
 if (preg_match('/^RingDat_Online\./', $project))
     $gitLabURL = "https://git04.quodata.de/it/rdo";
+elseif ($project === "BioVAL")
+    $gitLabURL = "https://git04.quodata.de/it/bioval-im-web";
 elseif ($project === "LPP.AOCS")
     $gitLabURL = "https://git04.quodata.de/it/lpp";
 elseif ($project === "OEQUASTA")
