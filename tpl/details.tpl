@@ -139,6 +139,7 @@
 
         window.open($(this).data('url')
           + '?issue[title]=' + encodeURIComponent(title)
+          + '&issue[label_ids][]=310' /* Screenshottest (Group) */
           + '&issue[description]=' + encodeURIComponent(description) )
     });
 </script>
