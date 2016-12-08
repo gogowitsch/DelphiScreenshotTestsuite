@@ -134,7 +134,7 @@
     $("#new-issue").submit(function(e) {
         e.preventDefault();
 
-        var title = $('#issue-title').val();
+        var title = "Screenshot-Test: " + $('#issue-title').val();
         var description = window.location.href;
 
         window.open($(this).data('url')
