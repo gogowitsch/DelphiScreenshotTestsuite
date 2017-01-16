@@ -131,7 +131,7 @@ function getProjectStatusPl($sProject, $sExePath) {
 function getRdoProjectStatus($sDesign) {
     $sLvuTestPath = 'C:\xampp\htdocs\lvu\tests\PhantomJS';
     $sLvuGitRef = $sLvuTestPath . '\Alter_des_Branches-reviewed-code-for-screenshots.txt';
-    $sGitCmds = "cd /d $sLvuTestPath && git pull";
+    $sGitCmds = "cd /d $sLvuTestPath && git checkout reviewed-code-for-screenshots && git pull";
     getProjectStatus("RingDat_Online.$sDesign", $sLvuGitRef, "$sGitCmds && ( fork_test.sh $sDesign || echo ok )");
 }
 
