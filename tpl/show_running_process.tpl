@@ -10,7 +10,7 @@
     {else}
         <div style="background-color: #ff9999" id="no_running_pocces">
             There is no running process.
-            <button name="killJobs">Test-Prozesse stoppen <small>(doch eigentlich sollten keine laufen)</small></button>
+            <input name="killJobs" type="submit" value="Clear Processes Anyway">
         </div>
     {/if}
 </form>
