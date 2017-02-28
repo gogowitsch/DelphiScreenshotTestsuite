@@ -20,14 +20,12 @@ require_once '../include/subscribers.inc.php';
 
 function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';
-    if (file_exists("../$path")) {
-        // TODO: auch class smtp laden
-        require_once("../$path");
+    if (!file_exists("../$path")) {
+        `echo %cd%`;
+        $path = "../lvu/$path";
     }
-    else {
-        echo `echo %cd%`;
-        require_once("../../lvu/$path");
-    }
+    require_once("../$path");
+    require(dirname("../$path") . '/class.SMTP.php');
 
     $mail = new PHPMailer(true);
     $mail->IsSMTP();
