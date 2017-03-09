@@ -25,7 +25,7 @@ function sendMailToUser($sMailTo, $subject, $message) {
         $path = "../lvu/$path";
     }
     require_once("../$path");
-    require(dirname("../$path") . '/class.SMTP.php');
+    require_once(dirname("../$path") . '/class.SMTP.php');
 
     $mail = new PHPMailer(true);
     $mail->IsSMTP();
