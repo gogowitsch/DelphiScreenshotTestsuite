@@ -79,5 +79,5 @@ function convertToPngIfNeeded($sName, &$sExt) {
 
     if (!$sRetVal)
         return $sName . '.png';
-    die("<tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b>");
+    echo "<h1>Fehler 547</h1><tt>$sCmd</tt><br><b style='color:red'>$sRetVal </b><hr>";
 }
