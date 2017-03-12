@@ -66,6 +66,7 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
             $aResult[0]['subscribers'] = getSubscribers($sProject);
             $aResult[0]['last_run'] = getLastRunTime($aResult[0]['title']);
             $aResult[0]['exe_time'] = $iExeTime;
+            $aResult[0]['exe_path'] = $sExePath;
             $aProjects[] = $aResult[0];
             return;
         }
@@ -103,7 +104,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
         'cmd' => $sCmd,
         'subscribers' => getSubscribers($sProject),
         'last_run' => getLastRunTime($sProject),
-        'exe_time' => $iExeTime
+        'exe_time' => $iExeTime,
+        'exe_path' => $sExePath,
     );
 
     db_connect("INSERT into `projects` (`title`, `status`, `ratio`) VALUES (".
