@@ -4,11 +4,15 @@
     {$ShowProcess="Laufende Tests anzeigen"}
     {$ShowAll="auch 100 % erfolgreiche Projekte zeigen"}
     {$sAddSubscriber = "Abonnent hinzu"}
+    {$sTestUpToDate = "Die Testergebnisse beziehen sich auf das neuste Release"}
+    {$sTestOutdated = "Es gibt ein neues Release, das noch nicht getestet wurde - der Test ist veraltet"}
 {else}
     {$Erf="successful"}
     {$ShowProcess="Show running process"}
     {$ShowAll="show 100 % successful projects as well"}
     {$sAddSubscriber = "Add subscriber"}
+    {$sTestUpToDate = "Test results cover the most recent release - they are up-to-date"}
+    {$sTestOutdated = "Test finished before most recent than release and is thus outdated"}
 {/if}
 
 {if $ini}
@@ -44,11 +48,15 @@
                         <td class="status{$aProject.status}">
                             {$aProject.duration}
                         </td>
-                        <td class="status{$aProject.last_run > $aProject.exe_time}">
-                            {if $aProject.last_run}
-                              {$aProject.last_run|date_format:"%Y-%m-%d %T"}
-                            {/if}
-                        </td>
+                        {if $aProject.last_run}
+                            <td class="test-alter{$aProject.last_run > $aProject.exe_time}" 
+                                data-exe_path="{$aProject.exe_path}" 
+                                data-exe_time="{$aProject.exe_time|date_format:'%Y-%m-%d %T'}">
+                                {$aProject.last_run|date_format:"%Y-%m-%d %T"}
+                            </td>
+                        {else}
+                            <td></td>
+                        {/if}
                         <td>
                             {include file="run_project.tpl" sFormTarget="form_target_$i"}
                         </td>
@@ -71,6 +79,14 @@
             {/foreach}
             </tbody>
         </table>
+        <script>
+            function setLastRunTitle(sSelector, sTemplate) {
+                var el = $(sSelector);
+                el.attr('title', sTemplate + '\nRelease: ' + el.data('exe_time') + ', ' + el.data('exe_path'));
+            }
+            setLastRunTitle('.test-alter1', '{$sTestUpToDate}');
+            setLastRunTitle('.test-alter', '{$sTestOutdated}');
+        </script>
         {if !$show_all && $bHasHiddenProjects}<a href="?show_all=1">{$ShowAll}</a><br><br>{/if}
         <iframe src='show_running_process.php' style='overflow: hidden; height:1.5em;width:100%;border:none'></iframe>
         {include file="footer.tpl"}

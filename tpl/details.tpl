@@ -119,7 +119,7 @@
     </div>
 </form>
 
-<!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
+<!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! -->
 {if isset($newGitLabIssueURL)}
 <form id="new-issue" data-url="{$newGitLabIssueURL}">
   <fieldset>
@@ -145,14 +145,14 @@
 </script>
 
 <div class='buttons' style='z-index:22'>
-    <button id="done-button" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}';">
+    <button id="done-button" href="done.php?done={$aTest.name|urlencode}&project={$project|urlencode}">
         A: {$IstZ}
     </button>
     {if $aTest.ext=='png' && file_exists($aTest.fileSoll)}
-        <button id="done-button-alternative" title="speichert den Ist-Wert als Sollwert-Alternative" onclick="location.href = 'done.php?done={$aTest.name|urlencode}&project={$project|urlencode}&alternative=1';">
+        <button id="done-button-alternative" title="speichert den Ist-Wert als Sollwert-Alternative" href="done.php?done={$aTest.name|urlencode}&project={$project|urlencode}&alternative=1">
             *
         </button>
-        <button id="doneAll-button" onclick="location.href = 'done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}';">
+        <button id="doneAll-button" href="done.php?doneAll={$aTest.name|urlencode}&project={$project|urlencode}">
             B: {$GleiU}
         </button>
     {/if}

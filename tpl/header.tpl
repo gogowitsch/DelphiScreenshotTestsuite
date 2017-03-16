@@ -15,6 +15,8 @@
             }
             .status1 a { text-decoration: none; color:black; }
             .status1 { background: #99ff99 {* gut - grün *} }
+            .test-alter { background: #ffabb5 {* veraltet - rosa *} }
+            .test-alter1 { background: #86ec86 {* gut - grün *} }
             tr .wouldbe1 { background: yellow; }
             tr .wouldbe-1 { background: black; }
             tr .wouldbe-1 a { text-decoration:none; color:white; }
