@@ -49,7 +49,9 @@
                             {$aProject.duration}
                         </td>
                         {if $aProject.last_run}
-                            <td class="test-alter{$aProject.last_run > $aProject.exe_time}" data-exe_path="{$aProject.exe_path}" data-exe_time="{$aProject.exe_time|date_format:'%Y-%m-%d %T'}">
+                            <td class="test-alter{$aProject.last_run > $aProject.exe_time}" 
+                                data-exe_path="{$aProject.exe_path}" 
+                                data-exe_time="{$aProject.exe_time|date_format:'%Y-%m-%d %T'}">
                                 {$aProject.last_run|date_format:"%Y-%m-%d %T"}
                             </td>
                         {else}
@@ -79,7 +81,7 @@
         </table>
         <script>
             function setLastRunTitle(sSelector, sTemplate) {
-                var el = $('.test-alter1');
+                var el = $(sSelector);
                 el.attr('title', sTemplate + '\nRelease: ' + el.data('exe_time') + ', ' + el.data('exe_path'));
             }
             setLastRunTitle('.test-alter1', '{$sTestUpToDate}');
