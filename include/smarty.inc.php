@@ -27,6 +27,8 @@ elseif ($project === "LPP.AOCS")
     $gitLabURL = "https://git04.quodata.de/it/lpp";
 elseif ($project === "OEQUASTA")
     $gitLabURL = "https://git04.quodata.de/it/oequasta";
+if (preg_match('/^PROLab/', $project))
+    $gitLabURL = "https://git04.quodata.de/it/prolab";
 
 if (isset($gitLabURL))
     $smarty->assign('newGitLabIssueURL', "$gitLabURL/issues/new");
