@@ -175,6 +175,7 @@ function getStatusOfAllProjects() {
         getRdoProjectStatus('NIST-OWM');
         getRdoProjectStatus('NIST-MML');
         getRdoProjectStatus('RKI');
+        getRdoProjectStatus('KIMW');
     }
     if (in_array($sHost, array('reinecke01-pc'))) {
         getProjectStatus('LPP.AOCS',
