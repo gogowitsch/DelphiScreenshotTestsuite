@@ -1,2 +1,2 @@
 <?php
-header('Location: html');
+header('Location: html?' . $_SERVER['QUERY_STRING']);
