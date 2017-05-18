@@ -81,7 +81,8 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     $sPicturePath = "$sProject/";
     $aNewTests = array();
     $iLocalStatusSum = 0;
-    array_walk(glob("Bilder/$sPicturePath*-ist.???"), function($sFile) {
+    $aFiles = glob("Bilder/$sPicturePath*-ist.???");
+    array_walk($aFiles, function($sFile) {
         global $aNewTests, $iLocalStatusSum, $sScreenshotName;
 
         $aNewTests[] = $aTest = getScreenshotStatus($sFile);
