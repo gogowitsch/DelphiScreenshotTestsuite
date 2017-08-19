@@ -195,9 +195,11 @@ function getStatusOfAllProjects() {
         getProjectStatus('BioVAL',
             'C:\xampp\htdocs\bioval.quodata.de\.git\refs\heads\master',
             'cd C:\xampp\htdocs\bioval.quodata.de\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
+    }
+    if (stristr(gethostname(), 'OEQUASTA')) {
         getProjectStatus('OEQUASTA',
-            'C:\xampp\htdocs\oequasta\.git\refs\heads\reviewed-code-for-screenshots',
-            'cd C:\xampp\htdocs\oequasta\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
+            'C:\WAMP\htdocs\oequasta\.git\refs\heads\reviewed-code-for-screenshots',
+            'cd C:\WAMP\htdocs\oequasta\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
     }
 
     checkFurtherImageConversions();
