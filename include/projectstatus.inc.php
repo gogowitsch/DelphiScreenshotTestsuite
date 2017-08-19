@@ -240,7 +240,7 @@ function aufLaufendeTestsPruefen(&$sCmd, &$iStatus, &$sOutput, $sAhkParam) {
         $sDesktop = dirname($sAhkFolderPl);
         echo `cd /d $sDesktop && git clone https://git04.quodata.de/it/DelphiScreenshotTestsuite-AHK.git ScreenshotsPROLab`;
     }
-    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" $sAhkParam";
+    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" $sAhkParam 2>&1";
 
     exec($sCmd, $aOutput, $iStatus);
     $sOutput = join("\n", $aOutput);
