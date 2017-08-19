@@ -6,11 +6,8 @@ require_once '../include/subscribers.inc.php';
 function startProjectTest($sProject, $sCmd) {
     global $sAhkCmd, $sAhkFolderPl;
     if (!empty($sCmd)) {
-        $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
-        if (file_exists($sCheckRunningTestsScript))
-            $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" && $sCmd";
-        exec("( $sCmd ) 2>&1", $aOutput, $iStatus);
-        $sOutput = join("\n", $aOutput);
+        aufLaufendeTestsPruefen($sCmd, $iStatus, $sOutput, ' && '.$sCmd);
+
         $sColor = $iStatus ? 'red' : 'green';
         $_GET['message'] = "Kommandozeile '$sCmd' wurde ausgef&uuml;hrt " .
                 "(Rückgabewert $iStatus). " .
@@ -33,7 +30,9 @@ function startProjectTest($sProject, $sCmd) {
 }
 
 /**
+ * @param string $sProject
  * @param string $p_sExePath wird für Ermittlung des Verfallsdatums verwendet, wird nicht zum Start verwendet
+ * @param string $sCmd
  */
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
@@ -221,14 +220,30 @@ function removeRunningTestFolder() {
 }
 
 function killRunningProcess() {
-    global $sAhkCmd, $sAhkFolderPl;
-    $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
-    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" killProcess";
-
     removeRunningTestFolder();
-    $sLastLine = exec($sCmd, $aOutput, $iStatus);
+    aufLaufendeTestsPruefen($sCmd, $iStatus, $sLastLine, 'killProcess');
     if ($iStatus)
         die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
+}
+
+/**
+ * @param string $sCmd gibt die Kommandozeile zurück (für Fehlermeldungen)
+ * @param int $iStatus Errorlevel (0 = Erfolg)
+ * @param string $sOutput - Ausgabe von AHK
+ * @param string $sAhkParam - weitere an AHK zu übergebende Parameter
+ */
+function aufLaufendeTestsPruefen(&$sCmd, &$iStatus, &$sOutput, $sAhkParam) {
+    global $sAhkCmd, $sAhkFolderPl;
+
+    $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
+    if (!file_exists($sCheckRunningTestsScript)) {
+        $sDesktop = dirname($sAhkFolderPl);
+        echo `cd /d $sDesktop && git clone https://git04.quodata.de/it/DelphiScreenshotTestsuite-AHK.git ScreenshotsPROLab`;
+    }
+    $sCmd = "$sAhkCmd \"$sCheckRunningTestsScript\" $sAhkParam 2>&1";
+
+    exec($sCmd, $aOutput, $iStatus);
+    $sOutput = join("\n", $aOutput);
 }
 
 function getLastRunTime($sProject) {
