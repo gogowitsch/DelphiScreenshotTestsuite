@@ -37,17 +37,6 @@ function startProjectTest($sProject, $sCmd) {
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
 
-    db_connect("CREATE TABLE IF NOT EXISTS `projects` ( ".
-               "`title` VARCHAR(255),".
-               "`status` BOOLEAN,".
-               "`ratio` VARCHAR(255))");
-
-    ob_start();
-    db_connect("ALTER TABLE `projects` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
-    db_connect("ALTER TABLE `projects` ADD COLUMN `duration` VARCHAR(32) NULL DEFAULT '';");
-    db_connect("ALTER TABLE `projects` ADD UNIQUE(`title`);");
-    ob_end_clean();
-
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
