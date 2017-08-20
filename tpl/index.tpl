@@ -15,6 +15,7 @@
     {$InQueue="In der Warteschlange"}
     {$green="grün"}
     {$yellow="gelb"}
+    {$Of="von"}
 {else}
     {$Proj="Project Overview"}
     {$Running="Test in progress, initiated on"}
@@ -30,6 +31,7 @@
     {$InQueue="Queued"}
     {$green="green"}
     {$yellow="yellow"}
+    {$Of="of"}
 {/if}
 
 
@@ -56,7 +58,7 @@
         <span> {$Finished} </span>
     {/if}
 
-    <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
+    <span style='background-color: #99ff99' id="sucess_stats">{$iStatusSum} {$Of} {count($aTests)} ({$iPercentage} %) {$Erf}</span><br>
 
     {include file="run_project.tpl" aProject=$aProjects.0}
 
