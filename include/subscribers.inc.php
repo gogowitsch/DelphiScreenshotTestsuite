@@ -13,6 +13,7 @@ db_connect("CREATE TABLE IF NOT EXISTS `subscribers` (" .
         "`email` VARCHAR(255)," .
         "`ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY);");
 
+/** @return array */
 function getSubscribers($project) {
     global $conn;
 

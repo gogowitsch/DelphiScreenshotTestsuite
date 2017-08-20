@@ -204,27 +204,24 @@ function save_job() {
     }
 
     $sEmail = empty($_POST['email']) ? '' : $_POST['email'];
-    if ($sEmail)
+    if ($sEmail) {
         $_SESSION['email'] = $sEmail;
+    }
 
 
-    $aEmails = array($sEmail);
+    $aEmails = [$sEmail];
 
-    foreach(getSubscribers($_GET['project']) as $subscriber)
+    foreach (getSubscribers($_GET['project']) as $subscriber) {
         $aEmails[] = $subscriber['email'];
+    }
 
     $project = $conn->quote($_GET['project']);
 
-    foreach($aEmails as $sEmail) {
+    foreach ($aEmails as $sEmail) {
         $sEmail = $conn->quote($sEmail);
         $sSQL = "INSERT INTO `job_warteschlange` (`project`, `user_email`, `Datum`) VALUES ($project, $sEmail, NOW());";
         db_connect($sSQL);
     }
-
-    // ID-Spalte hinzufügen, damit Tabelle in phpMyAdmin bearbeitbar wird
-    $aHasId = db_connect("SHOW COLUMNS FROM `job_warteschlange` LIKE 'ID'");
-    if (empty($aHasId))
-        db_connect("ALTER TABLE `job_warteschlange` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
 }
 
 function queued() {
