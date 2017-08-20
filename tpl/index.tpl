@@ -15,6 +15,7 @@
     {$InQueue="In der Warteschlange"}
     {$green="grün"}
     {$yellow="gelb"}
+    {$Of="von"}
 {else}
     {$Proj="Project Overview"}
     {$Running="Test in progress, initiated on"}
@@ -30,6 +31,7 @@
     {$InQueue="Queued"}
     {$green="green"}
     {$yellow="yellow"}
+    {$Of="of"}
 {/if}
 
 
@@ -56,7 +58,7 @@
         <span> {$Finished} </span>
     {/if}
 
-    <span style='background-color: #99ff99'>{$iStatusSum} ({$iPercentage} %) {$Erf}</span><br>
+    <span style='background-color: #99ff99' id="sucess_stats">{$iStatusSum} {$Of} {count($aTests)} ({$iPercentage} %) {$Erf}</span><br>
 
     {include file="run_project.tpl" aProject=$aProjects.0}
 
@@ -87,7 +89,7 @@
                         <label for="cb{$i}">{$aTest.title|utf8_encode}</label>
                     </td>
                     <td class="status{$aTest.status} wouldbe{$aTest.iWouldBeStatus}">
-                        <a href="details.php?project={$project|urlencode}&sTestName={$aTest.name|urlencode}">
+                        <a href="details.php?project={$project|urlencode}&amp;sTestName={$aTest.name|urlencode}">
                             {$aTest.desc}
                         </a>
                     </td>
@@ -99,8 +101,9 @@
         <div id="actions">
         <input type=submit name=done title="als Okay markieren" id='done-button' value="A: {$IstZu}" />
         <input type=submit name=discard value="C: {$ZurVer}"  id='discard-button' onclick="return confirm('{$MoeSi}\n\n{$DaIsSi}')"  />
+        </div>
     </form>
-    <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! --!>
+    <!-- NEUE GITLAB-URLS BEI include/smarty.inc.php ANLEGEN!!! -->
     {if isset($newGitLabIssueURL)}
     <form id="new-issue" data-url="{$newGitLabIssueURL}">
         <br>
@@ -111,7 +114,6 @@
         </fieldset>
     </form>
     {/if}
-        </div>
 
 
     <script>
@@ -171,7 +173,7 @@
         });
     </script>
     {if !$show_all}
-        <a href="?project={$project|urlencode}&show_all=1">
+        <a href="?project={$project|urlencode}&amp;show_all=1">
             {$ShowAll}: {$nSuccess} {$green}, {$nWouldBeSuccess} {$yellow}</a>
     {/if}
 

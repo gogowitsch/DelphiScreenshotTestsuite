@@ -37,17 +37,6 @@ function startProjectTest($sProject, $sCmd) {
 function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $sExePath, $iExeTime, $aTests, $aProjects, $iStatusSum, $iLocalStatusSum, $aNewTests, $sDoneFile;
 
-    db_connect("CREATE TABLE IF NOT EXISTS `projects` ( ".
-               "`title` VARCHAR(255),".
-               "`status` BOOLEAN,".
-               "`ratio` VARCHAR(255))");
-
-    ob_start();
-    db_connect("ALTER TABLE `projects` ADD `ID` INT AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`ID`)");
-    db_connect("ALTER TABLE `projects` ADD COLUMN `duration` VARCHAR(32) NULL DEFAULT '';");
-    db_connect("ALTER TABLE `projects` ADD UNIQUE(`title`);");
-    ob_end_clean();
-
     if (!empty($_GET['project']) && $_GET['project'] != $sProject)
         return;
 
@@ -185,7 +174,7 @@ function getStatusOfAllProjects() {
             'C:\xampp.htdocs\rdo\.git\refs\heads\master',
             'cd C:\xampp\htdocs\rdo\tests\PhantomJS && ( fork_test.sh NIST-MML || echo ok )');
     }
-    if (in_array($sHost, array('noack-kopie01-pc', 'noack-pc'))) {
+    if (strstr($sHost, 'noack')) {
         getProjectStatus('LPP.AOCS',
             'C:\railo\tomcat\webapps\ROOT\.git\refs\heads\master',
             'cd C:\railo\tomcat\webapps\ROOT\admin\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
@@ -195,7 +184,7 @@ function getStatusOfAllProjects() {
             'C:\xampp\htdocs\bioval.quodata.de\.git\refs\heads\master',
             'cd C:\xampp\htdocs\bioval.quodata.de\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
     }
-    if (stristr(gethostname(), 'OEQUASTA')) {
+    if (stristr(gethostname(), 'OEQUASTA') || strstr($sHost, 'blaeul')) {
         getProjectStatus('OEQUASTA',
             'C:\WAMP\htdocs\oequasta\.git\refs\heads\reviewed-code-for-screenshots',
             'cd C:\WAMP\htdocs\oequasta\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');

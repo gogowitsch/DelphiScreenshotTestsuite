@@ -33,7 +33,7 @@
               <th>Duration</th>
               <th>Last run</th>
               <th></th>
-              <td>Subscribers</th>
+              <th>Subscribers</th>
             </thead>
             <tbody>
             {foreach $aProjects as $i => $aProject}
@@ -62,7 +62,7 @@
                         </td>
                         <td class='subscribers status{$aProject.status}'>
 
-                            <a href="/phpmyadmin/sql.php?db=delphiscreenshottestsuite&table=subscribers"
+                            <a href="/phpmyadmin/sql.php?db=delphiscreenshottestsuite&amp;table=subscribers"
                                title="Abonenntenliste in phpMyAdmin bearbeiten.">
                                 {foreach $aProject.subscribers as $key => $subscriber}
                                     {if $key > 0}, {/if}

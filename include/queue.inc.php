@@ -1,21 +1,5 @@
 <?php
 
-db_connect("CREATE TABLE IF NOT EXISTS
-`job_warteschlange` (
-  `project` varchar(255) DEFAULT NULL,
-  `user_email` varchar(255) DEFAULT NULL,
-  `Datum` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  `ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-) ENGINE=InnoDB DEFAULT CHARSET=latin1; ");
-
-db_connect("CREATE TABLE IF NOT EXISTS
-`comments` (
-  `project` varchar(255) DEFAULT NULL,
-  `test` varchar(255) NOT NULL DEFAULT '',
-  `comment` varchar(255) DEFAULT NULL,
-  `time` datetime DEFAULT NULL
-);");
-
 require_once '../include/subscribers.inc.php';
 
 function sendMailToUser($sMailTo, $subject, $message) {
@@ -24,8 +8,8 @@ function sendMailToUser($sMailTo, $subject, $message) {
         `echo %cd%`;
         $path = "../lvu/$path";
     }
-    require_once("../$path");
-    require_once(dirname("../$path") . '/class.SMTP.php');
+    require_once "../$path";
+    require_once dirname("../$path") . '/class.SMTP.php';
 
     $mail = new PHPMailer(true);
     $mail->IsSMTP();
@@ -66,9 +50,10 @@ function db_connect($sSQL) {
             $dbname = "delphiscreenshottestsuite";
 
             // allow instances to override the default settings, e.g. specify a password
-            $sDatabaseConfig = '../config/config.database.inc.php';
-            if (file_exists($sDatabaseConfig))
-                include($sDatabaseConfig);
+            $sDatabaseConfig = __DIR__ . '/../config/config.database.inc.php';
+            if (file_exists($sDatabaseConfig)) {
+                include $sDatabaseConfig;
+            }
 
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -84,7 +69,10 @@ function db_connect($sSQL) {
         }
     }
     catch (PDOException $e) {
-        echo $sSQL . "<br>" . $e->getMessage();
+        echo $sSQL . "<br><span style='color:red'>{$e->getMessage()}</span>";
+        if (strpos($e->getMessage(), 'SQLSTATE[HY000]') !== FALSE) {
+            die("You can define your database configuration in the (optional) file <tt>$sDatabaseConfig</tt>.<br>\n");
+        }
     }
 }
 
