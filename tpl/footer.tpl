@@ -28,6 +28,6 @@
       location.href = this.getAttribute('href');
     });
 </script>
-<i style='font-size:10px'>{$MehrIn} <a href="https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite">{$QDde}</a>.</BODY>
+<i style='font-size:10px'>{$MehrIn} <a href="https://wiki.quodata.de/index.php?title=DelphiScreenshotTestsuite">{$QDde}</a>.</i></BODY>
 
 </HTML>

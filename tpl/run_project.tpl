@@ -23,7 +23,7 @@
     {if !empty($sFormTarget)}
           target="{$sFormTarget}"
     {/if}
-          action="run_project.php?project={$aProject.title|urlencode}&run=1"
+          action="run_project.php?project={$aProject.title|urlencode}&amp;run=1"
           class="{$verb}_project">
 
         <button type="submit"
