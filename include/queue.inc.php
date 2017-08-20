@@ -66,9 +66,10 @@ function db_connect($sSQL) {
             $dbname = "delphiscreenshottestsuite";
 
             // allow instances to override the default settings, e.g. specify a password
-            $sDatabaseConfig = '../config/config.database.inc.php';
-            if (file_exists($sDatabaseConfig))
-                include($sDatabaseConfig);
+            $sDatabaseConfig = __DIR__ . '/../config/config.database.inc.php';
+            if (file_exists($sDatabaseConfig)) {
+                include $sDatabaseConfig;
+            }
 
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -84,7 +85,10 @@ function db_connect($sSQL) {
         }
     }
     catch (PDOException $e) {
-        echo $sSQL . "<br>" . $e->getMessage();
+        echo $sSQL . "<br><span style='color:red'>{$e->getMessage()}</span>";
+        if (strpos($e->getMessage(), 'SQLSTATE[HY000]') !== FALSE) {
+            die("You can define your database configuration in the (optional) file <tt>$sDatabaseConfig</tt>.<br>\n");
+        }
     }
 }
 
