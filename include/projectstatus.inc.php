@@ -189,6 +189,11 @@ function getStatusOfAllProjects() {
             'C:\WAMP\htdocs\oequasta\.git\refs\heads\reviewed-code-for-screenshots',
             'cd C:\WAMP\htdocs\oequasta\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
     }
+    if ($sHost === 'screenshot03-pc') {
+        getProjectStatus('BVL-Webeingabe',
+            'C:\xampp\htdocs\bvl-webeingabe\refs\heads\master',
+            'cd C:\xampp\htdocs\bvl-webeingabe\tests\PhantomJS && start test.sh');
+        }
 
     checkFurtherImageConversions();
 }
