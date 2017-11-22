@@ -187,6 +187,7 @@ function getStatusOfAllProjects() {
     if (stristr(gethostname(), 'OEQUASTA') || strstr($sHost, 'blaeul')) {
         getProjectStatus('OEQUASTA',
             'C:\WAMP\htdocs\oequasta\.git\refs\heads\reviewed-code-for-screenshots',
+            'cd C:\WAMP\htdocs\OEQUASTA-Kollektivbildung && git pull && ' +
             'cd C:\WAMP\htdocs\oequasta\tests\PhantomJS && git pull && ( fork_test.sh || echo ok )');
     }
     if ($sHost === 'screenshot03-pc') {
