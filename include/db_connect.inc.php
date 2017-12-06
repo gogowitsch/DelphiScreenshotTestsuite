@@ -19,8 +19,9 @@ function db_connect($sSQL) {
             $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
-        if (!$sSQL)
+        if (!$sSQL) {
             return;
+        }
         $stmt = $conn->prepare($sSQL);
         $stmt->execute();
         if (stristr($sSQL, 'SELECT')) {
