@@ -45,10 +45,19 @@ function getProjectStatus($sProject, $p_sExePath, $sCmd = '') {
     global $conn;
     if (empty($_GET['project'])) {
         // die Startseite wird geladen
-        $aResult = db_connect("SELECT * FROM `projects` " .
-                              "WHERE `title` = " . $conn->quote($sProject));
+        $sWhere = "WHERE `title` = " . $conn->quote($sProject);
+        $aResult = db_connect("SELECT * FROM `projects` " . $sWhere);
         if (count($aResult)) {
             // Cache nutzen
+
+            if ($aResult[0]['exe_path'] !== $sExePath || $aResult[0]['cmd'] !== $sCmd) {
+                $sSafeCmd = $conn->quote($sCmd);
+                $sSafeExePath = $conn->quote($sExePath);
+                db_connect("UPDATE `projects` SET
+                                    `exe_path` = $sSafeExePath,
+                                    `cmd` = $sSafeCmd
+                                    $sWhere");
+            }
             $aResult[0]['cmd'] = $sCmd;
             $aResult[0]['subscribers'] = getSubscribers($sProject);
             $aResult[0]['last_run'] = getLastRunTime($aResult[0]['title']);
@@ -127,7 +136,14 @@ function getRdoProjectStatus($sDesign) {
 
 function getStatusOfAllProjects() {
     global $aTests;
-    $aTests = array();
+    $aTests = [];
+    $aProjectsFromDb = db_connect('SELECT `title`, `exe_path`, `cmd` FROM `projects` WHERE IFNULL(`exe_path`, "") <> ""');
+    if ($aProjectsFromDb) {
+        foreach ($aProjectsFromDb as $aRecord) {
+            getProjectStatus($aRecord['title'], $aRecord['exe_path'], $aRecord['cmd']);
+        }
+        return;
+    }
     $sHost = strtolower(gethostname());
     if (in_array($sHost, array('screenshot01-pc'))) {
         getProjectStatusPl('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe');
@@ -193,17 +209,19 @@ function getStatusOfAllProjects() {
         getProjectStatus('BVL-Webeingabe',
             'C:\xampp\htdocs\bvl-webeingabe\refs\heads\master',
             'cd C:\xampp\htdocs\bvl-webeingabe\tests\PhantomJS && start test.sh');
-        }
+    }
 
     checkFurtherImageConversions();
 }
 
 function checkFurtherImageConversions() {
     global $bNeedsFurtherConversions, $sScreenshotName, $smarty;
-    if (empty($bNeedsFurtherConversions))
+    if (empty($bNeedsFurtherConversions)) {
         return;
-    if (empty($smarty))
+    }
+    if (empty($smarty)) {
         return;
+    }
 
     $smarty->assign("iframeFurtherImageConversions", $bNeedsFurtherConversions);
     $smarty->assign("sScreenshotName", $sScreenshotName);
@@ -218,8 +236,9 @@ function removeRunningTestFolder() {
 function killRunningProcess() {
     removeRunningTestFolder();
     aufLaufendeTestsPruefen($sCmd, $iStatus, $sLastLine, 'killProcess');
-    if ($iStatus)
+    if ($iStatus) {
         die("<h1>Fehler</h1>$sLastLine<br><tt>$sCmd</tt>");
+    }
 }
 
 /**
@@ -250,7 +269,9 @@ function aufLaufendeTestsPruefen(&$sCmd, &$iStatus, &$sOutput, $sAhkParam) {
 
 function getLastRunTime($sProject) {
     $sDoneFile = getDoneFile($sProject);
-    if (!file_exists($sDoneFile)) return 0;
+    if (!file_exists($sDoneFile)) {
+        return 0;
+    }
 
     return filemtime($sDoneFile);
 }
