@@ -1,7 +1,6 @@
 <?php
 
-require_once '../include/queue.inc.php';
-require_once '../include/subscribers.inc.php';
+require_once __DIR__ . '/../include/queue.inc.php';
 
 function startProjectTest($sProject, $sCmd) {
     global $sAhkCmd, $sAhkFolderPl;

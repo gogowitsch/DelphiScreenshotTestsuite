@@ -1,6 +1,7 @@
 <?php
 
-require_once '../include/subscribers.inc.php';
+require_once __DIR__ . '/../include/db_connect.inc.php';
+require_once __DIR__ . '/../include/subscribers.inc.php';
 
 function sendMailToUser($sMailTo, $subject, $message) {
     $path = 'PHPMailer/class.phpmailer.php';

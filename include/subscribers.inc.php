@@ -6,8 +6,6 @@
  * jedem job_done=1 informiert werden.
  */
 
-require_once '../include/queue.inc.php';
-
 db_connect("CREATE TABLE IF NOT EXISTS `subscribers` (" .
         "`project` VARCHAR(255)," .
         "`email` VARCHAR(255)," .
