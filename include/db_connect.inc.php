@@ -39,9 +39,8 @@ function db_connect($sSQL) {
         if (!$sSQL) {
             return;
         }
-        $stmt = $conn->prepare($sSQL);
-        $stmt->execute();
-        if (stristr($sSQL, 'SELECT')) {
+        $stmt = $conn->query($sSQL);
+        if (false !== stripos($sSQL, 'SELECT')) {
             // bei UPDATE und DELETE gibt es kein Ergebnis
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             return $stmt->fetchAll();
@@ -49,7 +48,7 @@ function db_connect($sSQL) {
     }
     catch (PDOException $e) {
         echo $sSQL . "<br><span style='color:red'>{$e->getMessage()}</span>";
-        if (strpos($e->getMessage(), 'SQLSTATE[HY000]') !== FALSE) {
+        if (strpos($e->getMessage(), 'SQLSTATE[HY000]') !== false) {
             die("You can define your database configuration in the (optional) file <tt>$sDatabaseConfig</tt>.<br>\n");
         }
     }
