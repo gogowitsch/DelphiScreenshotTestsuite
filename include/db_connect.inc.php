@@ -1,8 +1,25 @@
 <?php
 
+(function () {
+    /** @var string[] $arrSQLInstallQuery */
+    /** @var int $iRev */
+    require __DIR__ . '/sql_queries.inc.php';
+    $QueryResult = db_connect("SELECT var_val FROM `config` WHERE var_name = 'db_revision'");
+
+    $iAktuelleDbRevision = $QueryResult[0]['var_val'];
+    if ($iAktuelleDbRevision < $iRev) {
+        foreach ($arrSQLInstallQuery as $i => $sSql) {
+            if ($i > $iAktuelleDbRevision) {
+                db_connect($sSql);
+            }
+        }
+    }
+})();
+
 function db_connect($sSQL) {
     global $conn;
 
+    $sDatabaseConfig = __DIR__ . '/../config/config.database.inc.php';
     try {
         if (empty($conn)) {
             $servername = "localhost";
@@ -11,8 +28,8 @@ function db_connect($sSQL) {
             $dbname = "delphiscreenshottestsuite";
 
             // allow instances to override the default settings, e.g. specify a password
-            $sDatabaseConfig = __DIR__ . '/../config/config.database.inc.php';
             if (file_exists($sDatabaseConfig)) {
+                /** @noinspection PhpIncludeInspection */
                 include $sDatabaseConfig;
             }
 

@@ -6,11 +6,6 @@
  * jedem job_done=1 informiert werden.
  */
 
-db_connect("CREATE TABLE IF NOT EXISTS `subscribers` (" .
-        "`project` VARCHAR(255)," .
-        "`email` VARCHAR(255)," .
-        "`ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY);");
-
 /** @return array */
 function getSubscribers($project) {
     global $conn;
