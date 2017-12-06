@@ -139,11 +139,18 @@ function getStatusOfAllProjects() {
     $aTests = [];
     $aProjectsFromDb = db_connect('SELECT `title`, `exe_path`, `cmd` FROM `projects` WHERE IFNULL(`exe_path`, "") <> ""');
     if ($aProjectsFromDb) {
+        // auf diesem Computer ist bereits eine Projektliste in der DB
         foreach ($aProjectsFromDb as $aRecord) {
             getProjectStatus($aRecord['title'], $aRecord['exe_path'], $aRecord['cmd']);
         }
+
+        checkFurtherImageConversions();
         return;
     }
+
+    // der folgende Code prüft host-abhängig, welche Projekte zu sehen sein
+    // sollen. Der Code kann gelöscht werden, sobald die DB für den Host gefüllt
+    // ist.
     $sHost = strtolower(gethostname());
     if (in_array($sHost, array('screenshot01-pc'))) {
         getProjectStatusPl('PROLab_de', 'c:/daten/prolab_plus_de_AD\\PROLab_de.exe');
