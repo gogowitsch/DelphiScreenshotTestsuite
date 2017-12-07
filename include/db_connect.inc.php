@@ -16,6 +16,12 @@
     }
 })();
 
+/**
+ * @param string $sSQL
+ *
+ * @global PDO $conn
+ * @return false|array
+ */
 function db_connect($sSQL) {
     global $conn;
 
@@ -37,7 +43,7 @@ function db_connect($sSQL) {
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         if (!$sSQL) {
-            return;
+            return false;
         }
         $stmt = $conn->query($sSQL);
         if (false !== stripos($sSQL, 'SELECT')) {
@@ -52,4 +58,5 @@ function db_connect($sSQL) {
             die("You can define your database configuration in the (optional) file <tt>$sDatabaseConfig</tt>.<br>\n");
         }
     }
+    return false;
 }
