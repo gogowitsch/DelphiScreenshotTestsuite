@@ -11,15 +11,17 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `delphiscreenshottestsuite`
 --
-CREATE DATABASE IF NOT EXISTS `delphiscreenshottestsuite` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `delphiscreenshottestsuite`
+  DEFAULT CHARACTER SET latin1
+  COLLATE latin1_swedish_ci;
 USE `delphiscreenshottestsuite`;
 
 -- --------------------------------------------------------
@@ -30,11 +32,15 @@ USE `delphiscreenshottestsuite`;
 
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments` (
-  `project` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `test` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `comment` varchar(255) DEFAULT NULL,
-  `time` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `project` VARCHAR(255)
+            CHARACTER SET utf8          DEFAULT NULL,
+  `test`    VARCHAR(255)
+            CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `comment` VARCHAR(255)                DEFAULT NULL,
+  `time`    DATETIME                    DEFAULT NULL
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -44,11 +50,13 @@ CREATE TABLE `comments` (
 
 DROP TABLE IF EXISTS `job_warteschlange`;
 CREATE TABLE `job_warteschlange` (
-  `ID` int(11) NOT NULL,
-  `project` varchar(255) DEFAULT NULL,
-  `user_email` varchar(255) DEFAULT NULL,
-  `Datum` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ID`         INT(11) NOT NULL,
+  `project`    VARCHAR(255) DEFAULT NULL,
+  `user_email` VARCHAR(255) DEFAULT NULL,
+  `Datum`      DATETIME     DEFAULT CURRENT_TIMESTAMP
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -58,12 +66,14 @@ CREATE TABLE `job_warteschlange` (
 
 DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
-  `ID` int(11) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `ratio` varchar(255) DEFAULT NULL,
-  `duration` varchar(32) DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ID`       INT(11) NOT NULL,
+  `title`    VARCHAR(255) DEFAULT NULL,
+  `status`   TINYINT(1)   DEFAULT NULL,
+  `ratio`    VARCHAR(255) DEFAULT NULL,
+  `duration` VARCHAR(32)  DEFAULT ''
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- --------------------------------------------------------
 
@@ -73,10 +83,12 @@ CREATE TABLE `projects` (
 
 DROP TABLE IF EXISTS `subscribers`;
 CREATE TABLE `subscribers` (
-  `project` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `project` VARCHAR(255) DEFAULT NULL,
+  `email`   VARCHAR(255) DEFAULT NULL,
+  `ID`      INT(11) NOT NULL
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 --
 -- Indexes for dumped tables
@@ -115,17 +127,31 @@ ALTER TABLE `subscribers`
 -- AUTO_INCREMENT for table `job_warteschlange`
 --
 ALTER TABLE `job_warteschlange`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 5;
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 10;
 --
 -- AUTO_INCREMENT for table `subscribers`
 --
 ALTER TABLE `subscribers`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 4;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `id`       INT(11) NOT NULL AUTO_INCREMENT,
+  `var_name` TINYTEXT,
+  `var_val`  TEXT,
+  PRIMARY KEY (`id`)
+)
+  DEFAULT CHARSET = latin1;
+
+INSERT INTO `config` (`var_name`, `var_val`) VALUES
+  ('db_revision', '1');

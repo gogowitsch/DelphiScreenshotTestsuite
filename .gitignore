@@ -1,4 +1,5 @@
 *.bak
+.idea/workspace.xml
 /config
 /html/*.html
 /html/Bilder
@@ -6,10 +7,10 @@
 /html/FinishedProcess
 /html/mailoutput
 /html/RunningProcess
+/html/smtp-settings.inc.php
 /include/path.ini
 /include/Smarty/cache
 /include/Smarty/compile
 /include/smtp-settings.inc.php
 /nbproject/private/
 /PHPMailer
-/html/smtp-settings.inc.php

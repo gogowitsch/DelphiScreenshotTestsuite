@@ -1,5 +1,5 @@
 <?php
-require_once '../include/config.inc.php';
+require_once __DIR__ . '/../include/config.inc.php';
 
 function compareFiles($sFileSoll, $sFileIst, &$retval) {
     $sTime = date('Y-m-d H:i:s', filemtime($sFileIst));

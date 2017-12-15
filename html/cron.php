@@ -1,21 +1,18 @@
 <?php
-//require_once  '../html/index.php';
-require '../include/screenshot.inc.php';
-require '../include/projectstatus.inc.php';
+require __DIR__ . '/../include/screenshot.inc.php';
+require __DIR__ . '/../include/projectstatus.inc.php';
 
-require_once '../include/queue.inc.php';
 getStatusOfAllProjects();
 
 // Verwaiste Test-Comment records aus Datenbank entfernen
 function delete_old_comments($aTests) {
     global $conn;
-    db_connect('');
 
     $sSQL = "SELECT `test` FROM `comments`";
     $aTests_with_comments = db_connect($sSQL);
 
     if (!empty($aTests_with_comments)) {
-        $aTitle = array();
+        $aTitle = [];
 
         if (!empty($aTests)) {
             foreach ($aTests as $keys => $val) {
