@@ -1,4 +1,7 @@
 *.bak
+.idea/dataSources.local.xml
+.idea/dataSources/
+.idea/delphiscreenshottestsuite.iml
 .idea/workspace.xml
 /config
 /html/*.html
