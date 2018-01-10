@@ -43,7 +43,7 @@
 
 {function showDifferences}
     <div style='background:{$color}'><span class='label'>   {$label}:</span>
-        {if $aTest.ext=='png' || $aTest.ext=='bmp'}
+        {if in_array($aTest.ext, ['bmp', 'png'])}
             <img src="{$file|dirname}/{$file|basename|utf8_decode|rawurlencode|htmlentities}?{$time|urlencode}" title="{$label} {$time}">
         {else}
             {if in_array($aTest.ext, array('txt', 'rtf', 'csv', 'xls')) }
@@ -81,7 +81,7 @@
 
     {showDifferences color=green file=$aTest.fileSoll|utf8_encode label={$SollTar} time=$aTest.sollTime}
 
-    {if $aTest.ext=='png' || $aTest.ext=='bmp'}
+    {if in_array($aTest.ext, ['bmp', 'png'])}
 
         <span class='label'>{$UntDif}: </span>
 
