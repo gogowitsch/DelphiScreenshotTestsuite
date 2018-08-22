@@ -36,3 +36,7 @@ You'll also need ImageMagick in the PATH.
 
 ## Similar projects by other authors
 - https://github.com/Sereda-Fazen/VisualCeption
+- https://github.com/wearefriday/spectre
+- https://github.com/xebia/VisualReview
+- https://visualregressiontesting.com/
+- https://github.com/HuddleEng/PhantomCSS (unmaintained)
