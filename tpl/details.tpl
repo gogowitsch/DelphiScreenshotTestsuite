@@ -116,7 +116,7 @@
         {if !empty($sTime)}
             <p>Comment-time: {$sTime}</p>
         {/if}
-        <input type="submit" id="submit_button" name='save_button' value="Submit"></input>
+        <input type="submit" id="submit_button" name='save_button' value="Submit" />
     </div>
 </form>
 
