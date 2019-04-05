@@ -53,6 +53,7 @@
                         {$aTest.sRtfLink|default}
                         <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
                     </div>
+                    &nbsp; <a href="{$file|dirname}/{$file|basename|utf8_decode|rawurlencode|htmlentities}?{$time|urlencode}" title="{$label} {$time}" target=_blank>Download</a>
                 {else}
                     <i>Datei '{$file}' wurde nicht gefunden.</i>
                 {/if}
