@@ -51,8 +51,10 @@
                 {if file_exists($file)}
                     <div class='iframe_container'>
                         {$aTest.sRtfLink|default}
-                        <textarea rows=21 cols=75 readonly="readonly">{fetch file=$file}</textarea>
+                        {fetch file=$file assign="content"}
+                        <textarea rows=21 cols=75 readonly="readonly">{$content|htmlentities}</textarea>
                     </div>
+                    &nbsp; <a href="{$file|dirname}/{$file|basename|utf8_decode|rawurlencode|htmlentities}?{$time|urlencode}" title="{$label} {$time}" target=_blank>Download</a>
                 {else}
                     <i>Datei '{$file}' wurde nicht gefunden.</i>
                 {/if}
@@ -115,7 +117,7 @@
         {if !empty($sTime)}
             <p>Comment-time: {$sTime}</p>
         {/if}
-        <input type="submit" id="submit_button" name='save_button' value="Submit"></input>
+        <input type="submit" id="submit_button" name='save_button' value="Submit" />
     </div>
 </form>
 
