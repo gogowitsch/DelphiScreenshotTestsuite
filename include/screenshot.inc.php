@@ -21,7 +21,12 @@ function compareFiles($sFileSoll, $sFileIst, &$retval) {
 }
 
 function compareImages($image1, $image2) {
-    $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
+    } else {
+        $sCompare = 'compare';
+    }
+
     $sCmd = "$sCompare -metric RMSE \"$image1\" \"$image2\" NULL:";
     $response = `$sCmd 2>&1`;
     return $response === '0 (0)';
@@ -55,7 +60,12 @@ function updateAllTestStatus($test, $projekt) {
 function createDifferenceImage($sFileIst, $sFileSoll, $sStem) {
     global $sCmd;
 
-    $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $sCompare = '"C:\\Program Files\\ImageMagick-6.8.9-Q16\\compare.exe"';
+    } else {
+        $sCompare = 'compare';
+    }
+
     if (file_exists("$sStem-difference.png")) {
         $iTimeD = filemtime("$sStem-difference.png");
         $iTimeI = filemtime($sFileIst);
