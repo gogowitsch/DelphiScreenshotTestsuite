@@ -260,7 +260,7 @@ function aufLaufendeTestsPruefen(&$sCmd, &$iStatus, &$sOutput, $sAhkParam) {
     $sCheckRunningTestsScript = $sAhkFolderPl . '/auf laufende Tests pruefen.ahk';
     if (!file_exists($sCheckRunningTestsScript)) {
         $sDesktop = dirname($sAhkFolderPl);
-        $sCmd = "git clone https://Account-Zum-Pullen-Auf-Produktionsservern:xgtnuSNZ-2zXgNyGtcgj@git04.quodata.de/it/DelphiScreenshotTestsuite-AHK.git $sAhkFolderPl 2>&1";
+        $sCmd = "git clone https://Account-Zum-Pullen-Auf-Produktionsservern:L_G-mjMeByxrzEv5HHDY@git04.quodata.de/it/DelphiScreenshotTestsuite-AHK.git $sAhkFolderPl 2>&1";
         exec($sCmd, $aOutput, $iStatus);
         if ($iStatus) {
             $sOutput = join("\n", $aOutput);
