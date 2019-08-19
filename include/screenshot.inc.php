@@ -193,7 +193,7 @@ function handleActions(&$retval) {
 }
 
 function addRtfLink(&$retval) {
-    if ($retval['ext'] == 'txt' || $retval['ext'] == 'rtf') {
+    if (in_array($retval['ext'], array('txt', 'rtf', 'html', 'xml', 'js'))) {
         $sContent = file_get_contents($retval['fileIst']);
         if (substr($sContent, 0, 5) == '{\rtf') {
             $retval['sRtfLink'] = "<a href='rtf.php?file=" . urlencode($retval['fileIst']) . "'>in Word öffnen</a>";
@@ -204,8 +204,8 @@ function addRtfLink(&$retval) {
 function getScreenshotStatus($sTestName = 'download-seite') {
     global $iExeTime, $sExePath;
 
-    $sStem = substr($sTestName, 0, -8);
-    $sExt = substr($sTestName, -3);
+    $sExt = pathinfo($sTestName, PATHINFO_EXTENSION);
+    $sStem = substr($sTestName, 0, -5-strlen($sExt));
     if (stristr($sExt, 'bmp')) {
         if (!file_exists("$sStem-ist.$sExt")) {
             header('Location: /details.php?' . substr(http_build_query($_GET), 0, -3) . 'png');
